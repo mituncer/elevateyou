@@ -672,3 +672,15 @@ function buildColorPicker() {
   const container = document.getElementById('colorOptions');
   CARD_COLORS.forEach(color => {
     const div = document.createElement('div
+    div.style.background = color;
+    div.onclick = () => {
+      selectedColor = color;
+      container.querySelectorAll('.color-opt').forEach(d=>d.classList.remove('selected'));
+      div.classList.add('selected');
+    };
+    container.appendChild(div);
+  });
+}
+</script>
+</body>
+</html>
