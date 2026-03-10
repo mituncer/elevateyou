@@ -25,6 +25,15 @@
   .site-title span { color: var(--orange); }
   .header-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); letter-spacing: 0.05em; text-align: right; }
 
+  /* ── NAV ── */
+  .site-nav { display: flex; align-items: center; gap: 0; padding: 0; border-bottom: 1px solid var(--border); }
+  .nav-link { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); cursor: pointer; padding: 10px 18px; border-right: 1px solid var(--border); transition: color 0.2s; white-space: nowrap; }
+  .nav-link:hover, .nav-link.active { color: var(--black); }
+  .nav-link.active { border-bottom: 2px solid var(--orange); }
+  .nav-social { margin-left: auto; display: flex; align-items: center; gap: 0; }
+  .nav-social-link { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); text-decoration: none; padding: 10px 18px; border-left: 1px solid var(--border); transition: color 0.2s; letter-spacing: 0.05em; }
+  .nav-social-link:hover { color: var(--orange); }
+
   /* ── SEARCH ── */
   .search-section { flex: 1; padding: 16px 0; display: flex; align-items: center; gap: 12px; }
   .search-wrapper { flex: 1; position: relative; display: flex; align-items: center; }
@@ -177,8 +186,16 @@
   <div class="header-top">
     <div class="site-date" id="site-date"></div>
     <div class="site-title" onclick="showList()">ELEVATE <span>THINKING</span></div>
-    <div class="header-meta">by Mustafa<br>Warsaw · Ankara</div>
+    <div class="header-meta">by Mustafa<br>Warsaw · Istanbul</div>
   </div>
+  <nav class="site-nav">
+    <span class="nav-link active" onclick="showList()">Yazılar</span>
+    <span class="nav-link" onclick="showAbout()">Hakkımda</span>
+    <div class="nav-social">
+      <a href="https://www.linkedin.com/in/mustafa-tuncer-ba283715/" target="_blank" class="nav-social-link">LinkedIn</a>
+      <a href="/cdn-cgi/l/email-protection#0b66627f7e65686e794b6c666a626725686466" class="nav-social-link"><span class="__cf_email__" data-cfemail="adc0c4d9d8c3cec8dfedcac0ccc4c183cec2c0">[email&#160;protected]</span></a>
+    </div>
+  </nav>
   <div style="display:flex; align-items:center; gap:0;">
     <div class="search-section">
       <div class="search-wrapper">
@@ -211,7 +228,7 @@
         <div class="sidebar-about">
           <p><strong>Mustafa</strong> — Yönetim kurulu üyesi, altyapı uzmanı ve düşünce lideri.</p>
           <p>Liderlik, davranışsal ekonomi, büyük ölçekli altyapı projeleri ve insanı merkeze alan yönetim üzerine yazıyor.</p>
-          <p style="color:var(--gray);font-size:12px;">Warsaw · Ankara · Skopje · Dubai</p>
+          <p style="color:var(--gray);font-size:12px;">Warsaw · Istanbul · Skopje</p>
         </div>
       </div>
       <div class="sidebar-section">
@@ -254,6 +271,57 @@
       <div class="sidebar-section">
         <div class="sidebar-title">Diğer Yazılar</div>
         <div id="detailRelated"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ══ ABOUT VIEW ══ -->
+<div id="about-view" style="display:none; max-width:1200px; margin:0 auto; padding:0 40px;">
+  <div style="display:grid; grid-template-columns:1fr 280px; gap:40px; padding-top:40px;">
+    <div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--orange);margin-bottom:16px;">Hakkımda</div>
+      <h1 style="font-family:'Playfair Display',serif;font-size:48px;font-weight:900;letter-spacing:-0.02em;line-height:1.1;margin-bottom:32px;border-bottom:3px solid var(--black);padding-bottom:24px;">Mustafa Tuncer</h1>
+
+      <div style="font-size:16px;line-height:1.85;color:#1a1a1a;">
+        <p style="margin-bottom:20px;">I am a Board Member at <strong>Gülermak Heavy Industries Construction & Contracting Co.</strong> — one of Turkey's leading infrastructure and construction companies with ~€1 billion annual revenue, operating across Turkey, Poland, the Balkans, the Middle East, India and the Philippines.</p>
+        <p style="margin-bottom:20px;">With over 25 years of experience in large-scale infrastructure and industrial projects, I have played a pivotal role in expanding Gülermak's operations across Central, Eastern, and Northern Europe. Previously serving as Executive Director for Europe, I led business development, project execution, strategic planning, and market expansion — building high-performing teams and evaluating strategic partnerships to drive sustainable growth. Throughout my career I have ensured the successful delivery of complex metro, rail, and industrial projects.</p>
+        <p style="margin-bottom:20px;">Leading international teams across 17 nationalities, I've never lost sight of the human side of the equation. Work, for me, is not just what I do — it's part of who I am. Serious, but not rigid.</p>
+        <p style="margin-bottom:20px;">I hold a Master of Science in Structural Engineering and a Bachelor's degree in Civil Engineering from <strong>Middle East Technical University (ODTÜ)</strong>.</p>
+        <p style="margin-bottom:20px;">I write about leadership, behavioral economics, mental models, and the human side of large-scale infrastructure. Occasionally also about language learning and whatever else catches my attention. Curious, grounded, and never done growing.</p>
+        <p style="margin-bottom:40px;">Based between <strong>Warsaw</strong> and <strong>Ankara</strong>.</p>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding-top:32px;margin-bottom:40px;">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--gray);margin-bottom:20px;">İletişim</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <a href="https://www.linkedin.com/in/mustafa-tuncer-ba283715/" target="_blank" style="display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:var(--black);font-size:15px;transition:color 0.2s;" onmouseover="this.style.color='var(--orange)'" onmouseout="this.style.color='var(--black)'">
+            <span style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--orange);min-width:80px;">LinkedIn</span>
+            linkedin.com/in/mustafa-tuncer-ba283715
+          </a>
+          <a href="/cdn-cgi/l/email-protection#24494d50514a474156644349454d480a474b49" style="display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:var(--black);font-size:15px;transition:color 0.2s;" onmouseover="this.style.color='var(--orange)'" onmouseout="this.style.color='var(--black)'">
+            <span style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--orange);min-width:80px;">E-posta</span>
+            <span class="__cf_email__" data-cfemail="f994908d8c979a9c8bb99e94989095d79a9694">[email&#160;protected]</span>
+          </a>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding-top:32px;">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--gray);margin-bottom:20px;">Projeler</div>
+        <a href="https://poloncekart.netlify.app" target="_blank" style="display:block;padding:20px;border:1.5px solid var(--border);text-decoration:none;color:var(--black);transition:border-color 0.2s;margin-bottom:12px;" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:6px;">PolonceKart</div>
+          <div style="font-size:13px;color:var(--gray);">Polish-English flashcard web app — single HTML file, deployed on Netlify.</div>
+        </a>
+      </div>
+    </div>
+
+    <aside style="padding-top:8px;">
+      <div style="border-left:3px solid var(--orange);padding-left:20px;margin-bottom:32px;">
+        <div style="font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:var(--gray);line-height:1.6;">"The hardest problems are not solved with more information, but with a better mental model."</div>
+      </div>
+      <div style="margin-bottom:24px;">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--gray);border-bottom:2px solid var(--black);padding-bottom:8px;margin-bottom:16px;">Son Yazılar</div>
+        <div id="aboutRecentList"></div>
       </div>
     </aside>
   </div>
@@ -361,7 +429,7 @@
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ══════════════════════════════════════════════════════
 //  CONFIG — Şifreyi buradan değiştir
 //  SHA-256 hash. Varsayılan şifre: ElevateAdmin2025
@@ -610,9 +678,30 @@ function openArticle(a) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function showAbout() {
+  document.getElementById('list-view').style.display = 'none';
+  document.getElementById('detail-view').style.display = 'none';
+  document.getElementById('about-view').style.display = 'block';
+  // recent list in about
+  const el = document.getElementById('aboutRecentList');
+  if (el) el.innerHTML = [...articles].slice(0,5).map(a => `
+    <div class="recent-item" onclick="openArticle(articles.find(x=>x.id===${a.id}))">
+      <div class="recent-title">${a.title}</div>
+      <div class="recent-date">${a.date}</div>
+    </div>
+  `).join('');
+  // nav active state
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll('.nav-link')[1].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function showList() {
   document.getElementById('list-view').style.display = 'block';
   document.getElementById('detail-view').style.display = 'none';
+  document.getElementById('about-view').style.display = 'none';
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll('.nav-link')[0].classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -753,17 +842,4 @@ function downloadJSON() {
 function buildColorPicker() {
   const container = document.getElementById('colorOptions');
   CARD_COLORS.forEach(color => {
-    const div = document.createElement('div');
-    div.className = 'color-opt' + (color === selectedColor ? ' selected' : '');
-    div.style.background = color;
-    div.onclick = () => {
-      selectedColor = color;
-      container.querySelectorAll('.color-opt').forEach(d => d.classList.remove('selected'));
-      div.classList.add('selected');
-    };
-    container.appendChild(div);
-  });
-}
-</script>
-</body>
-</html>
+    const div = document.createElement('div')
