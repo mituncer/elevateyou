@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELEVATE THINKING</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f8f6f1;
+    --orange: #e8440a;
+    --gray: #6b6b6b;
+    --gray-light: #e0ddd6;
+    --border: #d4d0c8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--white); color: var(--black); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; }
+
+  /* ── HEADER ── */
+  header { border-bottom: 3px solid var(--black); padding: 0 40px; }
+  .header-top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0 14px; border-bottom: 1px solid var(--border); }
+  .site-date { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: var(--gray); text-transform: uppercase; }
+  .site-title { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 900; letter-spacing: -0.02em; text-align: center; line-height: 1; cursor: pointer; }
+  .site-title span { color: var(--orange); }
+  .header-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); letter-spacing: 0.05em; text-align: right; }
+
+  /* ── SEARCH ── */
+  .search-section { flex: 1; padding: 16px 0; display: flex; align-items: center; gap: 12px; }
+  .search-wrapper { flex: 1; position: relative; display: flex; align-items: center; }
+  .search-icon { position: absolute; left: 14px; color: var(--gray); font-size: 14px; pointer-events: none; }
+  .search-input { width: 100%; padding: 10px 14px 10px 38px; border: 2px solid var(--black); background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; }
+  .search-input:focus { border-color: var(--orange); }
+  .search-input::placeholder { color: var(--gray); }
+  .search-clear { position: absolute; right: 12px; background: none; border: none; cursor: pointer; color: var(--gray); font-size: 16px; display: none; }
+  .result-count { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); white-space: nowrap; }
+
+  /* ── TAG BAR ── */
+  .tag-bar { padding: 12px 40px 16px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+  .tag-bar::-webkit-scrollbar { display: none; }
+  .tag-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); white-space: nowrap; margin-right: 4px; }
+  .tag-pill { padding: 4px 12px; border: 1.5px solid var(--border); background: transparent; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; white-space: nowrap; transition: all 0.15s; color: var(--black); letter-spacing: 0.03em; }
+  .tag-pill:hover { border-color: var(--orange); color: var(--orange); }
+  .tag-pill.active { background: var(--orange); border-color: var(--orange); color: white; }
+
+  /* ── MAIN ── */
+  .main { display: grid; grid-template-columns: 1fr 280px; gap: 0; max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+  .articles-col { border-right: 1px solid var(--border); padding-right: 40px; }
+
+  /* ── ARTICLE CARD ── */
+  .article-card { display: grid; grid-template-columns: 200px 1fr; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: all 0.2s; animation: fadeIn 0.3s ease both; }
+  .article-card:hover .article-title { color: var(--orange); }
+  .article-img-placeholder { width: 200px; height: 140px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; overflow: hidden; }
+  .article-img-placeholder::after { content: attr(data-letter); font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 900; color: rgba(255,255,255,0.08); position: absolute; bottom: -10px; right: 5px; }
+  .article-body { display: flex; flex-direction: column; gap: 8px; }
+  .article-category { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--orange); }
+  .article-title { font-family: 'Playfair Display', serif; font-size: 21px; font-weight: 700; line-height: 1.25; transition: color 0.2s; }
+  .article-excerpt { font-size: 14px; color: var(--gray); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .article-footer { display: flex; align-items: center; gap: 12px; margin-top: 4px; flex-wrap: wrap; }
+  .article-date { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); }
+  .article-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { padding: 2px 8px; border: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gray); cursor: pointer; transition: all 0.15s; }
+  .tag:hover { border-color: var(--orange); color: var(--orange); }
+  .read-more { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--orange); margin-top: 8px; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { padding-left: 32px; padding-top: 24px; }
+  .sidebar-section { margin-bottom: 32px; }
+  .sidebar-title { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gray); border-bottom: 2px solid var(--black); padding-bottom: 8px; margin-bottom: 16px; }
+  .sidebar-about p { font-size: 13px; color: var(--gray); line-height: 1.7; margin-bottom: 10px; }
+  .sidebar-about strong { color: var(--black); font-weight: 500; }
+  .recent-item { padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .recent-item:hover .recent-title { color: var(--orange); }
+  .recent-title { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; line-height: 1.3; margin-bottom: 4px; transition: color 0.2s; }
+  .recent-date { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gray); }
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* ── NO RESULTS ── */
+  .no-results { padding: 60px 0; text-align: center; display: none; }
+  .no-results-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .no-results-sub { color: var(--gray); font-size: 14px; }
+
+  /* ── DETAIL VIEW ── */
+  #detail-view { display: none; max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+  .detail-back { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray); cursor: pointer; background: none; border: none; border-bottom: 1px solid var(--border); width: 100%; text-align: left; padding: 20px 0; transition: color 0.2s; }
+  .detail-back:hover { color: var(--orange); }
+  .detail-header { padding: 32px 0 28px; border-bottom: 3px solid var(--black); }
+  .detail-category { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--orange); margin-bottom: 12px; }
+  .detail-title { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 900; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 16px; max-width: 780px; }
+  .detail-meta { display: flex; align-items: center; gap: 16px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); }
+  .detail-body { display: grid; grid-template-columns: 1fr 280px; gap: 40px; padding-top: 32px; }
+  .detail-hero-placeholder { width: 100%; height: 320px; margin-bottom: 28px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .detail-hero-placeholder::after { content: attr(data-letter); font-family: 'Playfair Display', serif; font-size: 180px; font-weight: 900; color: rgba(255,255,255,0.05); position: absolute; bottom: -20px; right: 10px; }
+  .detail-text { font-size: 16px; line-height: 1.85; color: #1a1a1a; }
+  .detail-text p { margin-bottom: 20px; }
+  .detail-text h2 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; margin: 32px 0 12px; }
+  .detail-text blockquote { border-left: 3px solid var(--orange); padding: 8px 0 8px 20px; margin: 24px 0; font-family: 'Playfair Display', serif; font-size: 20px; font-style: italic; color: var(--gray); }
+  .detail-tags { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ══ ADMIN OVERLAY ══ */
+  .admin-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; }
+  .admin-overlay.open { display: flex; }
+
+  /* ── Password Screen ── */
+  .password-box { background: var(--white); border: 3px solid var(--black); padding: 48px; width: 400px; text-align: center; }
+  .password-box h2 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; margin-bottom: 6px; }
+  .password-box p { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 28px; }
+  .pw-input { width: 100%; padding: 12px 16px; border: 2px solid var(--black); font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; margin-bottom: 12px; background: var(--white); }
+  .pw-input:focus { border-color: var(--orange); }
+  .pw-error { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--orange); margin-bottom: 12px; display: none; }
+  .btn-primary { width: 100%; padding: 12px; background: var(--black); color: var(--white); border: none; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--orange); }
+  .btn-cancel { margin-top: 12px; background: none; border: none; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); cursor: pointer; letter-spacing: 0.05em; text-decoration: underline; }
+  .btn-cancel:hover { color: var(--black); }
+
+  /* ── Admin Panel ── */
+  .admin-panel { background: var(--white); border: 3px solid var(--black); width: 700px; max-height: 90vh; overflow-y: auto; }
+  .admin-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 28px; border-bottom: 2px solid var(--black); background: var(--black); color: var(--white); }
+  .admin-header h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; }
+  .admin-header h2 span { color: var(--orange); }
+  .admin-close { background: none; border: 1px solid rgba(255,255,255,0.3); color: var(--white); cursor: pointer; font-size: 16px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s; }
+  .admin-close:hover { border-color: var(--orange); color: var(--orange); }
+  .admin-body { padding: 28px; }
+  .form-row { margin-bottom: 20px; }
+  .form-row label { display: block; font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); margin-bottom: 6px; }
+  .form-row label span { color: var(--orange); }
+  .form-input { width: 100%; padding: 10px 14px; border: 2px solid var(--border); background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; }
+  .form-input:focus { border-color: var(--black); }
+  .form-textarea { width: 100%; padding: 12px 14px; border: 2px solid var(--border); background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; resize: vertical; min-height: 120px; transition: border-color 0.2s; }
+  .form-textarea:focus { border-color: var(--black); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-hint { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gray); margin-top: 4px; }
+  .admin-footer { padding: 20px 28px; border-top: 1px solid var(--border); display: flex; gap: 12px; align-items: center; }
+  .btn-save { flex: 1; padding: 12px; background: var(--orange); color: var(--white); border: none; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+  .btn-save:hover { background: #c73a08; }
+  .btn-download { padding: 12px 20px; background: var(--black); color: var(--white); border: none; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+  .btn-download:hover { background: #333; }
+  .save-success { font-family: 'DM Mono', monospace; font-size: 11px; color: #16a34a; display: none; }
+
+  /* ── Color picker ── */
+  .color-options { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .color-opt { width: 28px; height: 28px; border: 2px solid transparent; cursor: pointer; transition: border-color 0.15s; }
+  .color-opt.selected { border-color: var(--orange); }
+
+  /* ── Article list in admin ── */
+  .admin-articles { margin-top: 24px; border-top: 1px solid var(--border); padding-top: 20px; }
+  .admin-articles-title { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); margin-bottom: 12px; }
+  .admin-article-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .admin-article-name { font-size: 13px; font-weight: 500; }
+  .admin-article-date { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gray); }
+  .btn-delete { background: none; border: 1px solid var(--border); color: var(--gray); font-family: 'DM Mono', monospace; font-size: 10px; padding: 3px 8px; cursor: pointer; transition: all 0.15s; }
+  .btn-delete:hover { border-color: #dc2626; color: #dc2626; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 768px) {
+    header, .main, #detail-view { padding: 0 20px; }
+    .main { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .article-card { grid-template-columns: 120px 1fr; gap: 16px; }
+    .article-img-placeholder { width: 120px; height: 90px; }
+    .site-title { font-size: 26px; }
+    .detail-title { font-size: 28px; }
+    .detail-body { grid-template-columns: 1fr; }
+    .admin-panel { width: 95vw; }
+    .form-grid { grid-template-columns: 1fr; }
+    .password-box { width: 90vw; padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="header-top">
+    <div class="site-date" id="site-date"></div>
+    <div class="site-title" onclick="showList()">ELEVATE <span>THINKING</span></div>
+    <div class="header-meta">by Mustafa<br>Warsaw · Istanbul</div>
+  </div>
+  <div style="display:flex; align-items:center; gap:0;">
+    <div class="search-section">
+      <div class="search-wrapper">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" id="searchInput" type="text" placeholder="Makale, fikir veya tag ara…" oninput="onSearch()">
+        <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+      </div>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+  </div>
+</header>
+
+<!-- ── TAG BAR ── -->
+<div class="tag-bar" id="tagBar">
+  <span class="tag-label">Konular →</span>
+</div>
+
+<!-- ══ LIST VIEW ══ -->
+<div id="list-view">
+  <div class="main">
+    <div class="articles-col" id="articlesCol">
+      <div class="no-results" id="noResults">
+        <div class="no-results-title">Sonuç bulunamadı</div>
+        <div class="no-results-sub">Farklı bir arama terimi veya tag deneyin.</div>
+      </div>
+    </div>
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Hakkında</div>
+        <div class="sidebar-about">
+          <p><strong>Mustafa</strong> — Yönetim kurulu üyesi, altyapı uzmanı ve düşünce lideri.</p>
+          <p>Liderlik, davranışsal ekonomi, büyük ölçekli altyapı projeleri ve insanı merkeze alan yönetim üzerine yazıyor.</p>
+          <p style="color:var(--gray);font-size:12px;">Warsaw · Istanbul · Skopje</p>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Son Yazılar</div>
+        <div id="recentList"></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Tüm Konular</div>
+        <div class="tag-cloud" id="sidebarTags"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ══ DETAIL VIEW ══ -->
+<div id="detail-view">
+  <button class="detail-back" onclick="showList()">← Tüm Yazılar</button>
+  <div class="detail-header">
+    <div class="detail-category" id="detailCategory"></div>
+    <div class="detail-title" id="detailTitle"></div>
+    <div class="detail-meta">
+      <span id="detailDate"></span>
+      <span style="color:var(--border)">|</span>
+      <span id="detailReadTime"></span>
+    </div>
+  </div>
+  <div class="detail-body">
+    <div>
+      <div id="detailHero"></div>
+      <div class="detail-text" id="detailContent"></div>
+      <div class="detail-tags" id="detailTags"></div>
+    </div>
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Hakkında</div>
+        <div class="sidebar-about">
+          <p><strong>Mustafa</strong> — Yönetim kurulu üyesi, altyapı uzmanı ve düşünce lideri.</p>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Diğer Yazılar</div>
+        <div id="detailRelated"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ══ ADMIN OVERLAY ══ -->
+<div class="admin-overlay" id="adminOverlay">
+
+  <!-- Password Screen -->
+  <div class="password-box" id="passwordBox">
+    <h2>ELEVATE <span style="color:var(--orange)">THINKING</span></h2>
+    <p>Admin Girişi</p>
+    <input class="pw-input" id="pwInput" type="password" placeholder="Şifre" onkeydown="if(event.key==='Enter')checkPassword()">
+    <div class="pw-error" id="pwError">Hatalı şifre. Tekrar deneyin.</div>
+    <button class="btn-primary" onclick="checkPassword()">Giriş Yap</button>
+    <br>
+    <button class="btn-cancel" onclick="closeAdmin()">İptal</button>
+  </div>
+
+  <!-- Admin Panel -->
+  <div class="admin-panel" id="adminPanel" style="display:none;">
+    <div class="admin-header">
+      <h2>ELEVATE <span>ADMIN</span></h2>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="admin-body">
+
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+        YENİ YAZI EKLE
+      </div>
+
+      <div class="form-row">
+        <label>Başlık <span>*</span></label>
+        <input class="form-input" id="f-title" type="text" placeholder="Yazının başlığı">
+      </div>
+
+      <div class="form-row">
+        <label>Kategori <span>*</span></label>
+        <input class="form-input" id="f-category" type="text" placeholder="ör. Liderlik, Altyapı, Teknoloji…">
+      </div>
+
+      <div class="form-row">
+        <label>Kısa Özet <span>*</span></label>
+        <textarea class="form-textarea" id="f-excerpt" style="min-height:80px;" placeholder="Kartlarda görünecek 2-3 cümle özet"></textarea>
+      </div>
+
+      <div class="form-row">
+        <label>İçerik <span>*</span></label>
+        <textarea class="form-textarea" id="f-content" style="min-height:200px;" placeholder="Yazının tam içeriği. HTML kullanabilirsin: &lt;p&gt;, &lt;h2&gt;, &lt;blockquote&gt;"></textarea>
+        <div class="form-hint">HTML etiketleri: &lt;p&gt; paragraf · &lt;h2&gt; başlık · &lt;blockquote&gt; alıntı</div>
+      </div>
+
+      <div class="form-row">
+        <label>Etiketler (Tag) <span>*</span></label>
+        <input class="form-input" id="f-tags" type="text" placeholder="Liderlik, Strateji, Yönetim">
+        <div class="form-hint">Virgülle ayır</div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-row">
+          <label>Tarih <span>*</span></label>
+          <input class="form-input" id="f-date" type="text" placeholder="10 Mart 2025">
+        </div>
+        <div class="form-row">
+          <label>Okuma Süresi</label>
+          <input class="form-input" id="f-readtime" type="text" placeholder="4 dk okuma">
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-row">
+          <label>Kart Harfi</label>
+          <input class="form-input" id="f-letter" type="text" placeholder="M" maxlength="2" style="font-family:'Playfair Display',serif;font-size:20px;">
+          <div class="form-hint">Kartın büyük harfi veya sembolü</div>
+        </div>
+        <div class="form-row">
+          <label>Kart Rengi</label>
+          <div class="color-options" id="colorOptions"></div>
+        </div>
+      </div>
+
+      <!-- Existing articles -->
+      <div class="admin-articles">
+        <div class="admin-articles-title">Mevcut Yazılar</div>
+        <div id="adminArticleList"></div>
+      </div>
+
+    </div>
+    <div class="admin-footer">
+      <button class="btn-save" onclick="saveArticle()">+ Yazıyı Ekle</button>
+      <button class="btn-download" onclick="downloadJSON()">⤓ JSON İndir</button>
+      <span class="save-success" id="saveSuccess">✓ Eklendi!</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  CONFIG — Şifreyi buradan değiştir
+//  SHA-256 hash. Varsayılan şifre: ElevateAdmin2025
+//  Değiştirmek için: https://emn178.github.io/online-tools/sha256.html
+// ══════════════════════════════════════════════════════
+const PASSWORD_HASH = 'f4e70404e765e45e4f048ed36a434b9cffb5d6e3465868915e1f4998fdd30fe7';
+
+// Kart renk seçenekleri
+const CARD_COLORS = [
+  '#0a0a0a', '#1a1a2e', '#0d1b2a', '#1c1c1c', '#111827',
+  '#1e1b18', '#14281d', '#2d1b33', '#1a0a00', '#0a1628'
+];
+
+// ══════════════════════════════════════════════════════
+//  DATA — articles.json'dan yüklenir
+// ══════════════════════════════════════════════════════
+let articles = [];
+let activeTag = null;
+let searchQuery = '';
+let selectedColor = CARD_COLORS[0];
+let adminUnlocked = false;
+
+// ── Load articles.json ──
+async function loadArticles() {
+  try {
+    const res = await fetch('articles.json?t=' + Date.now());
+    if (!res.ok) throw new Error('not found');
+    articles = await res.json();
+  } catch(e) {
+    // fallback — boş başla veya localStorage'dan al
+    const saved = localStorage.getItem('et_articles_backup');
+    if (saved) articles = JSON.parse(saved);
+    else articles = [];
+  }
+  renderAll();
+  renderTagBar();
+  renderSidebar();
+}
+
+// ══════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  const now = new Date();
+  document.getElementById('site-date').textContent =
+    now.toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+  // Tarih alanına bugünü yaz
+  document.getElementById('f-date').value =
+    now.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  loadArticles();
+  buildColorPicker();
+
+  // #admin URL ile admin aç
+  if (window.location.hash === '#admin') openAdmin();
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#admin') openAdmin();
+  });
+});
+
+// ══════════════════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════════════════
+function getAllTags() {
+  const set = new Set();
+  articles.forEach(a => (a.tags || []).forEach(t => set.add(t)));
+  return [...set].sort();
+}
+
+function renderTagBar() {
+  const bar = document.getElementById('tagBar');
+  bar.innerHTML = '<span class="tag-label">Konular →</span>';
+  getAllTags().forEach(tag => {
+    const pill = document.createElement('button');
+    pill.className = 'tag-pill' + (activeTag === tag ? ' active' : '');
+    pill.textContent = tag;
+    pill.onclick = () => toggleTag(tag);
+    bar.appendChild(pill);
+  });
+}
+
+function renderAll() {
+  const col = document.getElementById('articlesCol');
+  col.querySelectorAll('.article-card').forEach(e => e.remove());
+  const filtered = getFiltered();
+  const noRes = document.getElementById('noResults');
+  if (filtered.length === 0) {
+    noRes.style.display = 'block';
+  } else {
+    noRes.style.display = 'none';
+    filtered.forEach((a, i) => {
+      const card = buildCard(a, i);
+      col.insertBefore(card, noRes);
+    });
+  }
+  const count = filtered.length;
+  document.getElementById('resultCount').textContent =
+    (searchQuery || activeTag) ? `${count} / ${articles.length} sonuç` : '';
+}
+
+function buildCard(a, index) {
+  const card = document.createElement('div');
+  card.className = 'article-card';
+  card.style.animationDelay = `${index * 0.06}s`;
+  card.onclick = () => openArticle(a);
+
+  const imgDiv = document.createElement('div');
+  imgDiv.className = 'article-img-placeholder';
+  imgDiv.setAttribute('data-letter', a.imgLetter || '·');
+  imgDiv.style.background = a.imgColor || '#1a1a1a';
+  const accent = document.createElement('div');
+  accent.style.cssText = 'position:absolute;top:0;left:0;width:3px;height:100%;background:var(--orange);';
+  imgDiv.appendChild(accent);
+
+  const body = document.createElement('div');
+  body.className = 'article-body';
+  body.innerHTML = `
+    <div class="article-category">${a.category || ''}</div>
+    <div class="article-title">${a.title}</div>
+    <div class="article-excerpt">${a.excerpt}</div>
+    <div class="article-footer">
+      <span class="article-date">${a.date}</span>
+      <div class="article-tags">${(a.tags||[]).map(t =>
+        `<span class="tag" onclick="event.stopPropagation();filterByTag('${t}')">${t}</span>`
+      ).join('')}</div>
+    </div>
+    <span class="read-more">${a.readTime || ''} →</span>
+  `;
+  card.appendChild(imgDiv);
+  card.appendChild(body);
+  return card;
+}
+
+function renderSidebar() {
+  const recent = document.getElementById('recentList');
+  if (recent) recent.innerHTML = [...articles].slice(0, 4).map(a => `
+    <div class="recent-item" onclick="openArticle(articles.find(x=>x.id===${a.id}))">
+      <div class="recent-title">${a.title}</div>
+      <div class="recent-date">${a.date}</div>
+    </div>
+  `).join('');
+  const cloud = document.getElementById('sidebarTags');
+  if (cloud) cloud.innerHTML = getAllTags().map(t =>
+    `<span class="tag" onclick="filterByTag('${t}')">${t}</span>`
+  ).join('');
+}
+
+function renderAdminList() {
+  const list = document.getElementById('adminArticleList');
+  if (!list) return;
+  list.innerHTML = [...articles].reverse().map(a => `
+    <div class="admin-article-row">
+      <div>
+        <div class="admin-article-name">${a.title}</div>
+        <div class="admin-article-date">${a.date} · ${(a.tags||[]).join(', ')}</div>
+      </div>
+      <button class="btn-delete" onclick="deleteArticle(${a.id})">Sil</button>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════════
+//  FILTERING
+// ══════════════════════════════════════════════════════
+function getFiltered() {
+  return articles.filter(a => {
+    const q = searchQuery.toLowerCase();
+    const matchesSearch = !q || [a.title, a.excerpt, a.category, ...(a.tags||[])]
+      .some(s => s && s.toLowerCase().includes(q));
+    const matchesTag = !activeTag || (a.tags||[]).includes(activeTag);
+    return matchesSearch && matchesTag;
+  });
+}
+
+function onSearch() {
+  searchQuery = document.getElementById('searchInput').value;
+  document.getElementById('searchClear').style.display = searchQuery ? 'block' : 'none';
+  renderAll();
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  searchQuery = '';
+  document.getElementById('searchClear').style.display = 'none';
+  renderAll();
+}
+
+function toggleTag(tag) {
+  activeTag = activeTag === tag ? null : tag;
+  renderTagBar();
+  renderAll();
+}
+
+function filterByTag(tag) {
+  activeTag = tag;
+  showList();
+  renderTagBar();
+  renderAll();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════════════
+function openArticle(a) {
+  document.getElementById('detailCategory').textContent = a.category || '';
+  document.getElementById('detailTitle').textContent = a.title;
+  document.getElementById('detailDate').textContent = a.date;
+  document.getElementById('detailReadTime').textContent = a.readTime || '';
+  document.getElementById('detailHero').innerHTML = `
+    <div class="detail-hero-placeholder" data-letter="${a.imgLetter||'·'}" style="background:${a.imgColor||'#1a1a1a'}">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--orange);"></div>
+    </div>`;
+  document.getElementById('detailContent').innerHTML = a.content || '';
+  document.getElementById('detailTags').innerHTML = (a.tags||[]).map(t =>
+    `<span class="tag" onclick="filterByTag('${t}')">${t}</span>`
+  ).join('');
+  const related = articles.filter(x => x.id !== a.id).slice(0, 3);
+  document.getElementById('detailRelated').innerHTML = related.map(r => `
+    <div class="recent-item" onclick="openArticle(articles.find(x=>x.id===${r.id}))">
+      <div class="recent-title">${r.title}</div>
+      <div class="recent-date">${r.date}</div>
+    </div>
+  `).join('');
+  document.getElementById('list-view').style.display = 'none';
+  document.getElementById('detail-view').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showList() {
+  document.getElementById('list-view').style.display = 'block';
+  document.getElementById('detail-view').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════════════════
+//  ADMIN — PASSWORD
+// ══════════════════════════════════════════════════════
+function openAdmin() {
+  document.getElementById('adminOverlay').classList.add('open');
+  if (adminUnlocked) {
+    showPanel();
+  } else {
+    document.getElementById('passwordBox').style.display = 'block';
+    document.getElementById('adminPanel').style.display = 'none';
+    setTimeout(() => document.getElementById('pwInput').focus(), 100);
+  }
+}
+
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwError').style.display = 'none';
+  history.replaceState(null, '', window.location.pathname);
+}
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function checkPassword() {
+  const pw = document.getElementById('pwInput').value;
+  const hash = await sha256(pw);
+  // Geliştirme modunda: şifreyi ayarla
+  if (!adminUnlocked && pw === '__setup__') {
+    console.log('Hash for your password:', hash);
+    alert('Konsolda hash değerini gör ve PASSWORD_HASH sabitini güncelle.');
+    return;
+  }
+  if (hash === PASSWORD_HASH) {
+    adminUnlocked = true;
+    document.getElementById('pwError').style.display = 'none';
+    showPanel();
+  } else {
+    document.getElementById('pwError').style.display = 'block';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+  }
+}
+
+function showPanel() {
+  document.getElementById('passwordBox').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  renderAdminList();
+}
+
+// ══════════════════════════════════════════════════════
+//  ADMIN — ARTICLE CRUD
+// ══════════════════════════════════════════════════════
+function saveArticle() {
+  const title = document.getElementById('f-title').value.trim();
+  const category = document.getElementById('f-category').value.trim();
+  const excerpt = document.getElementById('f-excerpt').value.trim();
+  const content = document.getElementById('f-content').value.trim();
+  const tagsRaw = document.getElementById('f-tags').value.trim();
+  const date = document.getElementById('f-date').value.trim();
+  const readTime = document.getElementById('f-readtime').value.trim();
+  const letter = document.getElementById('f-letter').value.trim() || title[0] || '·';
+
+  if (!title || !category || !excerpt || !content || !tagsRaw || !date) {
+    alert('Lütfen yıldızlı (*) tüm alanları doldurun.');
+    return;
+  }
+
+  const tags = tagsRaw.split(',').map(t => t.trim()).filter(Boolean);
+  const maxId = articles.reduce((m, a) => Math.max(m, a.id || 0), 0);
+
+  const newArticle = {
+    id: maxId + 1,
+    category,
+    title,
+    excerpt,
+    content,
+    tags,
+    date,
+    readTime: readTime || '3 dk okuma',
+    imgColor: selectedColor,
+    imgLetter: letter.toUpperCase()
+  };
+
+  articles.unshift(newArticle);
+  localStorage.setItem('et_articles_backup', JSON.stringify(articles));
+
+  // Clear form
+  ['f-title','f-category','f-excerpt','f-content','f-tags','f-readtime','f-letter'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('f-date').value = new Date().toLocaleDateString('tr-TR', {day:'numeric',month:'long',year:'numeric'});
+
+  renderAll();
+  renderTagBar();
+  renderSidebar();
+  renderAdminList();
+
+  const s = document.getElementById('saveSuccess');
+  s.style.display = 'inline';
+  setTimeout(() => s.style.display = 'none', 2500);
+}
+
+function deleteArticle(id) {
+  if (!confirm('Bu yazıyı silmek istediğine emin misin?')) return;
+  articles = articles.filter(a => a.id !== id);
+  localStorage.setItem('et_articles_backup', JSON.stringify(articles));
+  renderAll();
+  renderTagBar();
+  renderSidebar();
+  renderAdminList();
+}
+
+function downloadJSON() {
+  const blob = new Blob([JSON.stringify(articles, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'articles.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════════════════════
+//  COLOR PICKER
+// ══════════════════════════════════════════════════════
+function buildColorPicker() {
+  const container = document.getElementById('colorOptions');
+  CARD_COLORS.forEach(color => {
+    const div = document.createElement('div');
+    div.className = 'color-opt' + (color === selectedColor ? ' selected' : '');
+    div.style.background = color;
+    div.onclick = () => {
+      selectedColor = color;
+      container.querySelectorAll('.color-opt').forEach(d => d.classList.remove('selected'));
+      div.classList.add('selected');
+    };
+    container.appendChild(div);
+  });
+}
+</script>
+</body>
+</html>
