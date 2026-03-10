@@ -321,14 +321,19 @@
         </div>
       </div>
 
+      <div class="form-row">
+        <label>Resim URL'si</label>
+        <input class="form-input" id="f-imgurl" type="text" placeholder="https://… veya images/makale.jpg">
+        <div class="form-hint">Boş bırakılırsa renkli kart gösterilir</div>
+      </div>
+
       <div class="form-grid">
         <div class="form-row">
-          <label>Kart Harfi</label>
+          <label>Kart Harfi <span style="color:var(--gray)">(resim yoksa)</span></label>
           <input class="form-input" id="f-letter" type="text" placeholder="M" maxlength="2" style="font-family:'Playfair Display',serif;font-size:20px;">
-          <div class="form-hint">Kartın büyük harfi veya sembolü</div>
         </div>
         <div class="form-row">
-          <label>Kart Rengi</label>
+          <label>Kart Rengi <span style="color:var(--gray)">(resim yoksa)</span></label>
           <div class="color-options" id="colorOptions"></div>
         </div>
       </div>
@@ -457,11 +462,20 @@ function buildCard(a, index) {
   card.onclick = () => openArticle(a);
 
   const imgDiv = document.createElement('div');
-  imgDiv.className = 'article-img-placeholder';
-  imgDiv.setAttribute('data-letter', a.imgLetter || '·');
-  imgDiv.style.background = a.imgColor || '#1a1a1a';
+  if (a.imgUrl) {
+    imgDiv.style.cssText = 'width:200px;height:140px;flex-shrink:0;position:relative;overflow:hidden;';
+    const img = document.createElement('img');
+    img.src = a.imgUrl;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;filter:grayscale(15%);transition:filter 0.3s;display:block;';
+    img.onerror = () => { imgDiv.style.background = a.imgColor || '#1a1a1a'; img.style.display='none'; };
+    imgDiv.appendChild(img);
+  } else {
+    imgDiv.className = 'article-img-placeholder';
+    imgDiv.setAttribute('data-letter', a.imgLetter || '·');
+    imgDiv.style.background = a.imgColor || '#1a1a1a';
+  }
   const accent = document.createElement('div');
-  accent.style.cssText = 'position:absolute;top:0;left:0;width:3px;height:100%;background:var(--orange);';
+  accent.style.cssText = 'position:absolute;top:0;left:0;width:3px;height:100%;background:var(--orange);z-index:1;';
   imgDiv.appendChild(accent);
 
   const body = document.createElement('div');
@@ -559,10 +573,18 @@ function openArticle(a) {
   document.getElementById('detailTitle').textContent = a.title;
   document.getElementById('detailDate').textContent = a.date;
   document.getElementById('detailReadTime').textContent = a.readTime || '';
-  document.getElementById('detailHero').innerHTML = `
-    <div class="detail-hero-placeholder" data-letter="${a.imgLetter||'·'}" style="background:${a.imgColor||'#1a1a1a'}">
-      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--orange);"></div>
-    </div>`;
+  if (a.imgUrl) {
+    document.getElementById('detailHero').innerHTML = `
+      <div style="position:relative;width:100%;height:320px;margin-bottom:28px;overflow:hidden;">
+        <img src="${a.imgUrl}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(10%);" onerror="this.parentElement.style.background='${a.imgColor||'#1a1a1a'}'">
+        <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--orange);"></div>
+      </div>`;
+  } else {
+    document.getElementById('detailHero').innerHTML = `
+      <div class="detail-hero-placeholder" data-letter="${a.imgLetter||'·'}" style="background:${a.imgColor||'#1a1a1a'}">
+        <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--orange);"></div>
+      </div>`;
+  }
   document.getElementById('detailContent').innerHTML = a.content || '';
   document.getElementById('detailTags').innerHTML = (a.tags||[]).map(t =>
     `<span class="tag" onclick="filterByTag('${t}')">${t}</span>`
@@ -651,6 +673,7 @@ function saveArticle() {
   const date = document.getElementById('f-date').value.trim();
   const readTime = document.getElementById('f-readtime').value.trim();
   const letter = document.getElementById('f-letter').value.trim() || title[0] || '·';
+  const imgUrl = document.getElementById('f-imgurl').value.trim();
 
   if (!title || !category || !excerpt || !content || !tagsRaw || !date) {
     alert('Lütfen yıldızlı (*) tüm alanları doldurun.');
@@ -670,14 +693,15 @@ function saveArticle() {
     date,
     readTime: readTime || '3 dk okuma',
     imgColor: selectedColor,
-    imgLetter: letter.toUpperCase()
+    imgLetter: letter.toUpperCase(),
+    imgUrl: imgUrl
   };
 
   articles.unshift(newArticle);
   localStorage.setItem('et_articles_backup', JSON.stringify(articles));
 
   // Clear form
-  ['f-title','f-category','f-excerpt','f-content','f-tags','f-readtime','f-letter'].forEach(id => {
+  ['f-title','f-category','f-excerpt','f-content','f-tags','f-readtime','f-letter','f-imgurl'].forEach(id => {
     document.getElementById(id).value = '';
   });
   document.getElementById('f-date').value = new Date().toLocaleDateString('tr-TR', {day:'numeric',month:'long',year:'numeric'});

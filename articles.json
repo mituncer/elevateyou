@@ -1,0 +1,80 @@
+[
+  {
+    "id": 1,
+    "category": "Leadership",
+    "title": "Legacy vs. Scale: The Real Test of Leadership",
+    "excerpt": "Being close and simple is not a virtue in itself. Having wide impact is not always arrogance. The problem lies in motivation, not in scale.",
+    "content": "<p>I was reading Erich Fromm recently and got stuck at one point.</p><p>Fromm presents the baker who makes the finest bread as a productive, fulfilled individual — close, simple, concrete, egoless. But he looks with suspicion at leaders who serve wider communities: \"Is this ego? Is this ambition?\" he asks.</p><p>I understood his point. But I respectfully disagree.</p><p>Being close and simple is not a virtue in itself. Having wide impact is not always arrogance.</p><blockquote>The problem lies in motivation, not in scale.</blockquote><p>The baker's contribution is beautiful — but its effect on generations and communities is limited. It rarely goes beyond personal satisfaction, and once that moment passes, it leaves no trace.</p><p>But someone who builds tunnels, roads, and railways across 7 countries cannot simply be dismissed as \"ambitious.\" The people who pass through those structures don't know you. You don't know them. Yet you are touching their lives. They will reach their families faster and more safely. Goods will be transported at lower cost. An entire country's economy will be shaped. For generations.</p><h2>The Real Question</h2><p>The real question is not about scale — it's about legacy: When the work is done, what remains — only personal satisfaction, or a lasting mark on the world? Any discussion that avoids this question remains incomplete.</p>",
+    "tags": ["Leadership", "Legacy", "Philosophy", "Infrastructure"],
+    "date": "March 2025",
+    "readTime": "3 min read",
+    "imgColor": "#1a1a2e",
+    "imgLetter": "L",
+    "imgUrl": ""
+  },
+  {
+    "id": 2,
+    "category": "Leadership",
+    "title": "The Most Dangerous Person on Any Project",
+    "excerpt": "Managing complex projects across 17 nationalities teaches you fast: the most dangerous person is not the one who admits uncertainty. It's the one who never does.",
+    "content": "<p>Managing complex projects across multiple countries, with teams from 17 nationalities, teaches you something fast:</p><blockquote>The most dangerous person on a project is not the one who admits uncertainty. It's the one who never does.</blockquote><p>I've seen it in boardrooms. I've seen it underground, 40 meters below surface, where overconfidence has real consequences.</p><p>The \"Peak of Mount Stupid\" is not just a concept. In infrastructure, it shows up as:</p><p>— Underestimated risk assessments<br>— Rushed schedules presented with false precision<br>— Junior engineers who've read the manual but haven't faced the ground conditions</p><h2>The Valley of Despair</h2><p>The Valley of Despair? That's where real professionals are forged. The ones who say \"Trust me, it's complicated\" — those are the people we want in our team.</p><p>True expertise is humble. It asks more questions than it answers.</p><p>Where do you see this curve most clearly in your field?</p>",
+    "tags": ["Leadership", "Risk", "Expertise", "Infrastructure"],
+    "date": "February 2025",
+    "readTime": "3 min read",
+    "imgColor": "#0d1b2a",
+    "imgLetter": "D",
+    "imgUrl": ""
+  },
+  {
+    "id": 3,
+    "category": "Behavioral Economics",
+    "title": "Hindsight Bias: The Silent Killer of Institutional Learning",
+    "excerpt": "The hindsight bias doesn't just distort memory — it quietly kills institutional learning. When outcomes rewrite the past, mistakes cannot be diagnosed and decision quality does not improve.",
+    "content": "<p>A while ago, I wrote about the \"I knew it all along\" reflex — how easy it is to sound wise after outcomes are known.</p><p>Recently, revisiting Daniel Kahneman's book <em>Thinking Fast and Slow</em> reminded me why that reflex is not harmless, but deeply corrosive for organizations.</p><blockquote>The hindsight bias doesn't just distort memory — it quietly kills institutional learning.</blockquote><p>Because when outcomes rewrite the past:<br>— Mistakes cannot be diagnosed properly<br>— Decision quality does not improve<br>— Everyone absolves themselves by saying \"I knew it\"</p><p>At that point, the issue is no longer technical — it is a leadership problem.</p><h2>Kahneman's Argument</h2><p>In <em>Thinking, Fast and Slow</em>, Chapter 22, Kahneman questions \"expert intuition\" for exactly this reason. In many domains, people do not rely on intuition — they rely on stories reconstructed after the fact, once uncertainty has disappeared. That is how overconfidence gets polished into fake expertise.</p><blockquote>Real foresight is not speaking after the outcome. Real foresight is taking responsibility while uncertainty still exists.</blockquote><p>Organizations learn not by asking \"Who was right?\" but by asking \"What did we know, what did we not know, and why did we decide anyway?\"</p><p>Otherwise, we don't learn. We just become better storytellers.</p>",
+    "tags": ["Behavioral Economics", "Kahneman", "Leadership", "Decision Making"],
+    "date": "January 2025",
+    "readTime": "4 min read",
+    "imgColor": "#1c1c1c",
+    "imgLetter": "H",
+    "imgUrl": ""
+  },
+  {
+    "id": 4,
+    "category": "Mental Models",
+    "title": "The Purloined Letter: Why Better Mental Models Beat More Data",
+    "excerpt": "In most complex problems, what truly matters is not information, but the ability to correctly model how the other side sees the world. Poe knew this in 1844.",
+    "content": "<p>Difficult problems are sometimes solved only with a better mental model.</p><p>In 1844, Edgar Allan Poe published a short story that still offers powerful lessons for business and leadership today: <em>The Purloined Letter</em>.</p><h2>The Story</h2><p>A sensitive letter is stolen by a clever minister who understands its power as blackmail. The police search his residence again and again — secret compartments, drawers, wall cavities. Everything is torn apart. Yet the letter is nowhere to be found. Because the police operate under a single assumption: \"Something this important must be very well hidden.\"</p><p>This is where C. Auguste Dupin enters the scene. What sets him apart is not access to information, but his ability to understand how people think.</p><blockquote>Dupin asks: \"What would this man do, knowing how I am going to think?\"</blockquote><p>The answer is clear: the letter is not hidden. It is in plain sight — hanging in a rack on the wall, right where no one thought it important enough to truly see.</p><h2>The Business Lesson</h2><p>This is exactly where we fail most often in business, negotiations, and crisis situations:</p><p>— We collect more data.<br>— We perform more analysis.<br>— We produce thicker reports.</p><p>Yet we misread the other side's mental assumptions. And while the solution is right in front of us, we keep searching hidden compartments.</p><blockquote>The hardest problems are not solved with more information, but with a better mental model.</blockquote>",
+    "tags": ["Mental Models", "Strategy", "Decision Making", "Leadership"],
+    "date": "December 2024",
+    "readTime": "5 min read",
+    "imgColor": "#14281d",
+    "imgLetter": "P",
+    "imgUrl": ""
+  },
+  {
+    "id": 5,
+    "category": "Legacy",
+    "title": "Some Races Never End — Only the Baton Changes Hands",
+    "excerpt": "Kathrine Switzer resisted, finished, got disqualified — then ran until women were officially accepted. Marie Curie kept running too. Today, my daughter Alara doesn't need permission to run.",
+    "content": "<p>I discovered Kathrine Switzer through Özgür Karcıoğlu's LinkedIn article.</p><p>In 1967's Boston Marathon, an official tried to rip off her number because women were \"too fragile\" for marathons. She resisted, finished the race, got disqualified — then ran persistently until women were officially accepted in 1972.</p><p>Marie Skłodowska-Curie faced similar barriers. The only woman studying science at Sorbonne in 1891, initially excluded from her 1903 Nobel (added only through her husband's insistence), rejected by the French Academy even after her second Nobel in 1911.</p><p>She kept running: two Nobels, radium and polonium discoveries, wartime X-ray units.</p><blockquote>Because they ran, Alara doesn't need permission to run.</blockquote><p>Today, my daughter Alara Tuncer pursues her doctorate at University of Toronto Sunnybrook, walking the path they opened. But she still runs every day.</p><p>Some races never end — only the baton changes hands.</p><hr style=\"margin:28px 0;border:none;border-top:1px solid #d4d0c8;\"><p><em>Kathrine Switzer'ı Özgür Karcıoğlu'nun LinkedIn makalesiyle tanıdım. 1967 Boston Maratonu'nda bir görevli numarasını söküp atmaya çalıştı — kadınlar \"çok narin\"di. Direndi, bitirdi, diskalifiye edildi — sonra 1972'de kadınlar resmen kabul edilene kadar ısrarla koştu.</em></p><p><em>Marie Skłodowska-Curie benzer engelleri yaşadı. 1891'de Sorbonne'da fizik okuyan tek kadın, 1903 Nobel'inden başta dışlandı, 1911'de ikinci Nobel'inden sonra bile Fransız Akademisi kapılarını açmadı.</em></p><p><em>Bugün kızım Alara Tuncer, University of Toronto Sunnybrook'da doktorasını yapıyor. Onlar koştuğu için Alara'nın izne ihtiyacı yok. Ama hâlâ her gün koşuyor. Bazı yarışlar hiç bitmiyor, sadece bayrak değişiyor.</em></p>",
+    "tags": ["Legacy", "Leadership", "Inspiration", "Personal"],
+    "date": "November 2024",
+    "readTime": "3 min read",
+    "imgColor": "#1e1b18",
+    "imgLetter": "K",
+    "imgUrl": ""
+  },
+  {
+    "id": 6,
+    "category": "Technology",
+    "title": "PolonceKart: Redesigning Language Learning",
+    "excerpt": "Flashcard apps are old — but when done right, they're still the most effective learning tool. Why I built PolonceKart from scratch, and the power of a single HTML file.",
+    "content": "<p>Gülay and I are learning Polish. From the same teacher, at the same pace. To make this process more effective, I looked for a tool — and when I couldn't find one, I built it.</p><h2>Why a Single HTML File?</h2><p>PolonceKart is published on Netlify as a single HTML file. No installation, no account, no app download. One URL — that's it. This simplicity is not a constraint, it's a choice.</p><blockquote>The best tool is the one that gets used. Not the perfect app with a complex setup, but the simple tool that's always accessible.</blockquote><p>CSV-based vocabulary management means adding new words takes minutes. Ko-fi integration enables community support. English and Turkish interface options expand the reach.</p><h2>The Psychology of Language Learning</h2><p>I apply Kahneman here too: repetition to train System 1, context to activate System 2. Not just memorizing words, but seeing words inside a sentence — this difference determines long-term memory.</p>",
+    "tags": ["Technology", "Language Learning", "Polish", "Coding"],
+    "date": "October 2024",
+    "readTime": "4 min read",
+    "imgColor": "#1a1a1a",
+    "imgLetter": "P",
+    "imgUrl": ""
+  }
+]
