@@ -94,7 +94,8 @@
     "readTime": "3 dk okuma",
     "imgColor": "#1a1a2e",
     "imgLetter": "İ",
-    "imgUrl": "https://raw.githubusercontent.com/mituncer/elevateyou/main/images/itibar.png",
+    "imgUrl": "",
+    "_note":  "imgUrl": "https://raw.githubusercontent.com/mituncer/elevateyou/main/images/itibar.png",
     "contentImgUrl": ""
   },
   {
@@ -108,7 +109,8 @@
     "readTime": "2 min read",
     "imgColor": "#0d1b2a",
     "imgLetter": "W",
-    "imgUrl": "https://raw.githubusercontent.com/mituncer/elevateyou/refs/heads/main/images/tunnel_at_night.jfif",
+    "imgUrl": "",
+    "_note": "imgUrl": "https://raw.githubusercontent.com/mituncer/elevateyou/refs/heads/main/images/tunnel_at_night.jfif",
     "contentImgUrl": ""
   }
 ]
