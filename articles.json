@@ -1,20 +1,5 @@
 [
-  {
-    "id": 7,
-    "category": "Liderlik, İtibar",
-    "title": "İtibar tanınmak ile başlar,",
-    "excerpt": "İtibar inşa edilir, korunur ve başkalarının sizin hakkında söyledikleri ile yükselir.",
-    "content": "Biraz önce EKOTÜRK kanalında Alkın Lakin programının yeniden gösteriminde Emre Alkin'den İtibar Piramidi'ni dinledim.\nİtibar tanınmak ile başlar, piramidin üst basamaklarına doğru güven -ilişki -memnun -bağlı -elçi olarak devam eder. Güven verdiğiniz ve kendinizi kanıtladığınız ölçüde itibarınız artar.\n\nEn sonunda sizin kendi hakkınızda değil, başkalarının sizin hakkınızda söyledikleri kadar itibarınız olur.\nPiramidin temelinden zirvesine:\n• Tanınma - Görünür olmak\n• Güven - Söz ve eylem birliği\n• İlişki - Bağ kurma yeteneği\n• Memnuniyet - Değer yaratma\n• Bağlılık - Sürdürülebilir etki\n• Elçi - Başkalarının sizi savunması\n\nBence \"Güven - ilişki - Memnuniyet\" üçlüsü aslında birbirini besleyen ve birlikte çalışan bir bütün. Güven olmadan sağlıklı ilişki kurulamaz, ilişki olmadan memnuniyet yaratılamaz. Bu üç basamak itibarın omurgasını oluşturuyor.\n\nTanınma'dan Güven-ilişki-Memnuniyet grubuna geçiş ne kadar zor ise, buradan Bağlılık'a atlamak da o ölçüde zaman ve çaba ister. Her geçiş, sabır ve tutarlılik gerektirir.\n\nİtibar inşa edilir, korunur ve başkalarının sizin hakkında söyledikleri ile yükselir.",
-    "tags": [
-      "Liderlik",
-      "İtibar"
-    ],
-    "date": "10 Mart 2026",
-    "readTime": "3 dk okuma",
-    "imgColor": "#0a0a0a",
-    "imgLetter": "İ",
-    "imgUrl": "https://github.com/mituncer/elevateyou/images/itibar.png"
-  },
+  
   {
     "id": 1,
     "category": "Leadership",
@@ -122,5 +107,21 @@
     "imgColor": "#1a1a1a",
     "imgLetter": "P",
     "imgUrl": ""
+  },
+  {
+    "id": 7,
+    "category": "Liderlik, İtibar",
+    "title": "İtibar tanınmak ile başlar,",
+    "excerpt": "İtibar inşa edilir, korunur ve başkalarının sizin hakkında söyledikleri ile yükselir.",
+    "content": "Biraz önce EKOTÜRK kanalında Alkın Lakin programının yeniden gösteriminde Emre Alkin'den İtibar Piramidi'ni dinledim.\nİtibar tanınmak ile başlar, piramidin üst basamaklarına doğru güven -ilişki -memnun -bağlı -elçi olarak devam eder. Güven verdiğiniz ve kendinizi kanıtladığınız ölçüde itibarınız artar.\n\nEn sonunda sizin kendi hakkınızda değil, başkalarının sizin hakkınızda söyledikleri kadar itibarınız olur.\nPiramidin temelinden zirvesine:\n• Tanınma - Görünür olmak\n• Güven - Söz ve eylem birliği\n• İlişki - Bağ kurma yeteneği\n• Memnuniyet - Değer yaratma\n• Bağlılık - Sürdürülebilir etki\n• Elçi - Başkalarının sizi savunması\n\nBence \"Güven - ilişki - Memnuniyet\" üçlüsü aslında birbirini besleyen ve birlikte çalışan bir bütün. Güven olmadan sağlıklı ilişki kurulamaz, ilişki olmadan memnuniyet yaratılamaz. Bu üç basamak itibarın omurgasını oluşturuyor.\n\nTanınma'dan Güven-ilişki-Memnuniyet grubuna geçiş ne kadar zor ise, buradan Bağlılık'a atlamak da o ölçüde zaman ve çaba ister. Her geçiş, sabır ve tutarlılik gerektirir.\n\nİtibar inşa edilir, korunur ve başkalarının sizin hakkında söyledikleri ile yükselir.",
+    "tags": [
+      "Liderlik",
+      "İtibar"
+    ],
+    "date": "10 Mart 2026",
+    "readTime": "3 dk okuma",
+    "imgColor": "#0a0a0a",
+    "imgLetter": "İ",
+    "imgUrl": "https://github.com/mituncer/elevateyou/images/itibar.png"
   }
 ]
