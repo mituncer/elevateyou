@@ -200,7 +200,7 @@
     <div class="search-section">
       <div class="search-wrapper">
         <span class="search-icon">⌕</span>
-        <input class="search-input" id="searchInput" type="text" placeholder="Makale, fikir veya tag ara…" oninput="onSearch()">
+        <input class="search-input" id="searchInput" type="text" placeholder="Makale, fikir veya etiket ara…" oninput="onSearch()">
         <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
       </div>
       <span class="result-count" id="resultCount"></span>
@@ -209,7 +209,7 @@
 </header>
 
 <div class="tag-bar" id="tagBar">
-  <span class="tag-label">Etiketler →</span>
+  <span class="tag-label">ETİKETLER →</span>
 </div>
 
 <!-- LIST VIEW -->
@@ -218,7 +218,7 @@
     <div class="articles-col" id="articlesCol">
       <div class="no-results" id="noResults">
         <div class="no-results-title">Sonuç bulunamadı</div>
-        <div class="no-results-sub">Farklı bir arama terimi veya tag deneyin.</div>
+        <div class="no-results-sub">Farklı bir arama terimi veya etiket deneyin.</div>
       </div>
     </div>
     <aside class="sidebar">
@@ -348,7 +348,7 @@
       <div class="form-row"><label>Kategori <span>*</span></label><input class="form-input" id="f-category" type="text" placeholder="ör. Leadership, Liderlik…"></div>
       <div class="form-row"><label>Kısa Özet <span>*</span></label><textarea class="form-textarea" id="f-excerpt" style="min-height:80px;" placeholder="Kartlarda görünecek 2-3 cümle özet"></textarea></div>
       <div class="form-row"><label>İçerik <span>*</span></label><textarea class="form-textarea" id="f-content" style="min-height:200px;" placeholder="Yazının tam içeriği. HTML kullanabilirsin: &lt;p&gt;, &lt;h2&gt;, &lt;blockquote&gt;"></textarea><div class="form-hint">HTML: &lt;p&gt; paragraf · &lt;h2&gt; başlık · &lt;blockquote&gt; alıntı · &lt;ul&gt;&lt;li&gt; liste</div></div>
-      <div class="form-row"><label>Etiketler (Tag) <span>*</span></label><input class="form-input" id="f-tags" type="text" placeholder="Leadership, Strategy"><div class="form-hint">Virgülle ayır</div></div>
+      <div class="form-row"><label>Etiketler <span>*</span></label><input class="form-input" id="f-tags" type="text" placeholder="Leadership, Strategy"><div class="form-hint">Virgülle ayır</div></div>
       <div class="form-grid">
         <div class="form-row"><label>Tarih <span>*</span></label><input class="form-input" id="f-date" type="text"></div>
         <div class="form-row"><label>Okuma Süresi</label><input class="form-input" id="f-readtime" type="text" placeholder="4 min read"></div>
@@ -417,7 +417,7 @@ function getAllTags() {
 
 function renderTagBar() {
   const bar = document.getElementById('tagBar');
-  bar.innerHTML = '<span class="tag-label">Konular →</span>';
+  bar.innerHTML = '<span class="tag-label">ETİKETLER →</span>';
   getAllTags().forEach(tag => {
     const pill = document.createElement('button');
     pill.className = 'tag-pill' + (activeTag === tag ? ' active' : '');
