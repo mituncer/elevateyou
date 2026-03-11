@@ -726,4 +726,12 @@ function buildColorPicker() {
     div.style.cssText += ';width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;';
     div.onclick = () => {
       selectedColor = color;
-      cont
+      container.querySelectorAll('.color-opt').forEach(d => d.classList.remove('selected'));
+      div.classList.add('selected');
+    };
+    container.appendChild(div);
+  });
+}
+</script>
+</body>
+</html>
