@@ -190,7 +190,6 @@
   </div>
   <nav class="site-nav">
     <span class="nav-link active" id="nav-articles">Articles</span>
-    <span class="nav-link" id="nav-apps">Apps</span>
     <span class="nav-link" id="nav-about">About</span>
     <div class="nav-social">
       <a href="https://www.linkedin.com/in/mustafa-tuncer-ba283715/" target="_blank" class="nav-social-link">LinkedIn</a>
@@ -277,31 +276,6 @@
   </div>
 </div>
 
-
-<!-- APPS VIEW -->
-<div id="apps-view" style="display:none;">
-  <div style="max-width:900px;margin:0 auto;padding:2rem 1rem 4rem;">
-    <div style="font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;color:#888;text-transform:uppercase;margin-bottom:0.4rem;">Side Projects</div>
-    <h2 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;margin:0 0 0.5rem;">Things I Built</h2>
-    <p style="color:#555;font-size:1rem;margin:0 0 2.5rem;max-width:560px;">Some problems are easier to solve by building something. These are mine — small, functional, and made to last.</p>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;">
-
-      <!-- PolonceKart EN -->
-      <div style="border:1.5px solid #e8440a;border-radius:4px;padding:1.5rem;display:flex;flex-direction:column;gap:0.8rem;">
-        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;">Language Learning · Web App</div>
-        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;">PolonceKart</div>
-        <p style="font-size:0.88rem;color:#444;line-height:1.6;margin:0;">Learning Polish as a Turkish speaker living in Warsaw. I couldn't find a flashcard tool that worked for me — so I built one. Basic and B1 vocabulary sets, clean interface, no installation.</p>
-        <div style="margin-top:auto;padding-top:0.8rem;display:flex;gap:0.8rem;flex-wrap:wrap;">
-          <a href="https://polonceen.netlify.app/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#fff;background:#e8440a;padding:0.4rem 0.9rem;text-decoration:none;border-radius:2px;">English Version →</a>
-          <a href="https://poloncetr.netlify.app/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#e8440a;border:1px solid #e8440a;padding:0.4rem 0.9rem;text-decoration:none;border-radius:2px;">Türkçe Versiyon →</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
 <!-- ABOUT VIEW -->
 <div id="about-view">
   <div class="about-grid">
@@ -330,7 +304,7 @@
 
       <div style="border-top:1px solid var(--border);padding-top:32px;">
         <div class="about-section-title">Projects</div>
-        <a href="https://polonceen.netlify.app/" target="_blank" class="about-project">
+        <a href="https://poloncekart.netlify.app" target="_blank" class="about-project">
           <div class="about-project-title">PolonceKart</div>
           <div class="about-project-desc">Polish-English flashcard web app — single HTML file, deployed on Netlify.</div>
         </a>
@@ -395,7 +369,7 @@
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const PASSWORD_HASH = 'f4e70404e765e45e4f048ed36a434b9cffb5d6e3465868915e1f4998fdd30fe7';
 const CARD_COLORS = ['#1a1a2e','#2d1b33','#0d2818','#2a1a0e','#1a2a1a','#0e1a2a','#1e1b18','#14281d'];
 
@@ -429,7 +403,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadArticles();
   buildColorPicker();
   document.getElementById('nav-articles').addEventListener('click', showList);
-  document.getElementById('nav-apps').addEventListener('click', showApps);
   document.getElementById('nav-about').addEventListener('click', showAbout);
   document.getElementById('site-title-link').addEventListener('click', showList);
   document.getElementById('detail-back-btn').addEventListener('click', showList);
@@ -587,8 +560,6 @@ function openArticle(a) {
   document.getElementById('list-view').style.display = 'none';
   document.getElementById('detail-view').style.display = 'block';
   document.getElementById('about-view').style.display = 'none';
-  if(document.getElementById('apps-view')) document.getElementById('apps-view').style.display = 'none';
-  if(document.getElementById('nav-apps')) document.getElementById('nav-apps').classList.remove('active');
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
@@ -596,23 +567,9 @@ function showList() {
   document.getElementById('list-view').style.display = 'block';
   document.getElementById('detail-view').style.display = 'none';
   document.getElementById('about-view').style.display = 'none';
-  document.getElementById('apps-view').style.display = 'none';
   document.getElementById('nav-articles').classList.add('active');
   document.getElementById('nav-about').classList.remove('active');
-  document.getElementById('nav-apps').classList.remove('active');
   window.scrollTo({ top:0, behavior:'smooth' });
-}
-
-function showApps() {
-  document.getElementById('list-view').style.display = 'none';
-  document.getElementById('detail-view').style.display = 'none';
-  document.getElementById('about-view').style.display = 'none';
-  document.getElementById('apps-view').style.display = 'block';
-  document.getElementById('nav-apps').classList.add('active');
-  document.getElementById('nav-articles').classList.remove('active');
-  if(document.getElementById('nav-apps')) document.getElementById('nav-apps').classList.remove('active');
-  document.getElementById('nav-about').classList.remove('active');
-  window.scrollTo(0,0);
 }
 
 function showAbout() {
@@ -721,4 +678,12 @@ function buildColorPicker() {
     div.style.cssText += ';width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;';
     div.onclick = () => {
       selectedColor = color;
-      cont
+      container.querySelectorAll('.color-opt').forEach(d=>d.classList.remove('selected'));
+      div.classList.add('selected');
+    };
+    container.appendChild(div);
+  });
+}
+</script>
+</body>
+</html>
