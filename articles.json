@@ -113,8 +113,38 @@
 
     "contentImgUrl": ""
   },
-  {
+    {
     "id": 9,
+    "category": "Leadership",
+    "title": "Taking Risks in Business",
+    "excerpt": "Taking Risks in Business: Lessons from the Racing Track...",
+   "content": "<h2>Taking Risks in Business: Lessons from the Racing Track</h2><p>One of motor racing's legendary pilots, Ayrton Senna, had a very famous quote: <em>\"If you no longer go for a gap that exists, you are no longer a racing driver.\"</em> This quote perfectly summarizes not just the mentality of racing drivers, but also the mindset needed for business success — seizing opportunities and taking calculated risks.</p><p>Here's a perfect example that illustrates both the potential and the peril of this philosophy: Belgian driver Laurens Vanthoor's incident at Germany's legendary Nürburgring circuit.</p><p>The Nordschleife section of the Nürburgring is called the \"Green Hell\" — a 20-kilometer narrow, dangerous track. The Dottinger Höhe straight is the most critical section where pilots reach speeds over 300 km/h. Here, Vanthoor spotted a chance to overtake two slow cars in heavy traffic. Just as Senna advocated, he saw the gap and went for it. He began the maneuver with surgical precision but made slight contact with another car. This minor contact, which would be insignificant under normal circumstances, created a domino effect at that high speed — the tire blew out, Vanthoor lost control, and the Audi crashed hard into the barriers. Fortunately, thanks to modern safety technologies, the pilot escaped unharmed, but the car was completely unusable and the team had to retire from the race.</p><h3>The Business Parallel</h3><p>This story perfectly mirrors business decision-making. Just like in racing, in business you must seize opportunities when you see them — but the key question is: are you aware of the risks you're taking?</p><p>Senna was right — you have to go for the gaps. But here's what separates great leaders from reckless ones: the best leaders, like the best drivers, don't avoid risks — they take intelligent ones with full awareness of what's at stake.</p><p>What gaps are you considering in your business? How are you calculating the risk?</p><ul><li>Are you aware of the risks you're taking?</li><li>Could this decision cause unexpected damage to your company?</li><li>If things go wrong, what's the impact on your team, your health, your mental well-being?</li><li>Are you taking calculated risks or chasing opportunities blindly?</li></ul>",
+    "tags": ["Leadership"],
+    "date": "27 January 2017",
+    "readTime": "2 min read",
+    "imgColor": "#0d1b2a",
+    "imgLetter": "Race",
+    "imgUrl": "",
+
+    "contentImgUrl": ""
+  },
+    {
+    "id": 10,
+    "category": "Leadership",
+    "title": "Understanding Immune Memor",
+    "excerpt": "HEB protein acts like a wise CEO who restrains the urge to overreact to every market fluctuation.",
+"content": "<h2>Understanding Immune Memory: A Business Lens on Cutting-Edge Research</h2><p>Understanding how our immune system forms memory is one of the most critical areas in modern medicine, and even perhaps in business.</p><p>The research <em>\"HEB Restrains Effector Gene Expression during Early CD8+ Memory Precursor T Cell Differentiation,\"</em> which my daughter Alara Sedef Tuncer contributed to, reveals an important discovery.</p><p>Simply, without the HEB protein, T cells respond very rapidly but lose their long-term memory capacity.</p><h3>An Analogy from My World</h3><p>HEB protein acts like a wise CEO who restrains the urge to overreact to every market fluctuation. Without HEB, T cells become like startups that burn through resources quickly for immediate impact but fail to build sustainable competitive advantages.</p><p>This is a resource allocation problem every business leader recognizes — the classic trade-off between short-term performance and long-term capability building.</p><p>This discovery could revolutionize how we approach immune system diseases and vaccine development — much like how understanding customer lifetime value transformed marketing strategies. Nature always shows us the way.</p><p>Seeing our young researchers tackle such fundamental questions fills me with pride! 👏</p>",
+    "tags": ["Leadership"],
+    "date": "27 January 2017",
+    "readTime": "2 min read",
+    "imgColor": "#0d1b2a",
+    "imgLetter": "C",
+    "imgUrl": "",
+
+    "contentImgUrl": ""
+  }
+  {
+    "id": 11,
     "category": "Leadership",
     "title": "Challenges will grow, but we will always find ways to compete",
     "excerpt": "No matter how much our challenges grow, we will always find ways to overcome this challenge via innovations.",
