@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELEVATE THINKING</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --black:#0a0a0a; --white:#f8f6f1; --orange:#e8440a; --gray:#6b6b6b; --gray-light:#e0ddd6; --border:#d4d0c8; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--white); color:var(--black); font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; }
+
+  /* HEADER */
+  header { border-bottom:3px solid var(--black); padding:0 40px; }
+  .header-top { display:flex; align-items:center; justify-content:space-between; padding:18px 0 14px; border-bottom:1px solid var(--border); }
+  .site-date { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.08em; color:var(--gray); text-transform:uppercase; }
+  .site-title { font-family:'Playfair Display',serif; font-size:38px; font-weight:900; letter-spacing:-0.02em; text-align:center; line-height:1; cursor:pointer; }
+  .site-title span { color:var(--orange); }
+  .header-meta { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); letter-spacing:0.05em; text-align:right; }
+
+  /* NAV */
+  .site-nav { display:flex; align-items:center; border-bottom:1px solid var(--border); }
+  .nav-link { font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--gray); cursor:pointer; padding:10px 18px; border-right:1px solid var(--border); transition:color 0.2s; white-space:nowrap; }
+  .nav-link:hover { color:var(--black); }
+  .nav-link.active { color:var(--black); border-bottom:2px solid var(--orange); }
+  .nav-social { margin-left:auto; display:flex; align-items:center; }
+  .nav-social-link { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); text-decoration:none; padding:10px 18px; border-left:1px solid var(--border); transition:color 0.2s; letter-spacing:0.05em; }
+  .nav-social-link:hover { color:var(--orange); }
+
+  /* SEARCH */
+  .search-section { flex:1; padding:16px 0; display:flex; align-items:center; gap:12px; }
+  .search-wrapper { flex:1; position:relative; display:flex; align-items:center; }
+  .search-icon { position:absolute; left:14px; color:var(--gray); font-size:14px; pointer-events:none; }
+  .search-input { width:100%; padding:10px 14px 10px 38px; border:2px solid var(--black); background:var(--white); font-family:'DM Sans',sans-serif; font-size:14px; outline:none; transition:border-color 0.2s; }
+  .search-input:focus { border-color:var(--orange); }
+  .search-input::placeholder { color:var(--gray); }
+  .search-clear { position:absolute; right:12px; background:none; border:none; cursor:pointer; color:var(--gray); font-size:16px; display:none; }
+  .result-count { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); white-space:nowrap; }
+
+  /* TAG BAR */
+  .tag-bar { padding:12px 40px 16px; border-top:1px solid var(--border); display:flex; align-items:center; gap:8px; overflow-x:auto; scrollbar-width:none; }
+  .tag-bar::-webkit-scrollbar { display:none; }
+  .tag-label { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--gray); white-space:nowrap; margin-right:4px; }
+  .tag-pill { padding:4px 12px; border:1.5px solid var(--border); background:transparent; font-family:'DM Mono',monospace; font-size:11px; cursor:pointer; white-space:nowrap; transition:all 0.15s; color:var(--black); letter-spacing:0.03em; }
+  .tag-pill:hover { border-color:var(--orange); color:var(--orange); }
+  .tag-pill.active { background:var(--orange); border-color:var(--orange); color:white; }
+
+  /* MAIN */
+  .main { display:grid; grid-template-columns:1fr 280px; gap:0; max-width:1200px; margin:0 auto; padding:0 40px; }
+  .articles-col { border-right:1px solid var(--border); padding-right:40px; }
+
+  /* ARTICLE CARD */
+  .article-card { display:grid; grid-template-columns:200px 1fr; gap:24px; padding:28px 0; border-bottom:1px solid var(--border); cursor:pointer; animation:fadeIn 0.3s ease both; }
+  .article-card:hover .article-title { color:var(--orange); }
+  .article-img-placeholder { width:200px; height:140px; display:flex; align-items:center; justify-content:center; flex-shrink:0; position:relative; overflow:hidden; }
+  .article-img-placeholder::after { content:attr(data-letter); font-family:'Playfair Display',serif; font-size:72px; font-weight:900; color:rgba(255,255,255,0.18); position:absolute; bottom:-10px; right:5px; }
+  .article-body { display:flex; flex-direction:column; gap:8px; }
+  .article-category { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--orange); }
+  .article-title { font-family:'Playfair Display',serif; font-size:21px; font-weight:700; line-height:1.25; transition:color 0.2s; }
+  .article-excerpt { font-size:14px; color:var(--gray); line-height:1.6; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .article-footer { display:flex; align-items:center; gap:12px; margin-top:4px; flex-wrap:wrap; }
+  .article-date { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); }
+  .article-tags { display:flex; gap:6px; flex-wrap:wrap; }
+  .tag { padding:2px 8px; border:1px solid var(--border); font-family:'DM Mono',monospace; font-size:10px; color:var(--gray); cursor:pointer; transition:all 0.15s; }
+  .tag:hover { border-color:var(--orange); color:var(--orange); }
+  .read-more { display:inline-flex; align-items:center; gap:6px; font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--orange); margin-top:8px; }
+
+  /* SIDEBAR */
+  .sidebar { padding-left:32px; padding-top:24px; }
+  .sidebar-section { margin-bottom:32px; }
+  .sidebar-title { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--gray); border-bottom:2px solid var(--black); padding-bottom:8px; margin-bottom:16px; }
+  .sidebar-about p { font-size:13px; color:var(--gray); line-height:1.7; margin-bottom:10px; }
+  .sidebar-about strong { color:var(--black); font-weight:500; }
+  .recent-item { padding:12px 0; border-bottom:1px solid var(--border); cursor:pointer; }
+  .recent-item:hover .recent-title { color:var(--orange); }
+  .recent-title { font-family:'Playfair Display',serif; font-size:14px; font-weight:700; line-height:1.3; margin-bottom:4px; transition:color 0.2s; }
+  .recent-date { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray); }
+  .tag-cloud { display:flex; flex-wrap:wrap; gap:6px; }
+
+  /* NO RESULTS */
+  .no-results { padding:60px 0; text-align:center; display:none; }
+  .no-results-title { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; margin-bottom:8px; }
+  .no-results-sub { color:var(--gray); font-size:14px; }
+
+  /* DETAIL VIEW */
+  #detail-view { display:none; max-width:1200px; margin:0 auto; padding:0 40px; }
+  .detail-back { display:inline-flex; align-items:center; gap:8px; font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--gray); cursor:pointer; background:none; border:none; border-bottom:1px solid var(--border); width:100%; text-align:left; padding:20px 0; transition:color 0.2s; }
+  .detail-back:hover { color:var(--orange); }
+  .detail-header { padding:32px 0 28px; border-bottom:3px solid var(--black); }
+  .detail-category { font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.12em; color:var(--orange); margin-bottom:12px; }
+  .detail-title { font-family:'Playfair Display',serif; font-size:42px; font-weight:900; line-height:1.15; letter-spacing:-0.02em; margin-bottom:16px; max-width:780px; }
+  .detail-meta { display:flex; align-items:center; gap:16px; font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); }
+  .detail-body { display:grid; grid-template-columns:1fr 280px; gap:40px; padding-top:32px; }
+  .detail-hero-placeholder { width:100%; height:320px; margin-bottom:28px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+  .detail-hero-placeholder::after { content:attr(data-letter); font-family:'Playfair Display',serif; font-size:180px; font-weight:900; color:rgba(255,255,255,0.12); position:absolute; bottom:-20px; right:10px; }
+  .detail-text { font-size:16px; line-height:1.85; color:#1a1a1a; }
+  .detail-text p { margin-bottom:20px; }
+  .detail-text h2 { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; margin:32px 0 12px; }
+  .detail-text blockquote { border-left:3px solid var(--orange); padding:8px 0 8px 20px; margin:24px 0; font-family:'Playfair Display',serif; font-size:20px; font-style:italic; color:var(--gray); }
+  .detail-text ul, .detail-text ol { margin:0 0 20px 24px; }
+  .detail-text li { margin-bottom:6px; }
+  .detail-tags { margin-top:32px; padding-top:20px; border-top:1px solid var(--border); display:flex; gap:8px; flex-wrap:wrap; }
+
+  /* ABOUT VIEW */
+  #about-view { display:none; max-width:1200px; margin:0 auto; padding:0 40px; }
+  .about-grid { display:grid; grid-template-columns:1fr 280px; gap:40px; padding-top:40px; }
+  .about-label { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--orange); margin-bottom:16px; }
+  .about-name { font-family:'Playfair Display',serif; font-size:48px; font-weight:900; letter-spacing:-0.02em; line-height:1.1; margin-bottom:32px; border-bottom:3px solid var(--black); padding-bottom:24px; }
+  .about-text p { font-size:16px; line-height:1.85; color:#1a1a1a; margin-bottom:20px; }
+  .about-section-title { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--gray); margin-bottom:20px; }
+  .about-contact-link { display:inline-flex; align-items:center; gap:12px; text-decoration:none; color:var(--black); font-size:15px; transition:color 0.2s; margin-bottom:12px; }
+  .about-contact-link:hover { color:var(--orange); }
+  .about-contact-label { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--orange); min-width:80px; }
+  .about-project { display:block; padding:20px; border:1.5px solid var(--border); text-decoration:none; color:var(--black); transition:border-color 0.2s; margin-bottom:12px; }
+  .about-project:hover { border-color:var(--orange); }
+  .about-project-title { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; margin-bottom:6px; }
+  .about-project-desc { font-size:13px; color:var(--gray); }
+  .about-quote { border-left:3px solid var(--orange); padding-left:20px; margin-bottom:32px; }
+  .about-quote-text { font-family:'Playfair Display',serif; font-size:18px; font-style:italic; color:var(--gray); line-height:1.6; }
+
+  /* ADMIN */
+  .admin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; }
+  .admin-overlay.open { display:flex; }
+  .password-box { background:var(--white); border:3px solid var(--black); padding:48px; width:400px; text-align:center; }
+  .password-box h2 { font-family:'Playfair Display',serif; font-size:28px; font-weight:900; margin-bottom:6px; }
+  .password-box p { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:28px; }
+  .pw-input { width:100%; padding:12px 16px; border:2px solid var(--black); font-family:'DM Sans',sans-serif; font-size:15px; outline:none; margin-bottom:12px; background:var(--white); }
+  .pw-input:focus { border-color:var(--orange); }
+  .pw-error { font-family:'DM Mono',monospace; font-size:11px; color:var(--orange); margin-bottom:12px; display:none; }
+  .btn-primary { width:100%; padding:12px; background:var(--black); color:var(--white); border:none; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:background 0.2s; }
+  .btn-primary:hover { background:var(--orange); }
+  .btn-cancel { margin-top:12px; background:none; border:none; font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); cursor:pointer; letter-spacing:0.05em; text-decoration:underline; }
+  .admin-panel { background:var(--white); border:3px solid var(--black); width:700px; max-height:90vh; overflow-y:auto; }
+  .admin-header { display:flex; align-items:center; justify-content:space-between; padding:20px 28px; border-bottom:2px solid var(--black); background:var(--black); color:var(--white); }
+  .admin-header h2 { font-family:'Playfair Display',serif; font-size:22px; font-weight:900; }
+  .admin-header h2 span { color:var(--orange); }
+  .admin-close { background:none; border:1px solid rgba(255,255,255,0.3); color:var(--white); cursor:pointer; font-size:16px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; }
+  .admin-close:hover { border-color:var(--orange); color:var(--orange); }
+  .admin-body { padding:28px; }
+  .form-row { margin-bottom:20px; }
+  .form-row label { display:block; font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--gray); margin-bottom:6px; }
+  .form-row label span { color:var(--orange); }
+  .form-input { width:100%; padding:10px 14px; border:2px solid var(--border); background:var(--white); font-family:'DM Sans',sans-serif; font-size:14px; outline:none; transition:border-color 0.2s; }
+  .form-input:focus { border-color:var(--black); }
+  .form-textarea { width:100%; padding:12px 14px; border:2px solid var(--border); background:var(--white); font-family:'DM Sans',sans-serif; font-size:14px; outline:none; resize:vertical; min-height:120px; transition:border-color 0.2s; }
+  .form-textarea:focus { border-color:var(--black); }
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .form-hint { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray); margin-top:4px; }
+  .admin-footer { padding:20px 28px; border-top:1px solid var(--border); display:flex; gap:12px; align-items:center; }
+  .btn-save { flex:1; padding:12px; background:var(--orange); color:var(--white); border:none; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; }
+  .btn-save:hover { background:#c73a08; }
+  .btn-download { padding:12px 20px; background:var(--black); color:var(--white); border:none; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; }
+  .btn-download:hover { background:#333; }
+  .save-success { font-family:'DM Mono',monospace; font-size:11px; color:#16a34a; display:none; }
+  .color-options { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+  .color-opt { width:28px; height:28px; border:2px solid transparent; cursor:pointer; transition:border-color 0.15s; }
+  .color-opt.selected { border-color:var(--orange); }
+  .admin-articles { margin-top:24px; border-top:1px solid var(--border); padding-top:20px; }
+  .admin-articles-title { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--gray); margin-bottom:12px; }
+  .admin-article-row { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); }
+  .admin-article-name { font-size:13px; font-weight:500; }
+  .admin-article-date { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray); }
+  .btn-delete { background:none; border:1px solid var(--border); color:var(--gray); font-family:'DM Mono',monospace; font-size:10px; padding:3px 8px; cursor:pointer; }
+  .btn-delete:hover { border-color:#dc2626; color:#dc2626; }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  @media (max-width:768px) {
+    header, .main, #detail-view, #about-view { padding:0 20px; }
+    .main { grid-template-columns:1fr; }
+    .sidebar { display:none; }
+    .article-card { grid-template-columns:120px 1fr; gap:16px; }
+    .article-img-placeholder { width:120px; height:90px; }
+    .site-title { font-size:26px; }
+    .detail-title { font-size:28px; }
+    .detail-body, .about-grid { grid-template-columns:1fr; }
+    .admin-panel { width:95vw; }
+    .form-grid { grid-template-columns:1fr; }
+    .password-box { width:90vw; padding:32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="site-date" id="site-date"></div>
+    <div class="site-title" id="site-title-link">ELEVATE <span>THINKING</span></div>
+    <div class="header-meta">by Mustafa<br>Warsaw · Ankara</div>
+  </div>
+  <nav class="site-nav">
+    <span class="nav-link" id="nav-home">Home</span>
+    <span class="nav-link active" id="nav-posts">Posts</span>
+    <span class="nav-link" id="nav-articles">Articles</span>
+    <span class="nav-link" id="nav-apps">Apps</span>
+    <span class="nav-link" id="nav-about">About</span>
+    <div class="nav-social">
+      <a href="https://www.linkedin.com/in/mustafa-tuncer-ba283715/" target="_blank" class="nav-social-link">LinkedIn</a>
+      <a href="/cdn-cgi/l/email-protection#c9a4a0bdbca7aaacbb89aea4a8a0a5e7aaa6a4" class="nav-social-link">Email</a>
+    </div>
+  </nav>
+  <div style="display:flex; align-items:center;">
+    <div class="search-section">
+      <div class="search-wrapper">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" id="searchInput" type="text" placeholder="Search articles, ideas or tags…" oninput="onSearch()">
+        <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+      </div>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+  </div>
+</header>
+
+<div class="tag-bar" id="tagBar">
+  <span class="tag-label">TAGS →</span>
+</div>
+
+<!-- LIST VIEW -->
+<!-- HOME VIEW -->
+<div id="home-view" style="display:none;min-height:100vh;display:none;flex-direction:column;">
+
+  <!-- HERO — resim + üstünde sol başlık, sağ listeler -->
+  <div style="position:relative;width:100%;height:560px;overflow:hidden;background:#0a0a0a;">
+    <img src="images/interchange.jpg"
+      alt="Interchange" style="width:100%;height:100%;object-fit:cover;filter:grayscale(30%) brightness(0.4);">
+    <div style="position:absolute;inset:0;display:grid;grid-template-columns:2fr 1fr;gap:2rem;padding:3rem 2.5rem;align-items:center;" class="hero-grid">
+
+      <!-- Sol: başlık -->
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:1.5rem;">Mustafa Tuncer</div>
+        <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4.5vw,4rem);font-weight:900;line-height:1.05;letter-spacing:-0.02em;color:#fff;margin-bottom:0;">40 Years.<br>15 Countries.<br><span style="color:#e8440a;">How Do We Lead Better?</span></h1>
+      </div>
+
+      <!-- Sağ: listeler -->
+      <div style="text-align:left;align-self:center;padding-left:2rem;border-left:1px solid rgba(255,255,255,0.2);" class="hero-right">
+
+        <div style="margin-bottom:1.5rem;">
+          <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:#e8440a;margin-bottom:0.8rem;">Latest Posts</div>
+          <div id="hero-posts-list"></div>
+        </div>
+
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:#e8440a;margin-bottom:0.8rem;">Latest Articles</div>
+          <div id="hero-articles-list"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <div style="background:#0a0a0a;padding:3rem 2.5rem;flex:1;">
+    <div style="max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;">
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;color:rgba(255,255,255,0.7);line-height:1.75;max-width:580px;font-weight:300;margin:0;">I build infrastructure that lasts a century. Then I think about the people who build it, lead it, and live near it. I write about leadership, behavioral economics, and the human side of large-scale projects.</p>
+      <div style="display:flex;gap:1rem;flex-shrink:0;">
+        <span id="home-posts-link" onclick="showList()" style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,0.3);padding:0.5rem 1.1rem;cursor:pointer;" onmouseover="this.style.borderColor='#e8440a'" onmouseout="this.style.borderColor='rgba(255,255,255,0.3)'">Posts →</span>
+        <span id="home-articles-link" onclick="showArticles()" style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:#fff;background:#e8440a;padding:0.5rem 1.1rem;cursor:pointer;">Articles →</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- dummy divs for JS compatibility -->
+  <div id="home-posts-list" style="display:none;"></div>
+  <div id="home-articles-list" style="display:none;"></div>
+
+</div>
+
+
+<div id="list-view">
+  <div class="main">
+    <div class="articles-col" id="articlesCol">
+      <div class="no-results" id="noResults">
+        <div class="no-results-title">No results found</div>
+        <div class="no-results-sub">Try a different search term or tag.</div>
+      </div>
+    </div>
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">About</div>
+        <div class="sidebar-about">
+          <p><strong>Mustafa Tuncer</strong></p>
+          <p>Thinker. Writer. Builder.</p>
+          <p>Writing on leadership, behavioral economics, and large-scale infrastructure.</p>
+          <p style="color:var(--gray);font-size:12px;">Warsaw · Ankara · Ayvalık</p>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Recent Posts</div>
+        <div id="recentList"></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">All Tags</div>
+        <div class="tag-cloud" id="sidebarTags"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- DETAIL VIEW -->
+<div id="detail-view">
+  <button class="detail-back" id="detail-back-btn">← All Articles</button>
+  <div class="detail-header">
+    <div class="detail-category" id="detailCategory"></div>
+    <div class="detail-title" id="detailTitle"></div>
+    <div class="detail-meta">
+      <span id="detailDate"></span>
+      <span style="color:var(--border)">|</span>
+      <span id="detailReadTime"></span>
+    </div>
+  </div>
+  <div class="detail-body">
+    <div>
+      <div id="detailHero"></div>
+      <div class="detail-text" id="detailContent"></div>
+      <div class="detail-tags" id="detailTags"></div>
+    </div>
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">About</div>
+        <div class="sidebar-about">
+          <p><strong>Mustafa Tuncer</strong></p>
+          <p>Thinker. Writer. Builder.</p>
+          <p>Writing on leadership, behavioral economics, and large-scale infrastructure.</p>
+          <p style="color:var(--gray);font-size:12px;">Warsaw · Ankara · Ayvalık</p>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">More Articles</div>
+        <div id="detailRelated"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- APPS VIEW -->
+<div id="apps-view" style="display:none;">
+  <div style="max-width:900px;margin:0 auto;padding:2rem 1rem 4rem;">
+    <div style="font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;color:#888;text-transform:uppercase;margin-bottom:0.4rem;">Side Projects</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;margin:0 0 0.5rem;">Things I Built</h2>
+    <p style="color:#555;font-size:1rem;margin:0 0 2.5rem;max-width:560px;">Some problems are easier to solve by building something. These are mine — small, functional, and made to last.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;">
+      <div style="border:1.5px solid #e8440a;border-radius:4px;padding:1.5rem;display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;">Language Learning · Web App</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;">PolonceKart</div>
+        <p style="font-size:0.88rem;color:#444;line-height:1.6;margin:0;">Learning Polish as a Turkish speaker living in Warsaw. I couldn't find a flashcard tool that worked for me — so I built one. Basic and B1 vocabulary sets, clean interface, no installation.</p>
+        <div style="margin-top:auto;padding-top:0.8rem;display:flex;gap:0.8rem;flex-wrap:wrap;">
+          <a href="https://mituncer.github.io/flashcard_en/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#fff;background:#e8440a;padding:0.4rem 0.9rem;text-decoration:none;border-radius:2px;">English Version →</a>
+          <a href="https://mituncer.github.io/flashcard_tr/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#e8440a;border:1px solid #e8440a;padding:0.4rem 0.9rem;text-decoration:none;border-radius:2px;">Türkçe Versiyon →</a>
+        </div>
+      </div>
+
+      <div style="border:1.5px solid #e8e8e8;border-radius:4px;padding:1.5rem;display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;">Productivity · Browser Dashboard</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;">Random Quote &amp; Market Hours</div>
+        <p style="font-size:0.88rem;color:#444;line-height:1.6;margin:0;">A lightweight personal dashboard that keeps me focused during the trading day. It displays real-time open and close countdowns for NYSE and Borsa Istanbul (BIST), automatically adjusted to my local time. A personal notes section stores my own motivational reminders — words I've written to myself for the moments when focus starts to slip. Set it as your browser's homepage and let it greet you every morning.</p>
+        <div style="margin-top:auto;padding-top:0.8rem;">
+          <a href="https://mituncer.github.io/market-hours/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#fff;background:#e8440a;padding:0.4rem 0.9rem;text-decoration:none;border-radius:2px;">Open Dashboard →</a>
+        </div>
+      </div>
+
+      <div style="border:1.5px solid #e8e8e8;border-radius:4px;padding:1.5rem;display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;">Productivity · Idea Management</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;">Idea Board</div>
+        <p style="font-size:0.88rem;color:#444;line-height:1.6;margin:0;">Good ideas don't wait for the right moment — they arrive in the middle of a meeting, on a flight, or at 2am. Idea Board is a clean, distraction-free space to capture, organize, and revisit them. No accounts, no clutter. Just your ideas, always where you left them.</p>
+        <div style="margin-top:auto;padding-top:0.8rem;">
+          <a href="https://mituncer.github.io/fikir_panosu/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#fff;background:#e8440a;padding:0.4rem 0.9rem;text-decoration:none;border-radius:2px;">Open Idea Board →</a>
+        </div>
+      </div>
+
+
+      <div style="border:1.5px solid #e8e8e8;border-radius:4px;padding:1.5rem;display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;">Language Learning · Polish Grammar</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;">Lehçe Hal</div>
+        <p style="font-size:0.88rem;color:#444;line-height:1.6;margin:0;">Polish grammar is beautiful — and unforgiving. Cases change everything: the ending of a word shifts depending on its role in the sentence. Lehçe Hal is a focused practice tool for mastering Polish grammatical cases, built for Turkish speakers navigating one of Europe's most complex languages.</p>
+        <div style="margin-top:auto;padding-top:0.8rem;">
+          <a href="https://mituncer.github.io/LehceHal/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#fff;background:#e8440a;padding:0.4rem 0.9rem;text-decoration:none;border-radius:2px;">Open Lehçe Hal →</a>
+        </div>
+      </div>
+
+      <div style="border:1.5px solid #e8e8e8;border-radius:4px;padding:1.5rem;display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;">Travel · Journey Log</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;">Seyyah Lizbon</div>
+        <p style="font-size:0.88rem;color:#444;line-height:1.6;margin:0;">A travel journal app built for a specific trip to Lisbon and Sintra. Captures photos, notes, and memories day by day — because the best trips deserve more than a camera roll.</p>
+        <div style="margin-top:auto;padding-top:0.8rem;">
+          <a href="https://mituncer.github.io/seyyah_lisbon/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#fff;background:#e8440a;padding:0.4rem 0.9rem;text-decoration:none;border-radius:2px;">Open Seyyah Lizbon →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLES VIEW -->
+<div id="articles-view" style="display:none;">
+  <div class="main">
+    <div class="articles-col">
+      <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;color:#888;text-transform:uppercase;margin-bottom:0.5rem;">Long-form</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;letter-spacing:-0.02em;color:#0a0a0a;margin-bottom:0.5rem;">Articles</h2>
+      <p style="color:#888;font-size:0.9rem;margin-bottom:1.5rem;">In-depth pieces on leadership, behavioral economics, and infrastructure.</p>
+      <!-- Kategori filtre pills -->
+      <div id="articles-category-bar" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem;"></div>
+      <div id="articles-list-container">
+        <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:#888;">Loading...</div>
+      </div>
+    </div>
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">About</div>
+        <div class="sidebar-about">
+          <p><strong>Mustafa Tuncer</strong></p>
+          <p>Thinker. Writer. Builder.</p>
+          <p>Writing on leadership, behavioral economics, and large-scale infrastructure.</p>
+          <p style="color:var(--gray);font-size:12px;">Warsaw · Ankara · Ayvalık</p>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Categories</div>
+        <div id="articles-sidebar-cats"></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Recent Posts</div>
+        <div id="articles-sidebar-posts"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ABOUT VIEW -->
+<div id="about-view">
+  <div class="about-grid">
+    <div>
+      <div class="about-label">About</div>
+      <h1 class="about-name">Mustafa Tuncer</h1>
+      <div class="about-text">
+        <p>I am a Board Member at <strong><a href="https://www.gulermak.com" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Gülermak Heavy Industries Construction &amp; Contracting Co.</a></strong> — one of Turkey's leading infrastructure and construction companies with ~€1 billion annual revenue, operating across Turkey, Poland, the Balkans, the Middle East, India and the Philippines.</p>
+        <p>With over 25 years of experience in large-scale infrastructure and industrial projects, I have played a pivotal role in expanding Gülermak's operations across Central, Eastern, and Northern Europe. Previously serving as Executive Director for Europe, I led business development, project execution, strategic planning, and market expansion — building high-performing teams and evaluating strategic partnerships to drive sustainable growth. Throughout my career I have ensured the successful delivery of complex metro, rail, and industrial projects.</p>
+        <p>Leading international teams across 17 nationalities, I've never lost sight of the human side of the equation. Work, for me, is not just what I do — it's part of who I am. Serious, but not rigid.</p>
+        <p>I hold a Master of Science in Structural Engineering and a Bachelor's degree in Civil Engineering from <strong><a href="https://www.metu.edu.tr/tr" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Middle East Technical University (ODTÜ)</a></strong>.</p>
+        <p>I write about leadership, behavioral economics, mental models, and the human side of large-scale infrastructure. Occasionally also about language learning and whatever else catches my attention. Curious, grounded, and never done growing.</p>
+        <p>Based between <strong>Warsaw</strong> and <strong>Ankara</strong>. Also found in Skopje and Dubai.</p>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding-top:32px;margin-bottom:40px;margin-top:20px;">
+        <div class="about-section-title">Contact</div>
+        <div style="display:flex;flex-direction:column;">
+          <a href="https://www.linkedin.com/in/mustafa-tuncer-ba283715/" target="_blank" class="about-contact-link">
+            <span class="about-contact-label">LinkedIn</span>
+            linkedin.com/in/mustafa-tuncer-ba283715
+          </a>
+          <a href="/cdn-cgi/l/email-protection#d0bdb9a4a5beb3b5a290b7bdb1b9bcfeb3bfbd" class="about-contact-link">
+            <span class="about-contact-label">E-posta</span>
+            Email
+          </a>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding-top:32px;">
+        <div class="about-section-title">Projects</div>
+        <a href="https://mituncer.github.io/flashcard_en/" target="_blank" class="about-project">
+          <div class="about-project-title">PolonceKart</div>
+          <div class="about-project-desc">Polish-English flashcard web app — single HTML file, deployed on Netlify.</div>
+        </a>
+      </div>
+    </div>
+
+    <aside style="padding-top:8px;">
+      <div class="about-quote">
+        <div class="about-quote-text">"The hardest problems are not solved with more information, but with a better mental model."</div>
+      </div>
+      <div>
+        <div class="sidebar-title">Recent Posts</div>
+        <div id="aboutRecentList"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ADMIN OVERLAY -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="password-box" id="passwordBox">
+    <h2>ELEVATE <span style="color:var(--orange)">THINKING</span></h2>
+    <p>Admin Login</p>
+    <input class="pw-input" id="pwInput" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPassword()">
+    <div class="pw-error" id="pwError">Incorrect password. Try again.</div>
+    <button class="btn-primary" onclick="checkPassword()">Sign In</button><br>
+    <button class="btn-cancel" onclick="closeAdmin()">Cancel</button>
+  </div>
+
+  <div class="admin-panel" id="adminPanel" style="display:none;">
+    <div class="admin-header">
+      <h2>ELEVATE <span>ADMIN</span></h2>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="admin-body">
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">ADD NEW ARTICLE</div>
+      <div class="form-row"><label>Title <span>*</span></label><input class="form-input" id="f-title" type="text" placeholder="Yazının başlığı"></div>
+      <div class="form-row"><label>Category <span>*</span></label><input class="form-input" id="f-category" type="text" placeholder="e.g. Leadership, Strategy…"></div>
+      <div class="form-row"><label>Excerpt <span>*</span></label><textarea class="form-textarea" id="f-excerpt" style="min-height:80px;" placeholder="2-3 sentence summary shown on cards"></textarea></div>
+      <div class="form-row"><label>Content <span>*</span></label><textarea class="form-textarea" id="f-content" style="min-height:200px;" placeholder="Yazının tam içeriği. HTML kullanabilirsin: &lt;p&gt;, &lt;h2&gt;, &lt;blockquote&gt;"></textarea><div class="form-hint">HTML: &lt;p&gt; paragraf · &lt;h2&gt; başlık · &lt;blockquote&gt; alıntı · &lt;ul&gt;&lt;li&gt; liste</div></div>
+      <div class="form-row"><label>Tags <span>*</span></label><input class="form-input" id="f-tags" type="text" placeholder="Leadership, Strategy"><div class="form-hint">Comma separated</div></div>
+      <div class="form-grid">
+        <div class="form-row"><label>Date <span>*</span></label><input class="form-input" id="f-date" type="text"></div>
+        <div class="form-row"><label>Read Time</label><input class="form-input" id="f-readtime" type="text" placeholder="4 min read"></div>
+      </div>
+      <div class="form-row"><label>Card Image URL</label><input class="form-input" id="f-imgurl" type="text" placeholder="https://…"><div class="form-hint">Leave empty to show colored placeholder</div></div>
+      <div class="form-row"><label>Article Hero Image URL</label><input class="form-input" id="f-contentimgurl" type="text" placeholder="https://…"><div class="form-hint">Leave empty to use card image</div></div>
+      <div class="form-grid">
+        <div class="form-row"><label>Card Letter <span style="color:var(--gray)">(if no image)</span></label><input class="form-input" id="f-letter" type="text" placeholder="M" maxlength="2" style="font-family:'Playfair Display',serif;font-size:20px;"></div>
+        <div class="form-row"><label>Card Color <span style="color:var(--gray)">(if no image)</span></label><div class="color-options" id="colorOptions"></div></div>
+      </div>
+      <div class="admin-articles">
+        <div class="admin-articles-title">Existing Articles</div>
+        <div id="adminArticleList"></div>
+      </div>
+    </div>
+    <div class="admin-footer">
+      <button class="btn-save" onclick="saveArticle()">+ Add Article</button>
+      <button class="btn-download" onclick="downloadJSON()">⤓ Download JSON</button>
+      <span class="save-success" id="saveSuccess">✓ Added!</span>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const PASSWORD_HASH = 'f4e70404e765e45e4f048ed36a434b9cffb5d6e3465868915e1f4998fdd30fe7';
+const CARD_COLORS = ['#1a1a2e','#2d1b33','#0d2818','#2a1a0e','#1a2a1a','#0e1a2a','#1e1b18','#14281d'];
+
+let articles = [];
+let activeTag = null;
+let searchQuery = '';
+let selectedColor = CARD_COLORS[0];
+let adminUnlocked = false;
+
+async function loadArticles() {
+  try {
+    const res = await fetch('articles.json?t=' + Date.now());
+    if (!res.ok) throw new Error('not found');
+    articles = await res.json();
+  } catch(e) {
+    const saved = localStorage.getItem('et_articles_backup');
+    if (saved) articles = JSON.parse(saved);
+    else articles = [];
+  }
+  renderAll();
+  renderTagBar();
+  renderSidebar();
+  renderHomeRecent();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const now = new Date();
+  document.getElementById('site-date').textContent =
+    now.toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  document.getElementById('f-date').value =
+    now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+  loadArticles();
+  buildColorPicker();
+  // Start on Home
+  setTimeout(() => showHome(), 10);
+  document.getElementById('nav-articles').addEventListener('click', showList);
+  document.getElementById('nav-home').addEventListener('click', showHome);
+  document.getElementById('nav-posts').addEventListener('click', showList);
+  document.getElementById('nav-articles').addEventListener('click', showArticles);
+  document.getElementById('nav-apps').addEventListener('click', showApps);
+  document.getElementById('nav-about').addEventListener('click', showAbout);
+  document.getElementById('home-posts-link').addEventListener('click', showList);
+  document.getElementById('home-articles-link').addEventListener('click', showArticles);
+  document.getElementById('site-title-link').addEventListener('click', showHome);
+  document.getElementById('detail-back-btn').addEventListener('click', showList);
+  if (window.location.hash === '#admin') openAdmin();
+  window.addEventListener('hashchange', () => { if (window.location.hash === '#admin') openAdmin(); });
+});
+
+function getAllTags() {
+  const set = new Set();
+  articles.forEach(a => (a.tags||[]).forEach(t => set.add(t)));
+  return [...set].sort();
+}
+
+function renderTagBar() {
+  const bar = document.getElementById('tagBar');
+  bar.innerHTML = '<span class="tag-label">TAGS →</span>';
+  getAllTags().forEach(tag => {
+    const pill = document.createElement('button');
+    pill.className = 'tag-pill' + (activeTag === tag ? ' active' : '');
+    pill.textContent = tag;
+    pill.onclick = () => toggleTag(tag);
+    bar.appendChild(pill);
+  });
+}
+
+function renderAll() {
+  const col = document.getElementById('articlesCol');
+  col.querySelectorAll('.article-card').forEach(e => e.remove());
+  const filtered = getFiltered();
+  const noRes = document.getElementById('noResults');
+  if (filtered.length === 0) {
+    noRes.style.display = 'block';
+  } else {
+    noRes.style.display = 'none';
+    filtered.forEach((a, i) => col.insertBefore(buildCard(a, i), noRes));
+  }
+  document.getElementById('resultCount').textContent =
+    (searchQuery || activeTag) ? `${filtered.length} / ${articles.length} results` : '';
+}
+
+function buildCard(a, index) {
+  const card = document.createElement('div');
+  card.className = 'article-card';
+  card.style.animationDelay = `${index * 0.06}s`;
+  card.onclick = () => openArticle(a);
+
+  const imgDiv = document.createElement('div');
+  if (a.imgUrl && a.imgUrl.trim() !== '') {
+    imgDiv.style.cssText = 'width:200px;height:140px;flex-shrink:0;position:relative;overflow:hidden;';
+    const img = document.createElement('img');
+    img.src = a.imgUrl;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;filter:grayscale(15%);display:block;';
+    img.onerror = () => { imgDiv.style.background = a.imgColor||'#1a1a1a'; img.style.display='none'; };
+    imgDiv.appendChild(img);
+  } else {
+    imgDiv.className = 'article-img-placeholder';
+    imgDiv.setAttribute('data-letter', a.imgLetter||'·');
+    imgDiv.style.background = a.imgColor||'#1a1a1a';
+  }
+  const accent = document.createElement('div');
+  accent.style.cssText = 'position:absolute;top:0;left:0;width:3px;height:100%;background:var(--orange);z-index:1;';
+  imgDiv.appendChild(accent);
+
+  const body = document.createElement('div');
+  body.className = 'article-body';
+  body.innerHTML = `
+    <div class="article-category">${a.category||''}</div>
+    <div class="article-title">${a.title}</div>
+    <div class="article-excerpt">${a.excerpt}</div>
+    <div class="article-footer">
+      <span class="article-date">${a.date}</span>
+      <div class="article-tags">${(a.tags||[]).map(t=>`<span class="tag" onclick="event.stopPropagation();filterByTag('${t}')">${t}</span>`).join('')}</div>
+    </div>
+    <span class="read-more">${a.readTime||''} →</span>`;
+  card.appendChild(imgDiv);
+  card.appendChild(body);
+  return card;
+}
+
+function renderSidebar() {
+  const recent = document.getElementById('recentList');
+  if (recent) recent.innerHTML = [...articles].slice(0,4).map(a=>`
+    <div class="recent-item" onclick="openArticle(articles.find(x=>x.id===${a.id}))">
+      <div class="recent-title">${a.title}</div>
+      <div class="recent-date">${a.date}</div>
+    </div>`).join('');
+  const cloud = document.getElementById('sidebarTags');
+  if (cloud) cloud.innerHTML = getAllTags().map(t=>`<span class="tag" onclick="filterByTag('${t}')">${t}</span>`).join('');
+}
+
+function renderAdminList() {
+  const list = document.getElementById('adminArticleList');
+  if (!list) return;
+  list.innerHTML = [...articles].reverse().map(a=>`
+    <div class="admin-article-row">
+      <div><div class="admin-article-name">${a.title}</div><div class="admin-article-date">${a.date}</div></div>
+      <button class="btn-delete" onclick="deleteArticle(${a.id})">Delete</button>
+    </div>`).join('');
+}
+
+function getFiltered() {
+  return articles.filter(a => {
+    const q = searchQuery.toLowerCase();
+    const matchesSearch = !q || [a.title,a.excerpt,a.category,...(a.tags||[])].some(s=>s&&s.toLowerCase().includes(q));
+    const matchesTag = !activeTag || (a.tags||[]).includes(activeTag);
+    return matchesSearch && matchesTag;
+  });
+}
+
+function onSearch() {
+  searchQuery = document.getElementById('searchInput').value;
+  document.getElementById('searchClear').style.display = searchQuery ? 'block' : 'none';
+  renderAll();
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  searchQuery = '';
+  document.getElementById('searchClear').style.display = 'none';
+  renderAll();
+}
+
+function toggleTag(tag) {
+  activeTag = activeTag === tag ? null : tag;
+  renderTagBar();
+  renderAll();
+}
+
+function filterByTag(tag) {
+  activeTag = tag;
+  showList();
+  renderTagBar();
+  renderAll();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function openArticle(a) {
+  document.getElementById('detailCategory').textContent = a.category||'';
+  document.getElementById('detailTitle').textContent = a.title;
+  document.getElementById('detailDate').textContent = a.date;
+  document.getElementById('detailReadTime').textContent = a.readTime||'';
+  const heroImg = (a.contentImgUrl&&a.contentImgUrl.trim()) || (a.imgUrl&&a.imgUrl.trim()) || '';
+  if (heroImg) {
+    document.getElementById('detailHero').innerHTML = `<div style="position:relative;width:100%;height:320px;margin-bottom:28px;overflow:hidden;"><img src="${heroImg}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(10%);" onerror="this.parentElement.style.background='${a.imgColor||'#1a1a1a'}'"><div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--orange);"></div></div>`;
+  } else {
+    document.getElementById('detailHero').innerHTML = `<div class="detail-hero-placeholder" data-letter="${a.imgLetter||'·'}" style="background:${a.imgColor||'#1a1a1a'}"><div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--orange);"></div></div>`;
+  }
+  document.getElementById('detailContent').innerHTML = a.content||'';
+  document.getElementById('detailTags').innerHTML = (a.tags||[]).map(t=>`<span class="tag" onclick="filterByTag('${t}')">${t}</span>`).join('');
+  const related = articles.filter(x=>x.id!==a.id).slice(0,3);
+  document.getElementById('detailRelated').innerHTML = related.map(r=>`
+    <div class="recent-item" onclick="openArticle(articles.find(x=>x.id===${r.id}))">
+      <div class="recent-title">${r.title}</div><div class="recent-date">${r.date}</div>
+    </div>`).join('');
+  document.getElementById('list-view').style.display = 'none';
+  document.getElementById('detail-view').style.display = 'block';
+  document.getElementById('about-view').style.display = 'none';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function hideAllViews() {
+  ['home-view','list-view','detail-view','about-view','apps-view','articles-view'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  ['nav-home','nav-posts','nav-articles','nav-apps','nav-about'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  const tagBar = document.getElementById('tagBar');
+  if (tagBar) tagBar.style.display = 'none';
+}
+
+function showHome() {
+  hideAllViews();
+  document.getElementById('home-view').style.display = 'flex';
+  document.getElementById('nav-home').classList.add('active');
+  renderHomeRecent();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function showList() {
+  hideAllViews();
+  document.getElementById('list-view').style.display = 'block';
+  document.getElementById('nav-posts').classList.add('active');
+  const tagBar = document.getElementById('tagBar');
+  if (tagBar) tagBar.style.display = 'flex';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function showArticles() {
+  hideAllViews();
+  document.getElementById('articles-view').style.display = 'block';
+  document.getElementById('nav-articles').classList.add('active');
+  loadArticlesList();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function renderHomeRecent() {
+  const heroPostsEl = document.getElementById('hero-posts-list');
+  if (heroPostsEl) {
+    heroPostsEl.innerHTML = [...articles].slice(0,3).map(a => `
+      <div onclick="openArticle(articles.find(x=>x.id===${a.id}))" style="margin-bottom:0.8rem;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:0.7rem;">
+        <div style="font-family:'Playfair Display',serif;font-size:0.92rem;font-weight:700;color:#fff;line-height:1.3;margin-bottom:0.2rem;">${a.title}</div>
+        <div style="font-size:0.78rem;color:rgba(255,255,255,0.5);font-weight:300;">${a.excerpt.split(' ').slice(0,12).join(' ')}...</div>
+      </div>
+    `).join('');
+  }
+  const heroArticlesEl = document.getElementById('hero-articles-list');
+  if (heroArticlesEl) {
+    fetch('articles-list.json?t=' + Date.now())
+      .then(r => r.json())
+      .then(list => {
+        heroArticlesEl.innerHTML = list.slice(0,2).map(a => `
+          <a href="${a.file}" style="display:block;margin-bottom:0.8rem;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:0.7rem;">
+            <div style="font-family:'Playfair Display',serif;font-size:0.92rem;font-weight:700;color:#fff;line-height:1.3;margin-bottom:0.2rem;">${a.title}</div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.5);font-weight:300;">${a.subtitle}</div>
+          </a>
+        `).join('');
+      }).catch(() => {});
+  }
+
+  // Son 3 post
+  const postsEl = document.getElementById('home-posts-list');
+  if (postsEl) {
+    const recent = [...articles].slice(0,3);
+    postsEl.innerHTML = recent.map(a => `
+      <div onclick="openArticle(articles.find(x=>x.id===${a.id}))" style="padding:1rem 0;border-bottom:1px solid #e0ddd8;cursor:pointer;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;color:#e8440a;margin-bottom:0.3rem;text-transform:uppercase;">${a.date}</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#0a0a0a;margin-bottom:0.3rem;line-height:1.3;">${a.title}</div>
+        <div style="font-size:0.85rem;color:#666;font-weight:300;line-height:1.5;">${a.excerpt.split(' ').slice(0,18).join(' ')}...</div>
+      </div>
+    `).join('');
+  }
+  // Son 2 article
+  const articlesEl = document.getElementById('home-articles-list');
+  if (articlesEl) {
+    fetch('articles-list.json?t=' + Date.now())
+      .then(r => r.json())
+      .then(list => {
+        articlesEl.innerHTML = list.slice(0,3).map(a => `
+          <a href="${a.file}" style="display:block;padding:1rem 0;border-bottom:1px solid #e0ddd8;text-decoration:none;">
+            <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;color:#e8440a;margin-bottom:0.3rem;text-transform:uppercase;">${a.date}</div>
+            <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#0a0a0a;margin-bottom:0.3rem;line-height:1.3;">${a.title}</div>
+            <div style="font-size:0.85rem;color:#666;font-weight:300;line-height:1.5;">${a.excerpt.split(' ').slice(0,18).join(' ')}...</div>
+          </a>
+        `).join('');
+      })
+      .catch(() => { articlesEl.innerHTML = '<div style="color:#888;font-size:0.85rem;">No articles yet.</div>'; });
+  }
+}
+
+let allArticlesList = [];
+let activeArticleCategory = null;
+
+function loadArticlesList() {
+  const container = document.getElementById('articles-list-container');
+  if (!container) return;
+  if (allArticlesList.length > 0) { renderArticlesList(); return; }
+  fetch('articles-list.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(list => {
+      allArticlesList = list;
+      renderArticlesList();
+      renderArticlesCategoryBar();
+      renderArticlesSidebar();
+    })
+    .catch(() => { container.innerHTML = '<div style="color:#888;">Articles not found.</div>'; });
+}
+
+function renderArticlesList() {
+  const container = document.getElementById('articles-list-container');
+  if (!container) return;
+  const filtered = activeArticleCategory
+    ? allArticlesList.filter(a => a.category === activeArticleCategory)
+    : allArticlesList;
+  container.innerHTML = filtered.map(a => `
+    <a href="${a.file}" style="display:flex;gap:1.2rem;padding:1.5rem 0;border-bottom:1px solid #e0ddd8;text-decoration:none;align-items:flex-start;">
+      ${a.image ? `<img src="${a.image}" alt="${a.title}"
+        style="width:100px;height:70px;object-fit:cover;flex-shrink:0;filter:grayscale(15%);"
+        onerror="this.style.display='none'">` : ''}
+      <div style="flex:1;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;margin-bottom:0.3rem;">${a.category} · ${a.readTime}</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#0a0a0a;line-height:1.2;margin-bottom:0.4rem;">${a.title}</div>
+        <div style="font-size:0.88rem;color:#444;line-height:1.6;margin-bottom:0.5rem;font-weight:300;">${a.excerpt || a.subtitle}</div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.62rem;color:#aaa;letter-spacing:0.06em;">${a.date}</div>
+      </div>
+    </a>
+  `).join('') || '<div style="color:#888;padding:1rem 0;">No articles in this category.</div>';
+}
+
+function renderArticlesCategoryBar() {
+  const bar = document.getElementById('articles-category-bar');
+  if (!bar) return;
+  const cats = [...new Set(allArticlesList.map(a => a.category))];
+  bar.innerHTML = `<button onclick="filterArticles(null)" style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid ${activeArticleCategory === null ? '#0a0a0a' : '#e0ddd8'};background:${activeArticleCategory === null ? '#0a0a0a' : 'transparent'};color:${activeArticleCategory === null ? '#fff' : '#888'};padding:0.25rem 0.7rem;cursor:pointer;">All</button>` +
+    cats.map(c => `<button onclick="filterArticles('${c}')" style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid ${activeArticleCategory === c ? '#e8440a' : '#e0ddd8'};background:${activeArticleCategory === c ? '#e8440a' : 'transparent'};color:${activeArticleCategory === c ? '#fff' : '#888'};padding:0.25rem 0.7rem;cursor:pointer;">${c}</button>`).join('');
+}
+
+function filterArticles(cat) {
+  activeArticleCategory = cat;
+  renderArticlesList();
+  renderArticlesCategoryBar();
+}
+
+function renderArticlesSidebar() {
+  // Categories
+  const catsEl = document.getElementById('articles-sidebar-cats');
+  if (catsEl) {
+    const cats = [...new Set(allArticlesList.map(a => a.category))];
+    catsEl.innerHTML = cats.map(c => `
+      <div onclick="filterArticles('${c}')" style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#555;padding:0.3rem 0;border-bottom:1px solid #f0ede8;cursor:pointer;letter-spacing:0.04em;"
+        onmouseover="this.style.color='#e8440a'" onmouseout="this.style.color='#555'">${c}</div>
+    `).join('');
+  }
+  // Recent posts from articles
+  const postsEl = document.getElementById('articles-sidebar-posts');
+  if (postsEl) {
+    postsEl.innerHTML = [...articles].slice(0,4).map(a => `
+      <div onclick="showList();setTimeout(()=>openArticle(articles.find(x=>x.id===${a.id})),100)" class="recent-item" style="cursor:pointer;">
+        <div class="recent-title">${a.title}</div>
+        <div class="recent-date">${a.date}</div>
+      </div>
+    `).join('');
+  }
+}
+
+
+function showApps() {
+  hideAllViews();
+  document.getElementById('apps-view').style.display = 'block';
+  document.getElementById('nav-apps').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showAbout() {
+  hideAllViews();
+  document.getElementById('about-view').style.display = 'block';
+  document.getElementById('nav-about').classList.add('active');
+  document.getElementById('nav-articles').classList.remove('active');
+  const el = document.getElementById('aboutRecentList');
+  if (el) el.innerHTML = [...articles].slice(0,5).map(a=>`
+    <div class="recent-item" onclick="openArticle(articles.find(x=>x.id===${a.id}))">
+      <div class="recent-title">${a.title}</div><div class="recent-date">${a.date}</div>
+    </div>`).join('');
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function openAdmin() {
+  document.getElementById('adminOverlay').classList.add('open');
+  if (adminUnlocked) { showPanel(); }
+  else {
+    document.getElementById('passwordBox').style.display = 'block';
+    document.getElementById('adminPanel').style.display = 'none';
+    setTimeout(() => document.getElementById('pwInput').focus(), 100);
+  }
+}
+
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwError').style.display = 'none';
+  history.replaceState(null,'',window.location.pathname);
+}
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  return Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function checkPassword() {
+  const pw = document.getElementById('pwInput').value;
+  const hash = await sha256(pw);
+  if (hash === PASSWORD_HASH) {
+    adminUnlocked = true;
+    document.getElementById('pwError').style.display = 'none';
+    showPanel();
+  } else {
+    document.getElementById('pwError').style.display = 'block';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+  }
+}
+
+function showPanel() {
+  document.getElementById('passwordBox').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  renderAdminList();
+}
+
+function saveArticle() {
+  const title = document.getElementById('f-title').value.trim();
+  const category = document.getElementById('f-category').value.trim();
+  const excerpt = document.getElementById('f-excerpt').value.trim();
+  const content = document.getElementById('f-content').value.trim();
+  const tagsRaw = document.getElementById('f-tags').value.trim();
+  const date = document.getElementById('f-date').value.trim();
+  const readTime = document.getElementById('f-readtime').value.trim();
+  const letter = document.getElementById('f-letter').value.trim() || title[0] || '·';
+  const imgUrl = document.getElementById('f-imgurl').value.trim();
+  const contentImgUrl = document.getElementById('f-contentimgurl').value.trim();
+  if (!title||!category||!excerpt||!content||!tagsRaw||!date) { alert('Please fill in all required (*) fields.'); return; }
+  const tags = tagsRaw.split(',').map(t=>t.trim()).filter(Boolean);
+  const maxId = articles.reduce((m,a)=>Math.max(m,a.id||0),0);
+  const newArticle = { id:maxId+1, category, title, excerpt, content, tags, date, readTime:readTime||'3 min read', imgColor:selectedColor, imgLetter:letter.toUpperCase(), imgUrl, contentImgUrl };
+  articles.unshift(newArticle);
+  localStorage.setItem('et_articles_backup', JSON.stringify(articles));
+  ['f-title','f-category','f-excerpt','f-content','f-tags','f-readtime','f-letter','f-imgurl','f-contentimgurl'].forEach(id => { document.getElementById(id).value=''; });
+  document.getElementById('f-date').value = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  renderAll(); renderTagBar(); renderSidebar(); renderAdminList();
+  const s = document.getElementById('saveSuccess');
+  s.style.display = 'inline';
+  setTimeout(()=>s.style.display='none', 2500);
+}
+
+function deleteArticle(id) {
+  if (!confirm('Are you sure you want to delete this article?')) return;
+  articles = articles.filter(a=>a.id!==id);
+  localStorage.setItem('et_articles_backup', JSON.stringify(articles));
+  renderAll(); renderTagBar(); renderSidebar(); renderAdminList();
+}
+
+function downloadJSON() {
+  const blob = new Blob([JSON.stringify(articles,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'articles.json'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function buildColorPicker() {
+  const container = document.getElementById('colorOptions');
+  CARD_COLORS.forEach(color => {
+    const div = document.createElement('div');
+    div.className = 'color-opt';
+    div.style.background = color;
+    div.style.cssText += ';width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;';
+    div.onclick = () => {
+      selectedColor = color;
+      container.querySelectorAll('.color-opt').forEach(d => d.classList.remove('selected'));
+      div.classList.add('selected');
+    };
+    container.appendChild(div);
+  });
+}
+</script>
+</body>
+</html>
