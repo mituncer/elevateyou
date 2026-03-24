@@ -1,0 +1,34 @@
+name: Generate Files List
+on:
+  push:
+    branches: [ main ] # Ana dalın adı 'master' ise onu yazmalısın
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Generate JSON
+        run: |
+          # Sadece .html dosyalarını listele, boyut ve tarih bilgilerini al
+          echo "[" > files.json
+          first=true
+          for f in *.html; do
+            if [ "$f" != "index.html" ]; then # Ana sayfayı listeye eklemek istemeyebilirsin
+              if [ "$first" = false ]; then echo "," >> files.json; fi
+              size=$(stat -c%s "$f")
+              date=$(date -r "$f" "+%Y-%m-%d")
+              echo "{\"name\": \"$f\", \"size\": $size, \"date\": \"$date\"}" >> files.json
+              first=false
+            fi
+          done
+          echo "]" >> files.json
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add files.json
+          git commit -m "Automated files.json update" || exit 0
+          git push
