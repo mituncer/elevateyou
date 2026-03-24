@@ -1,28 +1,46 @@
 name: Generate Files List
+
 on:
   push:
-    branches: [ main ] # Ana dalın adı 'master' ise onu yazmalısın
+    branches: [ main ] # Eğer ana dalın adı 'master' ise burayı 'master' yapın.
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Generate JSON
+      - name: Generate files.json
         run: |
-          # Sadece .html dosyalarını listele, boyut ve tarih bilgilerini al
           echo "[" > files.json
-          first=true
-          for f in *.html; do
-            if [ "$f" != "index.html" ]; then # Ana sayfayı listeye eklemek istemeyebilirsin
-              if [ "$first" = false ]; then echo "," >> files.json; fi
-              size=$(stat -c%s "$f")
-              date=$(date -r "$f" "+%Y-%m-%d")
-              echo "{\"name\": \"$f\", \"size\": $size, \"date\": \"$date\"}" >> files.json
-              first=false
+          FIRST=true
+          
+          # Mevcut dizindeki tüm öğeleri tara
+          for f in *; do
+            # Sadece dosyaysa (-f) ve gizlenmesi gerekenlerden değilse ekle
+            if [ -f "$f" ] && \
+               [ "$f" != "files.json" ] && \
+               [ "$f" != "index.html" ] && \
+               [ "$f" != "articles.json" ] && \
+               [ "$f" != "update-files.yml" ] && \
+               [ "$f" != "CNAME" ] && \
+               [ "$f" != "README.md" ] && \
+               [ "$f" != ".gitignore" ]; then
+              
+              if [ "$FIRST" = false ]; then echo "," >> files.json; fi
+              
+              SIZE=$(stat -c%s "$f")
+              DATE=$(date -r "$f" "+%Y-%m-%d")
+              
+              echo "{\"name\": \"$f\", \"size\": $SIZE, \"date\": \"$DATE\"}" >> files.json
+              FIRST=false
             fi
           done
+          
           echo "]" >> files.json
 
       - name: Commit and Push
@@ -30,5 +48,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add files.json
+          # Eğer değişiklik yoksa hata vermeden çık
           git commit -m "Automated files.json update" || exit 0
           git push
