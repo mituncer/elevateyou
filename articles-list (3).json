@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Taking Risks in Business",
+    "subtitle": "Lessons from the Racing Track",
+    "excerpt": "Ayrton Senna once said: if you no longer go for a gap that exists, you are no longer a racing driver. The same is true in business. But knowing when to go — and when the gap is an illusion — is what separates great leaders from reckless ones.",
+    "date": "January 2017",
+    "readTime": "4 min read",
+    "category": "Leadership",
+    "image": "images/racingbw.jpg",
+    "file": "articles/taking-risks-racing.html"
+  },
+  {
+    "title": "Hindsight Bias",
+    "subtitle": "The Silent Killer of Institutional Learning",
+    "excerpt": "The 'I knew it all along' reflex feels harmless. It isn't. When outcomes rewrite the past, organizations stop diagnosing mistakes properly — and everyone absolves themselves. Revisiting Kahneman reminded me how deeply corrosive this is for teams.",
+    "date": "January 2025",
+    "readTime": "4 min read",
+    "category": "Behavioral Economics",
+    "image": "images/hindsightbw.jpg",
+    "file": "articles/hindsight-bias-learning.html"
+  },
+  {
+    "title": "Some Races Never End",
+    "subtitle": "Only the Baton Changes Hands",
+    "excerpt": "In 1967, an official tried to physically remove Kathrine Switzer from the Boston Marathon mid-race. She finished. Then she ran until women were officially accepted in 1972. Today my daughter Alara pursues her doctorate at University of Toronto. She didn't need to ask permission to run.",
+    "date": "November 2024",
+    "readTime": "3 min read",
+    "category": "Legacy",
+    "image": "images/batonbw.jpg",
+    "file": "articles/some-races-never-end.html"
+  }
+]
