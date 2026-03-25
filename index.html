@@ -448,7 +448,7 @@ let adminUnlocked = false;
 
 async function loadArticles() {
   try {
-    const res = await fetch('posts.json?t=' + Date.now());
+    const res = await fetch('articles.json?t=' + Date.now());
     if (!res.ok) throw new Error('not found');
     articles = await res.json();
   } catch(e) {
@@ -746,7 +746,7 @@ function downloadJSON() {
   const blob = new Blob([JSON.stringify(articles,null,2)],{type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = 'posts.json'; a.click();
+  a.href = url; a.download = 'articles.json'; a.click();
   URL.revokeObjectURL(url);
 }
 
