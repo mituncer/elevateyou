@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taking Risks in Business: Lessons from the Racing Track — Elevate Thinking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #fafaf8;
+      --orange: #e8440a;
+      --gray: #888;
+      --border: #e0ddd8;
+      --text: #1a1a1a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--white);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .site-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: var(--black);
+    }
+    .site-title span { color: var(--orange); }
+    .header-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--gray);
+      letter-spacing: 0.08em;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0;
+    }
+    .nav-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      padding: 0.6rem 1.1rem;
+      border-right: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .nav-link:first-child { padding-left: 0; }
+    .nav-link:hover { color: var(--black); }
+    .nav-link.active { color: var(--black); border-bottom: 2px solid var(--orange); }
+
+    /* ── ARTICLE ── */
+    .article-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 2rem 6rem;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 2rem;
+    }
+    .breadcrumb a { color: var(--gray); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--orange); }
+    .breadcrumb span { margin: 0 0.5rem; }
+
+    /* Category tag */
+    .article-category {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 1rem;
+    }
+
+    /* Title */
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Meta */
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--gray);
+      letter-spacing: 0.06em;
+      padding-bottom: 1.5rem;
+      border-bottom: 3px solid var(--black);
+      margin-bottom: 2.5rem;
+    }
+    .meta-dot { color: var(--border); }
+
+    /* Hero image */
+    .hero-image {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      margin-bottom: 2.5rem;
+      filter: grayscale(20%);
+    }
+    .hero-caption {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--gray);
+      letter-spacing: 0.06em;
+      margin-top: -2rem;
+      margin-bottom: 2.5rem;
+      text-align: right;
+    }
+
+    /* Body text */
+    .article-body p {
+      margin-bottom: 1.6rem;
+      color: #1a1a1a;
+      font-weight: 300;
+    }
+    .article-body h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--black);
+      margin: 2.5rem 0 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .article-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--black);
+      margin: 2rem 0 0.8rem;
+    }
+    .article-body blockquote {
+      border-left: 3px solid var(--orange);
+      margin: 2rem 0;
+      padding: 1rem 0 1rem 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: #333;
+      line-height: 1.7;
+    }
+    .article-body ul {
+      margin: 1rem 0 1.6rem 1.2rem;
+    }
+    .article-body ul li {
+      margin-bottom: 0.6rem;
+      color: #1a1a1a;
+      font-weight: 300;
+    }
+    .article-body a {
+      color: var(--orange);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Pull quote — full width highlight */
+    .pull-quote {
+      background: var(--black);
+      color: var(--white);
+      padding: 2rem 2.5rem;
+      margin: 2.5rem -2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .pull-quote cite {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      font-style: normal;
+      letter-spacing: 0.1em;
+      color: var(--orange);
+      margin-top: 1rem;
+    }
+
+    /* Inline image */
+    .inline-image {
+      width: 100%;
+      margin: 2rem 0;
+    }
+    .inline-image img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      filter: grayscale(15%);
+    }
+    .inline-image figcaption {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--gray);
+      letter-spacing: 0.06em;
+      margin-top: 0.6rem;
+    }
+
+    /* LinkedIn link box */
+    .source-box {
+      border: 1.5px solid var(--border);
+      padding: 1.2rem 1.5rem;
+      margin: 2.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .source-box-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 0.3rem;
+    }
+    .source-box-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--black);
+    }
+    .source-box a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--white);
+      background: var(--orange);
+      padding: 0.4rem 0.9rem;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Footer */
+    .article-footer {
+      border-top: 3px solid var(--black);
+      margin-top: 4rem;
+      padding-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .article-footer-author {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: var(--gray);
+    }
+    .article-footer-author strong {
+      display: block;
+      color: var(--black);
+      font-size: 0.8rem;
+      margin-bottom: 0.2rem;
+    }
+    .back-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: var(--orange);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    /* Tags */
+    .article-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.6rem;
+      color: var(--gray);
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-top">
+    <a href="../index.html" class="site-title">ELEVATE <span>THINKING</span></a>
+    <div class="header-meta">by Mustafa / Warsaw · Ankara</div>
+  </div>
+  <nav>
+    <a href="../index.html#posts" class="nav-link">Posts</a>
+    <a href="../index.html#articles" class="nav-link active">Articles</a>
+    <a href="../index.html#apps" class="nav-link">Apps</a>
+    <a href="../index.html#about" class="nav-link">About</a>
+  </nav>
+</header>
+
+<main class="article-wrap">
+
+  <div class="breadcrumb">
+    <a href="../index.html">Home</a><span>→</span>
+    <a href="../index.html#articles">Articles</a><span>→</span>
+    Taking Risks in Business
+  </div>
+
+  <div class="article-category">Leadership · Risk</div>
+
+  <h1>Taking Risks in Business: Lessons from the Racing Track</h1>
+
+  <div class="article-meta">
+    <span>Mustafa Tuncer</span>
+    <span class="meta-dot">—</span>
+    <span>January 2017</span>
+    <span class="meta-dot">—</span>
+    <span>4 min read</span>
+  </div>
+
+  <!-- HERO IMAGE -->
+  <!-- Değiştirmek için: src="..." kısmına kendi fotoğrafının URL'ini yaz -->
+  <!-- Örnek: src="https://raw.githubusercontent.com/mituncer/elevateyou/main/images/racing.jpg" -->
+  <!-- Fotoğraf yoksa bu <img> bloğunu sil -->
+  <img class="hero-image"
+    src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80"
+    alt="Racing car on track">
+  <div class="hero-caption">Nürburgring Nordschleife — "The Green Hell" · Photo: Unsplash</div>
+  <!-- Fotoğraf açıklamasını değiştirmek için yukarıdaki satırı düzenle -->
+
+  <div class="article-body">
+
+    <div class="pull-quote">
+      "If you no longer go for a gap that exists, you are no longer a racing driver."
+      <cite>— Ayrton Senna</cite>
+    </div>
+
+    <p>This quote perfectly summarizes not just the mentality of racing drivers, but also the mindset needed for business success — seizing opportunities and taking calculated risks.</p>
+
+    <p>Here's a perfect example that illustrates both the potential and the peril of this philosophy: Belgian driver Laurens Vanthoor's incident at Germany's legendary Nürburgring circuit.</p>
+
+    <h2>The Green Hell</h2>
+
+    <p>The Nordschleife section of the Nürburgring is called the "Green Hell" — a 20-kilometer narrow, dangerous track. The Dottinger Höhe straight is the most critical section where pilots reach speeds over 300 km/h.</p>
+
+    <p>Here, Vanthoor spotted a chance to overtake two slow cars in heavy traffic. Just as Senna advocated, he saw the gap and went for it. He began the maneuver with surgical precision but made slight contact with another car.</p>
+
+    <p>This minor contact, which would be insignificant under normal circumstances, created a domino effect at that high speed — the tire blew out, Vanthoor lost control, and the Audi crashed hard into the barriers. Fortunately, thanks to modern safety technologies, the pilot escaped unharmed, but the car was completely unusable and the team had to retire from the race.</p>
+
+    <h2>The Business Parallel</h2>
+
+    <p>This story perfectly mirrors business decision-making. Just like in racing, in business you must seize opportunities when you see them — but the key question is: are you aware of the risks you're taking?</p>
+
+    <blockquote>
+      The best leaders, like the best drivers, don't avoid risks — they take intelligent ones with full awareness of what's at stake.
+    </blockquote>
+
+    <p>What gaps are you considering in your business? How are you calculating the risk?</p>
+
+    <ul>
+      <li>Are you aware of the risks you're taking?</li>
+      <li>Could this decision cause unexpected damage to your company?</li>
+      <li>If things go wrong, what's the impact on your team, your health, your mental well-being?</li>
+      <li>Are you taking calculated risks or chasing opportunities blindly?</li>
+    </ul>
+
+    <!-- LinkedIn post linki — değiştirmek için href="..." kısmını güncelle -->
+    <!-- Bu kutuyu istemiyorsan tüm <div class="source-box">...</div> bloğunu sil -->
+    <div class="source-box">
+      <div>
+        <div class="source-box-label">Originally published on</div>
+        <div class="source-box-title">LinkedIn · Mustafa Tuncer</div>
+      </div>
+      <a href="https://www.linkedin.com/in/mustafa-tuncer-ba283715/" target="_blank">View Post →</a>
+    </div>
+
+  </div>
+
+  <div class="article-tags">
+    <span class="tag">Leadership</span>
+    <span class="tag">Risk</span>
+    <span class="tag">Decision Making</span>
+    <span class="tag">Strategy</span>
+  </div>
+
+  <div class="article-footer">
+    <div class="article-footer-author">
+      <strong>Mustafa Tuncer</strong>
+      Board Member, Gülermak · Warsaw
+    </div>
+    <a href="../index.html#articles" class="back-link">← All Articles</a>
+  </div>
+
+</main>
+
+</body>
+</html>
