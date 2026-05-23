@@ -239,8 +239,8 @@
     .detail-meta { flex-wrap:wrap; gap:8px; }
 
     /* Engagement */
-    #engagement-section > div:first-child { flex-wrap:wrap; gap:10px; }
-    .like-btn { flex:1; min-width:120px; justify-content:center; }
+    .detail-meta { flex-wrap:wrap; gap:8px; }
+    .like-btn { padding:7px 14px; font-size:11px; }
 
     /* About */
     .about-grid { grid-template-columns:1fr; gap:28px; padding-top:24px; }
@@ -415,6 +415,10 @@
       <span id="detailDate"></span>
       <span style="color:var(--border)">|</span>
       <span id="detailReadTime"></span>
+      <span style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+        <button class="like-btn" id="likeBtn" onclick="toggleLike()">&#9825; Like</button>
+        <span class="engagement-count" id="likeCount" style="font-size:13px;"></span>
+      </span>
     </div>
   </div>
   <div class="detail-body">
@@ -423,14 +427,8 @@
       <div class="detail-text" id="detailContent"></div>
       <div class="detail-tags" id="detailTags"></div>
 
-      <!-- ── ENGAGEMENT: LIKE + VIEWS + COMMENTS ── -->
-      <div id="engagement-section" style="margin-top:36px;padding-top:28px;border-top:2px solid var(--black);">
-        <!-- Like row -->
-        <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;">
-          <button class="like-btn" id="likeBtn" onclick="toggleLike()">&#9825; Like</button>
-          <span class="engagement-count" id="likeCount"></span>
-        </div>
-        <!-- Comments -->
+      <!-- ── COMMENTS ── -->
+      <div id="engagement-section" style="margin-top:36px;padding-top:28px;border-top:1px solid var(--border);">
         <div id="comments-section">
           <div class="comments-title">Comments</div>
           <div id="commentsList"></div>
@@ -1158,14 +1156,54 @@ function loadArticlesList() {
     .catch(() => { container.innerHTML = '<div style="color:#888;">Articles not found.</div>'; });
 }
 
+function artLikeId(file) {
+  return 'art_' + file.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+}
+
+function toggleArticleLike(id, btn) {
+  if (!db) return;
+  const key = 'et_liked_' + id;
+  const liked = localStorage.getItem(key) === '1';
+  const ref = db.collection('articleStats').doc(id);
+  if (liked) {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(-1) }, { merge: true }).catch(() => {});
+    localStorage.removeItem(key);
+    btn.classList.remove('liked');
+    btn.innerHTML = '&#9825; <span>' + (parseInt(btn.querySelector('span').textContent || 0) - 1) + '</span>';
+  } else {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(1) }, { merge: true }).catch(() => {});
+    localStorage.setItem(key, '1');
+    btn.classList.add('liked');
+    btn.innerHTML = '&#9829; <span>' + (parseInt(btn.querySelector('span').textContent || 0) + 1) + '</span>';
+  }
+}
+
+async function loadArticleCardLikes(filtered) {
+  if (!db) return;
+  for (const a of filtered) {
+    const id = artLikeId(a.file);
+    const btn = document.getElementById('art-like-' + id);
+    if (!btn) continue;
+    const liked = localStorage.getItem('et_liked_' + id) === '1';
+    db.collection('articleStats').doc(id).get().then(doc => {
+      const likes = doc.exists ? (doc.data().likes || 0) : 0;
+      const sp = btn.querySelector('span');
+      if (sp) sp.textContent = likes;
+      if (liked) { btn.classList.add('liked'); btn.firstChild.textContent = '\u2665 '; }
+    }).catch(() => {});
+  }
+}
+
 function renderArticlesList() {
   const container = document.getElementById('articles-list-container');
   if (!container) return;
   const filtered = activeArticleCategory
     ? allArticlesList.filter(a => a.category === activeArticleCategory)
     : allArticlesList;
-  container.innerHTML = filtered.map(a => `
-    <a href="${a.file}" style="display:flex;gap:1.2rem;padding:1.5rem 0;border-bottom:1px solid #e0ddd8;text-decoration:none;align-items:flex-start;">
+  container.innerHTML = filtered.map(a => {
+    const aid = artLikeId(a.file);
+    const liked = localStorage.getItem('et_liked_' + aid) === '1';
+    return `<a href="${a.file}" style="display:flex;gap:1.2rem;padding:1.5rem 0;border-bottom:1px solid #e0ddd8;text-decoration:none;align-items:flex-start;">
       ${a.image ? `<img src="${a.image}" alt="${a.title}"
         style="width:100px;height:70px;object-fit:cover;flex-shrink:0;filter:grayscale(15%);"
         onerror="this.style.display='none'">` : ''}
@@ -1173,10 +1211,18 @@ function renderArticlesList() {
         <div style="font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;margin-bottom:0.3rem;">${a.category} · ${a.readTime}</div>
         <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#0a0a0a;line-height:1.2;margin-bottom:0.4rem;">${a.title}</div>
         <div style="font-size:0.88rem;color:#444;line-height:1.6;margin-bottom:0.5rem;font-weight:300;">${a.excerpt || a.subtitle}</div>
-        <div style="font-family:'DM Mono',monospace;font-size:0.62rem;color:#aaa;letter-spacing:0.06em;">${a.date}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:0.4rem;">
+          <span style="font-family:'DM Mono',monospace;font-size:0.62rem;color:#aaa;letter-spacing:0.06em;">${a.date}</span>
+          <button id="art-like-${aid}" onclick="event.preventDefault();event.stopPropagation();toggleArticleLike('${aid}',this)"
+            class="like-btn ${liked ? 'liked' : ''}"
+            style="padding:5px 14px;font-size:11px;border-width:1.5px;">
+            ${liked ? '&#9829;' : '&#9825;'} <span>0</span>
+          </button>
+        </div>
       </div>
-    </a>
-  `).join('') || '<div style="color:#888;padding:1rem 0;">No articles in this category.</div>';
+    </a>`;
+  }).join('') || '<div style="color:#888;padding:1rem 0;">No articles in this category.</div>';
+  loadArticleCardLikes(filtered);
 }
 
 function renderArticlesCategoryBar() {
