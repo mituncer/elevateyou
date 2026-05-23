@@ -84,6 +84,7 @@
 
   /* DETAIL VIEW */
   #detail-view { display:none; max-width:1200px; margin:0 auto; padding:0 40px; }
+  #article-overlay { display:none; max-width:1200px; margin:0 auto; padding:0 40px; }
   .detail-back { display:inline-flex; align-items:center; gap:8px; font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--gray); cursor:pointer; background:none; border:none; border-bottom:1px solid var(--border); width:100%; text-align:left; padding:20px 0; transition:color 0.2s; }
   .detail-back:hover { color:var(--orange); }
   .detail-header { padding:32px 0 28px; border-bottom:3px solid var(--black); }
@@ -662,9 +663,9 @@
 
 <!-- ARTICLE OVERLAY — mirrors Posts detail-header style -->
 <div id="article-overlay" style="display:none;">
-  <div id="art-overlay-header">
+  <div id="art-overlay-header" style="border-bottom:3px solid var(--black);padding-bottom:4px;margin-bottom:0;">
       <button class="detail-back" onclick="closeArticleOverlay()">&#8592; Home</button>
-      <div class="detail-header" style="border-bottom:none;padding-bottom:20px;">
+      <div class="detail-header" style="border-bottom:none;padding-bottom:20px;padding-top:0;">
         <div class="detail-category" id="artOverlayCategory"></div>
         <div class="detail-title" id="artOverlayTitle" style="font-size:32px;max-width:680px;"></div>
         <div class="detail-meta">
