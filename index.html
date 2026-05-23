@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELEVATE THINKING</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --black:#0a0a0a; --white:#f8f6f1; --orange:#e8440a; --gray:#6b6b6b; --gray-light:#e0ddd6; --border:#d4d0c8; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--white); color:var(--black); font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.6; }
+
+  /* HEADER */
+  header { border-bottom:3px solid var(--black); padding:0 40px; }
+  .header-top { display:flex; align-items:center; justify-content:space-between; padding:18px 0 14px; border-bottom:1px solid var(--border); }
+  .site-date { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.08em; color:var(--gray); text-transform:uppercase; }
+  .site-title { font-family:'Playfair Display',serif; font-size:38px; font-weight:900; letter-spacing:-0.02em; text-align:center; line-height:1; cursor:pointer; }
+  .site-title span { color:var(--orange); }
+  .header-meta { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); letter-spacing:0.05em; text-align:right; }
+
+  /* NAV */
+  .site-nav { display:flex; align-items:center; border-bottom:1px solid var(--border); }
+  .nav-link { font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--gray); cursor:pointer; padding:10px 18px; border-right:1px solid var(--border); transition:color 0.2s; white-space:nowrap; }
+  .nav-link:hover { color:var(--black); }
+  .nav-link.active { color:var(--black); border-bottom:2px solid var(--orange); }
+  .nav-social { margin-left:auto; display:flex; align-items:center; }
+  .nav-social-link { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); text-decoration:none; padding:10px 18px; border-left:1px solid var(--border); transition:color 0.2s; letter-spacing:0.05em; }
+  .nav-social-link:hover { color:var(--orange); }
+
+  /* SEARCH */
+  .search-section { flex:1; padding:16px 0; display:flex; align-items:center; gap:12px; }
+  .search-wrapper { flex:1; position:relative; display:flex; align-items:center; }
+  .search-icon { position:absolute; left:14px; color:var(--gray); font-size:14px; pointer-events:none; }
+  .search-input { width:100%; padding:10px 14px 10px 38px; border:2px solid var(--black); background:var(--white); font-family:'DM Sans',sans-serif; font-size:14px; outline:none; transition:border-color 0.2s; }
+  .search-input:focus { border-color:var(--orange); }
+  .search-input::placeholder { color:var(--gray); }
+  .search-clear { position:absolute; right:12px; background:none; border:none; cursor:pointer; color:var(--gray); font-size:16px; display:none; }
+  .result-count { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); white-space:nowrap; }
+
+  /* TAG BAR */
+  .tag-bar { padding:12px 40px 16px; border-top:1px solid var(--border); display:flex; align-items:center; gap:8px; overflow-x:auto; scrollbar-width:none; }
+  .tag-bar::-webkit-scrollbar { display:none; }
+  .tag-label { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--gray); white-space:nowrap; margin-right:4px; }
+  .tag-pill { padding:4px 12px; border:1.5px solid var(--border); background:transparent; font-family:'DM Mono',monospace; font-size:11px; cursor:pointer; white-space:nowrap; transition:all 0.15s; color:var(--black); letter-spacing:0.03em; }
+  .tag-pill:hover { border-color:var(--orange); color:var(--orange); }
+  .tag-pill.active { background:var(--orange); border-color:var(--orange); color:white; }
+
+  /* MAIN */
+  .main { display:grid; grid-template-columns:1fr 280px; gap:0; max-width:1200px; margin:0 auto; padding:0 40px; }
+  .articles-col { border-right:1px solid var(--border); padding-right:40px; }
+
+  /* ARTICLE CARD */
+  .article-card { display:grid; grid-template-columns:200px 1fr; gap:24px; padding:28px 0; border-bottom:1px solid var(--border); cursor:pointer; animation:fadeIn 0.3s ease both; }
+  .article-card:hover .article-title { color:var(--orange); }
+  .article-img-placeholder { width:200px; height:140px; display:flex; align-items:center; justify-content:center; flex-shrink:0; position:relative; overflow:hidden; }
+  .article-img-placeholder::after { content:attr(data-letter); font-family:'Playfair Display',serif; font-size:72px; font-weight:900; color:rgba(255,255,255,0.18); position:absolute; bottom:-10px; right:5px; }
+  .article-body { display:flex; flex-direction:column; gap:8px; }
+  .article-category { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--orange); }
+  .article-title { font-family:'Playfair Display',serif; font-size:21px; font-weight:700; line-height:1.25; transition:color 0.2s; }
+  .article-excerpt { font-size:14px; color:var(--gray); line-height:1.6; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .article-footer { display:flex; align-items:center; gap:12px; margin-top:4px; flex-wrap:wrap; }
+  .article-date { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); }
+  .article-tags { display:flex; gap:6px; flex-wrap:wrap; }
+  .tag { padding:2px 8px; border:1px solid var(--border); font-family:'DM Mono',monospace; font-size:10px; color:var(--gray); cursor:pointer; transition:all 0.15s; }
+  .tag:hover { border-color:var(--orange); color:var(--orange); }
+  .read-more { display:inline-flex; align-items:center; gap:6px; font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--orange); margin-top:8px; }
+
+  /* SIDEBAR */
+  .sidebar { padding-left:32px; padding-top:24px; }
+  .sidebar-section { margin-bottom:32px; }
+  .sidebar-title { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--gray); border-bottom:2px solid var(--black); padding-bottom:8px; margin-bottom:16px; }
+  .sidebar-about p { font-size:13px; color:var(--gray); line-height:1.7; margin-bottom:10px; }
+  .sidebar-about strong { color:var(--black); font-weight:500; }
+  .recent-item { padding:12px 0; border-bottom:1px solid var(--border); cursor:pointer; }
+  .recent-item:hover .recent-title { color:var(--orange); }
+  .recent-title { font-family:'Playfair Display',serif; font-size:14px; font-weight:700; line-height:1.3; margin-bottom:4px; transition:color 0.2s; }
+  .recent-date { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray); }
+  .tag-cloud { display:flex; flex-wrap:wrap; gap:6px; }
+
+  /* NO RESULTS */
+  .no-results { padding:60px 0; text-align:center; display:none; }
+  .no-results-title { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; margin-bottom:8px; }
+  .no-results-sub { color:var(--gray); font-size:14px; }
+
+  /* DETAIL VIEW */
+  #detail-view { display:none; max-width:1200px; margin:0 auto; padding:0 40px; }
+  .detail-back { display:inline-flex; align-items:center; gap:8px; font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--gray); cursor:pointer; background:none; border:none; border-bottom:1px solid var(--border); width:100%; text-align:left; padding:20px 0; transition:color 0.2s; }
+  .detail-back:hover { color:var(--orange); }
+  .detail-header { padding:32px 0 28px; border-bottom:3px solid var(--black); }
+  .detail-category { font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.12em; color:var(--orange); margin-bottom:12px; }
+  .detail-title { font-family:'Playfair Display',serif; font-size:42px; font-weight:900; line-height:1.15; letter-spacing:-0.02em; margin-bottom:16px; max-width:780px; }
+  .detail-meta { display:flex; align-items:center; gap:16px; font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); }
+  .detail-body { display:grid; grid-template-columns:1fr 280px; gap:40px; padding-top:32px; }
+  .detail-hero-placeholder { width:100%; height:320px; margin-bottom:28px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+  .detail-hero-placeholder::after { content:attr(data-letter); font-family:'Playfair Display',serif; font-size:180px; font-weight:900; color:rgba(255,255,255,0.12); position:absolute; bottom:-20px; right:10px; }
+  .detail-text { font-size:16px; line-height:1.85; color:#1a1a1a; }
+  .detail-text p { margin-bottom:20px; }
+  .detail-text h2 { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; margin:32px 0 12px; }
+  .detail-text blockquote { border-left:3px solid var(--orange); padding:8px 0 8px 20px; margin:24px 0; font-family:'Playfair Display',serif; font-size:20px; font-style:italic; color:var(--gray); }
+  .detail-text ul, .detail-text ol { margin:0 0 20px 24px; }
+  .detail-text li { margin-bottom:6px; }
+  .detail-tags { margin-top:32px; padding-top:20px; border-top:1px solid var(--border); display:flex; gap:8px; flex-wrap:wrap; }
+
+  /* ABOUT VIEW */
+  #about-view { display:none; max-width:1200px; margin:0 auto; padding:0 40px; }
+  .about-grid { display:grid; grid-template-columns:1fr 280px; gap:40px; padding-top:40px; }
+  .about-label { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--orange); margin-bottom:16px; }
+  .about-name { font-family:'Playfair Display',serif; font-size:48px; font-weight:900; letter-spacing:-0.02em; line-height:1.1; margin-bottom:32px; border-bottom:3px solid var(--black); padding-bottom:24px; }
+  .about-text p { font-size:16px; line-height:1.85; color:#1a1a1a; margin-bottom:20px; }
+  .about-section-title { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--gray); margin-bottom:20px; }
+  .about-contact-link { display:inline-flex; align-items:center; gap:12px; text-decoration:none; color:var(--black); font-size:15px; transition:color 0.2s; margin-bottom:12px; }
+  .about-contact-link:hover { color:var(--orange); }
+  .about-contact-label { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--orange); min-width:80px; }
+  .about-project { display:block; padding:20px; border:1.5px solid var(--border); text-decoration:none; color:var(--black); transition:border-color 0.2s; margin-bottom:12px; }
+  .about-project:hover { border-color:var(--orange); }
+  .about-project-title { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; margin-bottom:6px; }
+  .about-project-desc { font-size:13px; color:var(--gray); }
+  .about-quote { border-left:3px solid var(--orange); padding-left:20px; margin-bottom:32px; }
+  .about-quote-text { font-family:'Playfair Display',serif; font-size:18px; font-style:italic; color:var(--gray); line-height:1.6; }
+
+  /* ADMIN */
+  .admin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; }
+  .admin-overlay.open { display:flex; }
+  .password-box { background:var(--white); border:3px solid var(--black); padding:48px; width:400px; text-align:center; }
+  .password-box h2 { font-family:'Playfair Display',serif; font-size:28px; font-weight:900; margin-bottom:6px; }
+  .password-box p { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:28px; }
+  .pw-input { width:100%; padding:12px 16px; border:2px solid var(--black); font-family:'DM Sans',sans-serif; font-size:15px; outline:none; margin-bottom:12px; background:var(--white); }
+  .pw-input:focus { border-color:var(--orange); }
+  .pw-error { font-family:'DM Mono',monospace; font-size:11px; color:var(--orange); margin-bottom:12px; display:none; }
+  .btn-primary { width:100%; padding:12px; background:var(--black); color:var(--white); border:none; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:background 0.2s; }
+  .btn-primary:hover { background:var(--orange); }
+  .btn-cancel { margin-top:12px; background:none; border:none; font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); cursor:pointer; letter-spacing:0.05em; text-decoration:underline; }
+  .admin-panel { background:var(--white); border:3px solid var(--black); width:700px; max-height:90vh; overflow-y:auto; }
+  .admin-header { display:flex; align-items:center; justify-content:space-between; padding:20px 28px; border-bottom:2px solid var(--black); background:var(--black); color:var(--white); }
+  .admin-header h2 { font-family:'Playfair Display',serif; font-size:22px; font-weight:900; }
+  .admin-header h2 span { color:var(--orange); }
+  .admin-close { background:none; border:1px solid rgba(255,255,255,0.3); color:var(--white); cursor:pointer; font-size:16px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; }
+  .admin-close:hover { border-color:var(--orange); color:var(--orange); }
+  .admin-body { padding:28px; }
+  .form-row { margin-bottom:20px; }
+  .form-row label { display:block; font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--gray); margin-bottom:6px; }
+  .form-row label span { color:var(--orange); }
+  .form-input { width:100%; padding:10px 14px; border:2px solid var(--border); background:var(--white); font-family:'DM Sans',sans-serif; font-size:14px; outline:none; transition:border-color 0.2s; }
+  .form-input:focus { border-color:var(--black); }
+  .form-textarea { width:100%; padding:12px 14px; border:2px solid var(--border); background:var(--white); font-family:'DM Sans',sans-serif; font-size:14px; outline:none; resize:vertical; min-height:120px; transition:border-color 0.2s; }
+  .form-textarea:focus { border-color:var(--black); }
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .form-hint { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray); margin-top:4px; }
+  .admin-footer { padding:20px 28px; border-top:1px solid var(--border); display:flex; gap:12px; align-items:center; }
+  .btn-save { flex:1; padding:12px; background:var(--orange); color:var(--white); border:none; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; }
+  .btn-save:hover { background:#c73a08; }
+  .btn-download { padding:12px 20px; background:var(--black); color:var(--white); border:none; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; }
+  .btn-download:hover { background:#333; }
+  .save-success { font-family:'DM Mono',monospace; font-size:11px; color:#16a34a; display:none; }
+  .color-options { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+  .color-opt { width:28px; height:28px; border:2px solid transparent; cursor:pointer; transition:border-color 0.15s; }
+  .color-opt.selected { border-color:var(--orange); }
+  .admin-articles { margin-top:24px; border-top:1px solid var(--border); padding-top:20px; }
+  .admin-articles-title { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--gray); margin-bottom:12px; }
+  .admin-article-row { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); }
+  .admin-article-name { font-size:13px; font-weight:500; }
+  .admin-article-date { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray); }
+  .btn-delete { background:none; border:1px solid var(--border); color:var(--gray); font-family:'DM Mono',monospace; font-size:10px; padding:3px 8px; cursor:pointer; }
+  .btn-delete:hover { border-color:#dc2626; color:#dc2626; }
+
+  /* LIKE BUTTON */
+  .like-btn { display:inline-flex; align-items:center; gap:8px; padding:9px 22px; border:2px solid var(--black); background:transparent; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; transition:all 0.2s; color:var(--black); }
+  .like-btn:hover { border-color:var(--orange); color:var(--orange); }
+  .like-btn.liked { background:var(--orange); border-color:var(--orange); color:#fff; }
+  .engagement-count { font-family:'DM Mono',monospace; font-size:12px; color:var(--gray); }
+  .engagement-views { font-family:'DM Mono',monospace; font-size:11px; color:var(--border); margin-left:auto; }
+
+  /* COMMENTS */
+  .comments-title { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--gray); border-bottom:2px solid var(--black); padding-bottom:8px; margin-bottom:20px; }
+  .comment-item { padding:16px 0; border-bottom:1px solid var(--border); }
+  .comment-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+  .comment-name { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; color:var(--black); }
+  .comment-date { font-family:'DM Mono',monospace; font-size:10px; color:var(--gray); }
+  .comment-text { font-size:14px; color:#1a1a1a; line-height:1.7; }
+  .comment-empty { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); padding:12px 0; }
+
+  /* ADMIN STATS */
+  .stats-total-box { background:#0a0a0a; color:#fff; padding:14px 18px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; }
+  .stats-total-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.55); }
+  .stats-total-number { font-family:'Playfair Display',serif; font-size:28px; font-weight:900; color:var(--orange); }
+  .stats-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); }
+  .stats-row-title { flex:1; font-size:13px; font-weight:500; color:var(--black); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding-right:12px; }
+  .stats-row-nums { display:flex; gap:18px; flex-shrink:0; }
+  .stats-num { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* JS-built image wrappers — default (desktop) */
+  .article-img-wrap { width:200px; height:140px; flex-shrink:0; position:relative; overflow:hidden; }
+  .detail-hero-img  { position:relative; width:100%; height:320px; margin-bottom:28px; overflow:hidden; }
+
+  @media (max-width:1024px) {
+    .hero-grid { grid-template-columns:1fr !important; }
+    .hero-right { display:none !important; }
+  }
+
+  /* ── 768 px: tablets & phones ─────────────────────────── */
+  @media (max-width:768px) {
+    body { overflow-x:hidden; }
+
+    /* Header */
+    header { padding:0 16px; }
+    .header-top { flex-direction:column; align-items:center; gap:4px; padding:12px 0 10px; }
+    .site-date { display:none; }
+    .header-meta { text-align:center; font-size:10px; }
+    .site-title { font-size:24px; }
+
+    /* Nav — horizontal scroll, hide social links (they're in About) */
+    .site-nav { overflow-x:auto; scrollbar-width:none; flex-wrap:nowrap; -webkit-overflow-scrolling:touch; }
+    .site-nav::-webkit-scrollbar { display:none; }
+    .nav-social { display:none; }
+
+    /* Tag / search */
+    .tag-bar { padding:10px 16px 12px; }
+    .search-section { padding:12px 0; }
+
+    /* Main layouts */
+    .main, #detail-view, #about-view { padding:0 16px; }
+    .main { grid-template-columns:1fr; }
+    .sidebar { display:none; }
+
+    /* Article cards — fully stacked */
+    .article-card { grid-template-columns:1fr; gap:0; padding:20px 0; }
+    .article-img-wrap { width:100% !important; height:160px !important; }
+    .article-img-placeholder { width:100%; height:160px; }
+    .article-img-wrap img { width:100%; height:100%; object-fit:cover; }
+
+    /* Detail view */
+    .detail-header { padding:20px 0 18px; }
+    .detail-title { font-size:26px; }
+    .detail-body { grid-template-columns:1fr; gap:20px; padding-top:20px; }
+    .detail-hero-img { height:200px !important; margin-bottom:18px !important; }
+    .detail-hero-placeholder { height:200px; }
+    .detail-meta { flex-wrap:wrap; gap:8px; }
+
+    /* Engagement */
+    .detail-meta { flex-wrap:wrap; gap:8px; }
+    .like-btn { padding:7px 14px; font-size:11px; }
+
+    /* About */
+    .about-grid { grid-template-columns:1fr; gap:28px; padding-top:24px; }
+    .about-name { font-size:30px; padding-bottom:18px; margin-bottom:20px; }
+
+    /* Apps grid */
+    #apps-view > div { padding:1.5rem 1rem 3rem !important; }
+
+    /* Articles view */
+    #articles-view { padding:0; }
+    #articles-view .main { padding:0 16px; }
+
+    /* Home hero */
+    #home-view > div:first-child { height:auto !important; min-height:300px; }
+    .hero-grid { padding:2rem 1rem !important; }
+
+    /* Article overlay */
+    #art-overlay-header > div { padding:0 16px; }
+    #artOverlayTitle { font-size:22px !important; }
+
+    /* Admin */
+    .admin-panel { width:95vw; max-height:95vh; }
+    .admin-body { padding:20px; }
+    .admin-header { padding:16px 20px; }
+    .admin-footer { padding:14px 20px; flex-wrap:wrap; }
+    .form-grid { grid-template-columns:1fr; }
+    .password-box { width:90vw; padding:28px 20px; }
+  }
+
+  /* ── 480 px: small phones ─────────────────────────────── */
+  @media (max-width:480px) {
+    .site-title { font-size:20px; }
+    .nav-link { padding:10px 12px; font-size:10px; }
+    .detail-title { font-size:22px; }
+    .detail-text { font-size:15px; }
+    .article-title { font-size:18px; }
+    .admin-body { padding:14px; }
+    .admin-footer { gap:8px; }
+    .btn-save, .btn-download { font-size:11px; padding:10px 12px; }
+    .stats-total-number { font-size:22px; }
+  }
+</style>
+<!-- ═══════════════════════════════════════════════════════════
+     FIREBASE SETUP (required for likes, comments & visitor stats)
+     1. Go to https://console.firebase.google.com
+     2. Create a project → Add a web app → Copy the firebaseConfig
+     3. Firestore Database → Create database (start in test mode)
+     4. Replace all YOUR_... values below with your actual config
+     ═══════════════════════════════════════════════════════════ -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="site-date" id="site-date"></div>
+    <div class="site-title" id="site-title-link">ELEVATE <span>THINKING</span></div>
+    <div class="header-meta">by Mustafa<br>Warsaw · Ankara</div>
+  </div>
+  <nav class="site-nav">
+    <span class="nav-link" id="nav-home">Home</span>
+    <span class="nav-link active" id="nav-posts">Posts</span>
+    <span class="nav-link" id="nav-articles">Articles</span>
+    <span class="nav-link" id="nav-apps">Apps</span>
+    <span class="nav-link" id="nav-about">About</span>
+    <div class="nav-social">
+      <a href="https://www.linkedin.com/in/mustafa-tuncer-ba283715/" target="_blank" class="nav-social-link">LinkedIn</a>
+      <a href="/cdn-cgi/l/email-protection#f5989c81809b969087b59298949c99db969a98" class="nav-social-link">Email</a>
+    </div>
+  </nav>
+  <div style="display:flex; align-items:center;">
+    <div class="search-section">
+      <div class="search-wrapper">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" id="searchInput" type="text" placeholder="Search articles, ideas or tags…" oninput="onSearch()">
+        <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+      </div>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+  </div>
+</header>
+
+<div class="tag-bar" id="tagBar">
+  <span class="tag-label">TAGS →</span>
+</div>
+
+<!-- LIST VIEW -->
+<!-- HOME VIEW -->
+<div id="home-view" style="display:none;min-height:100vh;display:none;flex-direction:column;">
+
+  <!-- HERO — resim + üstünde sol başlık, sağ listeler -->
+  <div style="position:relative;width:100%;height:560px;overflow:hidden;background:#0a0a0a;">
+    <img src="images/interchange.jpg"
+      alt="Interchange" style="width:100%;height:100%;object-fit:cover;filter:grayscale(30%) brightness(0.4);">
+    <div style="position:absolute;inset:0;display:grid;grid-template-columns:2fr 1fr;gap:2rem;padding:3rem 2.5rem;align-items:center;" class="hero-grid">
+
+      <!-- Sol: başlık -->
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:1.5rem;">Mustafa Tuncer</div>
+        <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4.5vw,4rem);font-weight:900;line-height:1.05;letter-spacing:-0.02em;color:#fff;margin-bottom:0;">40 Years.<br>15 Countries.<br><span style="color:#e8440a;">How Do We Lead Better?</span></h1>
+      </div>
+
+      <!-- Sağ: listeler -->
+      <div style="text-align:left;align-self:center;padding-left:2rem;border-left:1px solid rgba(255,255,255,0.2);" class="hero-right">
+
+        <div style="margin-bottom:1.5rem;">
+          <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:#e8440a;margin-bottom:0.8rem;">Latest Posts</div>
+          <div id="hero-posts-list"></div>
+        </div>
+
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:#e8440a;margin-bottom:0.8rem;">Latest Articles</div>
+          <div id="hero-articles-list"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <div style="background:#0a0a0a;padding:3rem 2.5rem;flex:1;">
+    <div style="max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;">
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;color:rgba(255,255,255,0.7);line-height:1.75;max-width:580px;font-weight:300;margin:0;">I build infrastructure that lasts a century. Then I think about the people who build it, lead it, and live near it. I write about leadership, behavioral economics, and the human side of large-scale projects.</p>
+      <div style="display:flex;gap:1rem;flex-shrink:0;">
+        <span id="home-posts-link" onclick="showList()" style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,0.3);padding:0.5rem 1.1rem;cursor:pointer;" onmouseover="this.style.borderColor='#e8440a'" onmouseout="this.style.borderColor='rgba(255,255,255,0.3)'">Posts →</span>
+        <span id="home-articles-link" onclick="showArticles()" style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:#fff;background:#e8440a;padding:0.5rem 1.1rem;cursor:pointer;">Articles →</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- dummy divs for JS compatibility -->
+  <div id="home-posts-list" style="display:none;"></div>
+  <div id="home-articles-list" style="display:none;"></div>
+
+</div>
+
+
+<div id="list-view">
+  <div class="main">
+    <div class="articles-col" id="articlesCol">
+      <div class="no-results" id="noResults">
+        <div class="no-results-title">No results found</div>
+        <div class="no-results-sub">Try a different search term or tag.</div>
+      </div>
+    </div>
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">About</div>
+        <div class="sidebar-about">
+          <p><strong>Mustafa Tuncer</strong></p>
+          <p>Thinker. Writer. Builder.</p>
+          <p>Writing on leadership, behavioral economics, and large-scale infrastructure.</p>
+          <p style="color:var(--gray);font-size:12px;">Warsaw · Ankara · Ayvalık</p>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Recent Posts</div>
+        <div id="recentList"></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">All Tags</div>
+        <div class="tag-cloud" id="sidebarTags"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- DETAIL VIEW -->
+<div id="detail-view">
+  <button class="detail-back" id="detail-back-btn">← Home</button>
+  <div class="detail-header">
+    <div class="detail-category" id="detailCategory"></div>
+    <div class="detail-title" id="detailTitle"></div>
+    <div class="detail-meta">
+      <span id="detailDate"></span>
+      <span style="color:var(--border)">|</span>
+      <span id="detailReadTime"></span>
+      <span style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+        <button class="like-btn" id="likeBtn" onclick="toggleLike()">&#9825; Like</button>
+        <span class="engagement-count" id="likeCount" style="font-size:13px;"></span>
+      </span>
+    </div>
+  </div>
+  <div class="detail-body">
+    <div>
+      <div id="detailHero"></div>
+      <div class="detail-text" id="detailContent"></div>
+      <div class="detail-tags" id="detailTags"></div>
+
+      <!-- ── COMMENTS ── -->
+      <div id="engagement-section" style="margin-top:36px;padding-top:28px;border-top:1px solid var(--border);">
+        <div id="comments-section">
+          <div class="comments-title">Comments</div>
+          <div id="commentsList"></div>
+          <form id="commentForm" onsubmit="submitComment(event)" style="margin-top:24px;">
+            <div class="form-row">
+              <label>Name</label>
+              <input class="form-input" id="commentName" type="text" placeholder="Your name" required maxlength="80">
+            </div>
+            <div class="form-row">
+              <textarea class="form-textarea" id="commentText" placeholder="Share your thoughts…" required maxlength="2000" style="min-height:90px;"></textarea>
+            </div>
+            <button type="submit" class="btn-save" style="width:auto;padding:10px 28px;" id="commentSubmitBtn">Post Comment</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">About</div>
+        <div class="sidebar-about">
+          <p><strong>Mustafa Tuncer</strong></p>
+          <p>Thinker. Writer. Builder.</p>
+          <p>Writing on leadership, behavioral economics, and large-scale infrastructure.</p>
+          <p style="color:var(--gray);font-size:12px;">Warsaw · Ankara · Ayvalık</p>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">More Articles</div>
+        <div id="detailRelated"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- APPS VIEW -->
+<div id="apps-view" style="display:none;">
+  <div style="max-width:900px;margin:0 auto;padding:2rem 1rem 4rem;">
+    <div style="font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;color:#888;text-transform:uppercase;margin-bottom:0.4rem;">Side Projects</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;margin:0 0 0.5rem;">Things I Built</h2>
+    <p style="color:#555;font-size:1rem;margin:0 0 2.5rem;max-width:560px;">Some problems are easier to solve by building something. These are mine — small, functional, and made to last.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;">
+
+      <!-- Polish Learning Tools -->
+      <div style="border:1.5px solid #e8440a;border-radius:4px;padding:1.5rem;display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;">Language Learning · Polish</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;">Polish Learning Tools</div>
+        <p style="font-size:0.88rem;color:#444;line-height:1.6;margin:0;">Learning Polish from scratch while living in Warsaw. I built three tools along the way — because the best way to learn a language is to build something that forces you to use it. Flashcards in English and Turkish (PolonceKart) for Polish B1 Level exam, a grammatical cases trainer (Lehçe Hal), and an exam that tests nouns, adjectives, and verbs in their correct forms (Polish Grammar Exam).</p>
+        <div style="margin-top:auto;padding-top:0.8rem;display:flex;gap:0.6rem;flex-wrap:wrap;">
+          <a href="https://mituncer.github.io/flashcard_en/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.08em;color:#fff;background:#e8440a;padding:0.4rem 0.8rem;text-decoration:none;border-radius:2px;">PolonceKart EN →</a>
+          <a href="https://mituncer.github.io/flashcard_tr/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.08em;color:#e8440a;border:1px solid #e8440a;padding:0.4rem 0.8rem;text-decoration:none;border-radius:2px;">PolonceKart TR →</a>
+          <a href="https://mituncer.github.io/LehceHal/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.08em;color:#e8440a;border:1px solid #e8440a;padding:0.4rem 0.8rem;text-decoration:none;border-radius:2px;">Lehçe Hal →</a>
+          <a href="https://mituncer.github.io/PolishTest/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.08em;color:#e8440a;border:1px solid #e8440a;padding:0.4rem 0.8rem;text-decoration:none;border-radius:2px;">Polish Grammar Exam →</a>
+        </div>
+      </div>
+
+      <!-- Random Quote & Market Hours -->
+      <div style="border:1.5px solid #e8e8e8;border-radius:4px;padding:1.5rem;display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;">Productivity · Browser Dashboard</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;">Random Quote &amp; Market Hours</div>
+        <p style="font-size:0.88rem;color:#444;line-height:1.6;margin:0;">A lightweight personal dashboard that keeps me focused during the trading day. It displays real-time open and close countdowns for NYSE and Borsa Istanbul (BIST), automatically adjusted to my local time. A personal notes section stores my own motivational reminders — words I've written to myself for the moments when focus starts to slip. Set it as your browser's homepage and let it greet you every morning.</p>
+        <div style="margin-top:auto;padding-top:0.8rem;">
+          <a href="https://mituncer.github.io/market-hours/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#fff;background:#e8440a;padding:0.4rem 0.9rem;text-decoration:none;border-radius:2px;">Open Dashboard →</a>
+        </div>
+      </div>
+
+      <!-- Idea Board -->
+      <div style="border:1.5px solid #e8e8e8;border-radius:4px;padding:1.5rem;display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;">Productivity · Idea Management</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;">Idea Board</div>
+        <p style="font-size:0.88rem;color:#444;line-height:1.6;margin:0;">Good ideas don't wait for the right moment — they arrive in the middle of a meeting, on a flight, or at 2am. Idea Board is a clean, distraction-free space to capture, organize, and revisit them. No accounts, no clutter. Just your ideas, always where you left them.</p>
+        <div style="margin-top:auto;padding-top:0.8rem;">
+          <a href="https://mituncer.github.io/fikir_panosu/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#fff;background:#e8440a;padding:0.4rem 0.9rem;text-decoration:none;border-radius:2px;">Open Idea Board →</a>
+        </div>
+      </div>
+
+      <!-- Seyyah -->
+      <div style="border:1.5px solid #e8e8e8;border-radius:4px;padding:1.5rem;display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;">Travel · Journey Log</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;">Seyyah</div>
+        <p style="font-size:0.88rem;color:#444;line-height:1.6;margin:0;">I am a traveller. A recent journey to Lisbon and Sintra forced me to create a traveller's app. Now I am travelling to Montreal and I used the structure of the Lisbon app for my future travel to Montreal. It captures photos, notes, and memories day by day — because the best trips deserve more than a camera roll.</p>
+        <div style="margin-top:auto;padding-top:0.8rem;">
+         <a href="https://mituncer.github.io/seyyah/lisboa.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#fff;background:#e8440a;padding:0.4rem 0.9rem;text-decoration:none;border-radius:2px;">Open Lisboa →</a>
+         <a href="https://mituncer.github.io/seyyah/" target="_blank" style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:#fff;background:#e8440a;padding:0.4rem 0.9rem;text-decoration:none;border-radius:2px;">Open Seyyah →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLES VIEW -->
+<div id="articles-view" style="display:none;">
+  <div class="main">
+    <div class="articles-col">
+      <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;color:#888;text-transform:uppercase;margin-bottom:0.5rem;">Long-form</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;letter-spacing:-0.02em;color:#0a0a0a;margin-bottom:0.5rem;">Articles</h2>
+      <p style="color:#888;font-size:0.9rem;margin-bottom:1.5rem;">In-depth pieces on leadership, behavioral economics, and infrastructure.</p>
+      <!-- Kategori filtre pills -->
+      <div id="articles-category-bar" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem;"></div>
+      <div id="articles-list-container">
+        <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:#888;">Loading...</div>
+      </div>
+    </div>
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">About</div>
+        <div class="sidebar-about">
+          <p><strong>Mustafa Tuncer</strong></p>
+          <p>Thinker. Writer. Builder.</p>
+          <p>Writing on leadership, behavioral economics, and large-scale infrastructure.</p>
+          <p style="color:var(--gray);font-size:12px;">Warsaw · Ankara · Ayvalık</p>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Categories</div>
+        <div id="articles-sidebar-cats"></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Recent Posts</div>
+        <div id="articles-sidebar-posts"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ABOUT VIEW -->
+<div id="about-view">
+  <div class="about-grid">
+    <div>
+      <div class="about-label">About</div>
+      <h1 class="about-name">Mustafa Tuncer</h1>
+      <div class="about-text">
+        <p>I am a Board Member at <strong><a href="https://www.gulermak.com" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Gülermak Heavy Industries Construction &amp; Contracting Co.</a></strong> — one of Turkey's leading infrastructure and construction companies with ~€1 billion annual revenue, operating across Turkey, Poland, the Balkans, the Middle East, India and the Philippines.</p>
+        <p>With over 25 years of experience in large-scale infrastructure and industrial projects, I have played a pivotal role in expanding Gülermak's operations across Central, Eastern, and Northern Europe. Previously serving as Executive Director for Europe, I led business development, project execution, strategic planning, and market expansion — building high-performing teams and evaluating strategic partnerships to drive sustainable growth. Throughout my career I have ensured the successful delivery of complex metro, rail, and industrial projects.</p>
+        <p>Leading international teams across 17 nationalities, I've never lost sight of the human side of the equation. Work, for me, is not just what I do — it's part of who I am. Serious, but not rigid.</p>
+        <p>I hold a Master of Science in Structural Engineering and a Bachelor's degree in Civil Engineering from <strong><a href="https://www.metu.edu.tr/tr" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Middle East Technical University (ODTÜ)</a></strong>.</p>
+        <p>I write about leadership, behavioral economics, mental models, and the human side of large-scale infrastructure. Occasionally also about language learning and whatever else catches my attention. Curious, grounded, and never done growing.</p>
+        <p>Based between <strong>Warsaw</strong> and <strong>Ankara</strong>. Also found in Skopje and Dubai.</p>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding-top:32px;margin-bottom:40px;margin-top:20px;">
+        <div class="about-section-title">Contact</div>
+        <div style="display:flex;flex-direction:column;">
+          <a href="https://www.linkedin.com/in/mustafa-tuncer-ba283715/" target="_blank" class="about-contact-link">
+            <span class="about-contact-label">LinkedIn</span>
+            linkedin.com/in/mustafa-tuncer-ba283715
+          </a>
+          <a href="/cdn-cgi/l/email-protection#0d60647978636e687f4d6a606c6461236e6260" class="about-contact-link">
+            <span class="about-contact-label">E-posta</span>
+            Email
+          </a>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding-top:32px;">
+        <div class="about-section-title">Projects</div>
+        <a href="https://mituncer.github.io/flashcard_en/" target="_blank" class="about-project">
+          <div class="about-project-title">PolonceKart</div>
+          <div class="about-project-desc">Polish-English flashcard web app — single HTML file, deployed on Netlify.</div>
+        </a>
+      </div>
+    </div>
+
+    <aside style="padding-top:8px;">
+      <div class="about-quote">
+        <div class="about-quote-text">"The hardest problems are not solved with more information, but with a better mental model."</div>
+      </div>
+      <div>
+        <div class="sidebar-title">Recent Posts</div>
+        <div id="aboutRecentList"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ADMIN OVERLAY -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="password-box" id="passwordBox">
+    <h2>ELEVATE <span style="color:var(--orange)">THINKING</span></h2>
+    <p>Admin Login</p>
+    <input class="pw-input" id="pwInput" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPassword()">
+    <div class="pw-error" id="pwError">Incorrect password. Try again.</div>
+    <button class="btn-primary" onclick="checkPassword()">Sign In</button><br>
+    <button class="btn-cancel" onclick="closeAdmin()">Cancel</button>
+  </div>
+
+  <div class="admin-panel" id="adminPanel" style="display:none;">
+    <div class="admin-header">
+      <h2>ELEVATE <span>ADMIN</span></h2>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="admin-body">
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;">SITE &amp; ARTICLE STATS
+        <button onclick="loadAdminStats()" style="margin-left:10px;background:none;border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.06em;padding:2px 8px;cursor:pointer;color:var(--gray);">↻ Refresh</button>
+      </div>
+      <div id="adminStats" style="margin-bottom:24px;padding-bottom:20px;border-bottom:2px solid var(--black);">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);">Loading stats…</div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">ADD NEW ARTICLE</div>
+      <div class="form-row"><label>Title <span>*</span></label><input class="form-input" id="f-title" type="text" placeholder="Yazının başlığı"></div>
+      <div class="form-row"><label>Category <span>*</span></label><input class="form-input" id="f-category" type="text" placeholder="e.g. Leadership, Strategy…"></div>
+      <div class="form-row"><label>Excerpt <span>*</span></label><textarea class="form-textarea" id="f-excerpt" style="min-height:80px;" placeholder="2-3 sentence summary shown on cards"></textarea></div>
+      <div class="form-row"><label>Content <span>*</span></label><textarea class="form-textarea" id="f-content" style="min-height:200px;" placeholder="Yazının tam içeriği. HTML kullanabilirsin: &lt;p&gt;, &lt;h2&gt;, &lt;blockquote&gt;"></textarea><div class="form-hint">HTML: &lt;p&gt; paragraf · &lt;h2&gt; başlık · &lt;blockquote&gt; alıntı · &lt;ul&gt;&lt;li&gt; liste</div></div>
+      <div class="form-row"><label>Tags <span>*</span></label><input class="form-input" id="f-tags" type="text" placeholder="Leadership, Strategy"><div class="form-hint">Comma separated</div></div>
+      <div class="form-grid">
+        <div class="form-row"><label>Date <span>*</span></label><input class="form-input" id="f-date" type="text"></div>
+        <div class="form-row"><label>Read Time</label><input class="form-input" id="f-readtime" type="text" placeholder="4 min read"></div>
+      </div>
+      <div class="form-row"><label>Card Image URL</label><input class="form-input" id="f-imgurl" type="text" placeholder="https://…"><div class="form-hint">Leave empty to show colored placeholder</div></div>
+      <div class="form-row"><label>Article Hero Image URL</label><input class="form-input" id="f-contentimgurl" type="text" placeholder="https://…"><div class="form-hint">Leave empty to use card image</div></div>
+      <div class="form-grid">
+        <div class="form-row"><label>Card Letter <span style="color:var(--gray)">(if no image)</span></label><input class="form-input" id="f-letter" type="text" placeholder="M" maxlength="2" style="font-family:'Playfair Display',serif;font-size:20px;"></div>
+        <div class="form-row"><label>Card Color <span style="color:var(--gray)">(if no image)</span></label><div class="color-options" id="colorOptions"></div></div>
+      </div>
+      <div class="admin-articles">
+        <div class="admin-articles-title">Existing Articles</div>
+        <div id="adminArticleList"></div>
+      </div>
+    </div>
+    <div class="admin-footer">
+      <button class="btn-save" onclick="saveArticle()">+ Add Article</button>
+      <button class="btn-download" onclick="downloadJSON()">⤓ Download JSON</button>
+      <span class="save-success" id="saveSuccess">✓ Added!</span>
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLE OVERLAY — mirrors Posts detail-header style -->
+<div id="article-overlay" style="display:none;">
+  <div id="art-overlay-header">
+      <button class="detail-back" onclick="closeArticleOverlay()">&#8592; Home</button>
+      <div class="detail-header" style="border-bottom:none;padding-bottom:20px;">
+        <div class="detail-category" id="artOverlayCategory"></div>
+        <div class="detail-title" id="artOverlayTitle" style="font-size:32px;max-width:680px;"></div>
+        <div class="detail-meta">
+          <span id="artOverlayDate"></span>
+          <span style="color:var(--border)">|</span>
+          <span id="artOverlayReadTime"></span>
+          <span style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+            <button class="like-btn" id="artOverlayLikeBtn" onclick="toggleArticleOverlayLike()">&#9825; Like</button>
+            <span class="engagement-count" id="artOverlayLikeCount" style="font-size:13px;"></span>
+          </span>
+        </div>
+      </div>
+  </div>
+  <iframe id="article-iframe" style="width:100%;height:75vh;border:none;display:block;" loading="lazy"></iframe>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const PASSWORD_HASH = 'f4e70404e765e45e4f048ed36a434b9cffb5d6e3465868915e1f4998fdd30fe7';
+
+// ════════════════════════════════════════════════════════
+//  FIREBASE CONFIG  — replace with your project values
+// ════════════════════════════════════════════════════════
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyBimGHLu_0AXNl1sPcS5dcJBffww-dpR_0",
+  authDomain:        "elevatethinking-de4a8.firebaseapp.com",
+  projectId:         "elevatethinking-de4a8",
+  storageBucket:     "elevatethinking-de4a8.firebasestorage.app",
+  messagingSenderId: "431444002777",
+  appId:             "1:431444002777:web:ce6bd7ef0193803d89bbc8"
+};
+
+let db = null;
+let currentArticleId = null;
+let currentArticleUnsubscribe = null;
+
+function isFirebaseConfigured() {
+  return FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY';
+}
+
+function initFirebase() {
+  if (!isFirebaseConfigured()) {
+    console.warn('[ElevateThinking] Firebase not configured — add your config to enable likes, comments and stats.');
+    return;
+  }
+  try {
+    if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+    db = firebase.firestore();
+    trackSiteVisit();
+  } catch(e) {
+    console.error('[ElevateThinking] Firebase init error:', e);
+  }
+}
+
+function trackSiteVisit() {
+  if (!db) return;
+  const key = 'et_site_visit_' + new Date().toDateString();
+  if (sessionStorage.getItem(key)) return;
+  sessionStorage.setItem(key, '1');
+  db.collection('siteStats').doc('global').set(
+    { totalVisits: firebase.firestore.FieldValue.increment(1) },
+    { merge: true }
+  ).catch(() => {});
+}
+
+function trackArticleView(articleId) {
+  if (!db) return;
+  const key = 'et_viewed_' + articleId;
+  if (sessionStorage.getItem(key)) return;
+  sessionStorage.setItem(key, '1');
+  db.collection('articleStats').doc(String(articleId)).set(
+    { views: firebase.firestore.FieldValue.increment(1) },
+    { merge: true }
+  ).catch(() => {});
+}
+
+function loadEngagement(articleId) {
+  if (currentArticleUnsubscribe) { currentArticleUnsubscribe(); currentArticleUnsubscribe = null; }
+  currentArticleId = articleId;
+  if (!db) {
+    const sec = document.getElementById('engagement-section');
+    if (sec) sec.style.display = 'none';
+    return;
+  }
+  currentArticleUnsubscribe = db.collection('articleStats').doc(String(articleId))
+    .onSnapshot(doc => {
+      const data = doc.exists ? doc.data() : {};
+      const likes = data.likes || 0;
+      const views = data.views || 0;
+      const lcEl = document.getElementById('likeCount');
+      if (lcEl) lcEl.textContent = likes + (likes === 1 ? ' like' : ' likes');
+      const liked = localStorage.getItem('et_liked_' + articleId) === '1';
+      const btn = document.getElementById('likeBtn');
+      if (btn) {
+        if (liked) { btn.classList.add('liked'); btn.innerHTML = '&#9829; Liked'; }
+        else        { btn.classList.remove('liked'); btn.innerHTML = '&#9825; Like'; }
+      }
+    }, () => {});
+  loadComments(articleId);
+}
+
+function loadComments(articleId) {
+  if (!db) return;
+  db.collection('comments').doc(String(articleId)).collection('items')
+    .orderBy('timestamp', 'asc')
+    .onSnapshot(snapshot => {
+      const list = document.getElementById('commentsList');
+      if (!list) return;
+      if (snapshot.empty) {
+        list.innerHTML = '<div class="comment-empty">No comments yet. Be the first to share your thoughts!</div>';
+        return;
+      }
+      list.innerHTML = snapshot.docs.map(doc => {
+        const c = doc.data();
+        return '<div class="comment-item">'
+          + '<div class="comment-header">'
+          + '<span class="comment-name">' + escapeHtml(c.name) + '</span>'
+          + '<span class="comment-date">' + (c.date || '') + '</span>'
+          + '</div>'
+          + '<div class="comment-text">' + escapeHtml(c.text) + '</div>'
+          + '</div>';
+      }).join('');
+    }, () => {});
+}
+
+function toggleLike() {
+  if (!db || currentArticleId === null) return;
+  const key = 'et_liked_' + currentArticleId;
+  const liked = localStorage.getItem(key) === '1';
+  const ref = db.collection('articleStats').doc(String(currentArticleId));
+  if (liked) {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(-1) }, { merge: true }).catch(() => {});
+    localStorage.removeItem(key);
+  } else {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(1) }, { merge: true }).catch(() => {});
+    localStorage.setItem(key, '1');
+  }
+}
+
+async function submitComment(event) {
+  event.preventDefault();
+  if (!db || currentArticleId === null) return;
+  const name = document.getElementById('commentName').value.trim();
+  const text = document.getElementById('commentText').value.trim();
+  if (!name || !text) return;
+  const btn = document.getElementById('commentSubmitBtn');
+  btn.disabled = true; btn.textContent = 'Posting…';
+  try {
+    await db.collection('comments').doc(String(currentArticleId)).collection('items').add({
+      name,
+      text,
+      date: new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }),
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('commentName').value = '';
+    document.getElementById('commentText').value = '';
+  } catch(e) {
+    alert('Could not post comment. Please try again.');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Post Comment';
+  }
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.appendChild(document.createTextNode(str || ''));
+  return d.innerHTML;
+}
+
+async function loadAdminStats() {
+  const el = document.getElementById('adminStats');
+  if (!el) return;
+  if (!db) {
+    el.innerHTML = '<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--gray);">Firebase not configured — add your config to enable stats.</div>';
+    return;
+  }
+  el.innerHTML = '<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--gray);">Loading…</div>';
+  try {
+    const [globalDoc, statsSnap] = await Promise.all([
+      db.collection('siteStats').doc('global').get(),
+      db.collection('articleStats').get()
+    ]);
+    const totalVisits = globalDoc.exists ? (globalDoc.data().totalVisits || 0) : 0;
+    const statsMap = {};
+    statsSnap.forEach(doc => { statsMap[doc.id] = doc.data(); });
+    const rows = articles.length === 0
+      ? '<div class="comment-empty">No articles yet.</div>'
+      : '<div style="font-family:\'DM Mono\',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;">Per Article</div>'
+        + [...articles].map(a => {
+            const s = statsMap[String(a.id)] || {};
+            return '<div class="stats-row">'
+              + '<div class="stats-row-title">' + a.title + '</div>'
+              + '<div class="stats-row-nums">'
+              + '<span class="stats-num">♥ ' + (s.likes || 0) + '</span>'
+              + '<span class="stats-num">👁 ' + (s.views || 0) + '</span>'
+              + '</div></div>';
+          }).join('');
+    el.innerHTML = '<div class="stats-total-box">'
+      + '<span class="stats-total-label">Total Site Visits</span>'
+      + '<span class="stats-total-number">' + totalVisits.toLocaleString() + '</span>'
+      + '</div>' + rows;
+  } catch(e) {
+    el.innerHTML = '<div style="color:#dc2626;font-family:\'DM Mono\',monospace;font-size:11px;">Error loading stats. Check Firestore rules.</div>';
+  }
+}
+const CARD_COLORS = ['#1a1a2e','#2d1b33','#0d2818','#2a1a0e','#1a2a1a','#0e1a2a','#1e1b18','#14281d'];
+
+let articles = [];
+let activeTag = null;
+let searchQuery = '';
+let selectedColor = CARD_COLORS[0];
+let adminUnlocked = false;
+
+async function loadArticles() {
+  try {
+    const res = await fetch('articles.json?t=' + Date.now());
+    if (!res.ok) throw new Error('not found');
+    articles = await res.json();
+  } catch(e) {
+    const saved = localStorage.getItem('et_articles_backup');
+    if (saved) articles = JSON.parse(saved);
+    else articles = [];
+  }
+  renderAll();
+  renderTagBar();
+  renderSidebar();
+  renderHomeRecent();
+  showHome();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const now = new Date();
+  document.getElementById('site-date').textContent =
+    now.toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  document.getElementById('f-date').value =
+    now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+  loadArticles();
+  buildColorPicker();
+  initFirebase();
+  document.getElementById('nav-home').addEventListener('click', showHome);
+  document.getElementById('nav-posts').addEventListener('click', showList);
+  document.getElementById('nav-articles').addEventListener('click', showArticles);
+  document.getElementById('nav-apps').addEventListener('click', showApps);
+  document.getElementById('nav-about').addEventListener('click', showAbout);
+  document.getElementById('home-posts-link').addEventListener('click', showList);
+  document.getElementById('home-articles-link').addEventListener('click', showArticles);
+  document.getElementById('site-title-link').addEventListener('click', showHome);
+  document.getElementById('detail-back-btn').addEventListener('click', showHome);
+  if (window.location.hash === '#admin') openAdmin();
+  window.addEventListener('hashchange', () => { if (window.location.hash === '#admin') openAdmin(); });
+});
+
+function getAllTags() {
+  const set = new Set();
+  articles.forEach(a => (a.tags||[]).forEach(t => set.add(t)));
+  return [...set].sort();
+}
+
+function renderTagBar() {
+  const bar = document.getElementById('tagBar');
+  bar.innerHTML = '<span class="tag-label">TAGS →</span>';
+  getAllTags().forEach(tag => {
+    const pill = document.createElement('button');
+    pill.className = 'tag-pill' + (activeTag === tag ? ' active' : '');
+    pill.textContent = tag;
+    pill.onclick = () => toggleTag(tag);
+    bar.appendChild(pill);
+  });
+}
+
+function renderAll() {
+  const col = document.getElementById('articlesCol');
+  col.querySelectorAll('.article-card').forEach(e => e.remove());
+  const filtered = getFiltered();
+  const noRes = document.getElementById('noResults');
+  if (filtered.length === 0) {
+    noRes.style.display = 'block';
+  } else {
+    noRes.style.display = 'none';
+    filtered.forEach((a, i) => col.insertBefore(buildCard(a, i), noRes));
+    loadAllPostCardLikes(filtered);
+  }
+  document.getElementById('resultCount').textContent =
+    (searchQuery || activeTag) ? `${filtered.length} / ${articles.length} results` : '';
+}
+
+function buildCard(a, index) {
+  const card = document.createElement('div');
+  card.className = 'article-card';
+  card.style.animationDelay = `${index * 0.06}s`;
+  card.onclick = () => openArticle(a);
+
+  const imgDiv = document.createElement('div');
+  if (a.imgUrl && a.imgUrl.trim() !== '') {
+    imgDiv.className = 'article-img-wrap';
+    const img = document.createElement('img');
+    img.src = a.imgUrl;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;filter:grayscale(15%);display:block;';
+    img.onerror = () => { imgDiv.style.background = a.imgColor||'#1a1a1a'; img.style.display='none'; };
+    imgDiv.appendChild(img);
+  } else {
+    imgDiv.className = 'article-img-placeholder';
+    imgDiv.setAttribute('data-letter', a.imgLetter||'·');
+    imgDiv.style.background = a.imgColor||'#1a1a1a';
+  }
+  const accent = document.createElement('div');
+  accent.style.cssText = 'position:absolute;top:0;left:0;width:3px;height:100%;background:var(--orange);z-index:1;';
+  imgDiv.appendChild(accent);
+
+  const body = document.createElement('div');
+  body.className = 'article-body';
+  const postLiked = localStorage.getItem('et_liked_' + a.id) === '1';
+  body.innerHTML = `
+    <div class="article-category">${a.category||''}</div>
+    <div class="article-title">${a.title}</div>
+    <div class="article-excerpt">${a.excerpt}</div>
+    <div class="article-footer">
+      <span class="article-date">${a.date}</span>
+      <div class="article-tags">${(a.tags||[]).map(t=>`<span class="tag" onclick="event.stopPropagation();filterByTag('${t}')">${t}</span>`).join('')}</div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+      <span class="read-more">${a.readTime||''} →</span>
+      <button id="post-like-${a.id}" onclick="event.stopPropagation();togglePostCardLike(${a.id},this)"
+        class="like-btn${postLiked ? ' liked' : ''}" style="padding:5px 14px;font-size:11px;border-width:1.5px;">
+        ${postLiked ? '&#9829;' : '&#9825;'} <span>—</span>
+      </button>
+    </div>`;
+  card.appendChild(imgDiv);
+  card.appendChild(body);
+  return card;
+}
+
+function renderSidebar() {
+  const recent = document.getElementById('recentList');
+  if (recent) recent.innerHTML = [...articles].slice(0,4).map(a=>`
+    <div class="recent-item" onclick="openArticle(articles.find(x=>x.id===${a.id}))">
+      <div class="recent-title">${a.title}</div>
+      <div class="recent-date">${a.date}</div>
+    </div>`).join('');
+  const cloud = document.getElementById('sidebarTags');
+  if (cloud) cloud.innerHTML = getAllTags().map(t=>`<span class="tag" onclick="filterByTag('${t}')">${t}</span>`).join('');
+}
+
+function renderAdminList() {
+  const list = document.getElementById('adminArticleList');
+  if (!list) return;
+  list.innerHTML = [...articles].reverse().map(a=>`
+    <div class="admin-article-row">
+      <div><div class="admin-article-name">${a.title}</div><div class="admin-article-date">${a.date}</div></div>
+      <button class="btn-delete" onclick="deleteArticle(${a.id})">Delete</button>
+    </div>`).join('');
+}
+
+function getFiltered() {
+  return articles.filter(a => {
+    const q = searchQuery.toLowerCase();
+    const matchesSearch = !q || [a.title,a.excerpt,a.category,...(a.tags||[])].some(s=>s&&s.toLowerCase().includes(q));
+    const matchesTag = !activeTag || (a.tags||[]).includes(activeTag);
+    return matchesSearch && matchesTag;
+  });
+}
+
+function onSearch() {
+  searchQuery = document.getElementById('searchInput').value;
+  document.getElementById('searchClear').style.display = searchQuery ? 'block' : 'none';
+  renderAll();
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  searchQuery = '';
+  document.getElementById('searchClear').style.display = 'none';
+  renderAll();
+}
+
+function toggleTag(tag) {
+  activeTag = activeTag === tag ? null : tag;
+  renderTagBar();
+  renderAll();
+}
+
+function filterByTag(tag) {
+  activeTag = tag;
+  showList();
+  renderTagBar();
+  renderAll();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function openArticle(a) {
+  document.getElementById('detailCategory').textContent = a.category||'';
+  document.getElementById('detailTitle').textContent = a.title;
+  document.getElementById('detailDate').textContent = a.date;
+  document.getElementById('detailReadTime').textContent = a.readTime||'';
+  const heroImg = (a.contentImgUrl&&a.contentImgUrl.trim()) || (a.imgUrl&&a.imgUrl.trim()) || '';
+  if (heroImg) {
+    document.getElementById('detailHero').innerHTML = `<div class="detail-hero-img"><img src="${heroImg}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(10%);" onerror="this.parentElement.style.background='${a.imgColor||'#1a1a1a'}'"><div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--orange);"></div></div>`;
+  } else {
+    document.getElementById('detailHero').innerHTML = `<div class="detail-hero-placeholder" data-letter="${a.imgLetter||'·'}" style="background:${a.imgColor||'#1a1a1a'}"><div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--orange);"></div></div>`;
+  }
+  document.getElementById('detailContent').innerHTML = a.content||'';
+  document.getElementById('detailTags').innerHTML = (a.tags||[]).map(t=>`<span class="tag" onclick="filterByTag('${t}')">${t}</span>`).join('');
+  const related = articles.filter(x=>x.id!==a.id).slice(0,3);
+  document.getElementById('detailRelated').innerHTML = related.map(r=>`
+    <div class="recent-item" onclick="openArticle(articles.find(x=>x.id===${r.id}))">
+      <div class="recent-title">${r.title}</div><div class="recent-date">${r.date}</div>
+    </div>`).join('');
+  trackArticleView(a.id);
+  loadEngagement(a.id);
+  document.getElementById('list-view').style.display = 'none';
+  document.getElementById('detail-view').style.display = 'block';
+  document.getElementById('about-view').style.display = 'none';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function hideAllViews() {
+  ['home-view','list-view','detail-view','about-view','apps-view','articles-view','article-overlay'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  ['nav-home','nav-posts','nav-articles','nav-apps','nav-about'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  const tagBar = document.getElementById('tagBar');
+  if (tagBar) tagBar.style.display = 'none';
+}
+
+function showHome() {
+  hideAllViews();
+  document.getElementById('home-view').style.display = 'flex';
+  document.getElementById('nav-home').classList.add('active');
+  renderHomeRecent();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function showList() {
+  hideAllViews();
+  document.getElementById('list-view').style.display = 'block';
+  document.getElementById('nav-posts').classList.add('active');
+  const tagBar = document.getElementById('tagBar');
+  if (tagBar) tagBar.style.display = 'flex';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function showArticles() {
+  hideAllViews();
+  document.getElementById('articles-view').style.display = 'block';
+  document.getElementById('nav-articles').classList.add('active');
+  loadArticlesList();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function renderHomeRecent() {
+  const heroPostsEl = document.getElementById('hero-posts-list');
+  if (heroPostsEl) {
+    heroPostsEl.innerHTML = [...articles].slice(0,3).map(a => `
+      <div onclick="openArticle(articles.find(x=>x.id===${a.id}))" style="margin-bottom:0.8rem;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:0.7rem;">
+        <div style="font-family:'Playfair Display',serif;font-size:0.92rem;font-weight:700;color:#fff;line-height:1.3;margin-bottom:0.2rem;">${a.title}</div>
+        <div style="font-size:0.78rem;color:rgba(255,255,255,0.5);font-weight:300;">${a.excerpt.split(' ').slice(0,12).join(' ')}...</div>
+      </div>
+    `).join('');
+  }
+  const heroArticlesEl = document.getElementById('hero-articles-list');
+  if (heroArticlesEl) {
+    fetch('articles-list.json?t=' + Date.now())
+      .then(r => r.json())
+      .then(list => {
+        heroArticlesEl.innerHTML = list.slice(0,2).map(a => `
+          <a href="${a.file}" style="display:block;margin-bottom:0.8rem;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:0.7rem;">
+            <div style="font-family:'Playfair Display',serif;font-size:0.92rem;font-weight:700;color:#fff;line-height:1.3;margin-bottom:0.2rem;">${a.title}</div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.5);font-weight:300;">${a.subtitle}</div>
+          </a>
+        `).join('');
+      }).catch(() => {});
+  }
+
+  // Son 3 post
+  const postsEl = document.getElementById('home-posts-list');
+  if (postsEl) {
+    const recent = [...articles].slice(0,3);
+    postsEl.innerHTML = recent.map(a => `
+      <div onclick="openArticle(articles.find(x=>x.id===${a.id}))" style="padding:1rem 0;border-bottom:1px solid #e0ddd8;cursor:pointer;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;color:#e8440a;margin-bottom:0.3rem;text-transform:uppercase;">${a.date}</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#0a0a0a;margin-bottom:0.3rem;line-height:1.3;">${a.title}</div>
+        <div style="font-size:0.85rem;color:#666;font-weight:300;line-height:1.5;">${a.excerpt.split(' ').slice(0,18).join(' ')}...</div>
+      </div>
+    `).join('');
+  }
+  // Son 2 article
+  const articlesEl = document.getElementById('home-articles-list');
+  if (articlesEl) {
+    fetch('articles-list.json?t=' + Date.now())
+      .then(r => r.json())
+      .then(list => {
+        articlesEl.innerHTML = list.slice(0,3).map(a => `
+          <a href="${a.file}" style="display:block;padding:1rem 0;border-bottom:1px solid #e0ddd8;text-decoration:none;">
+            <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;color:#e8440a;margin-bottom:0.3rem;text-transform:uppercase;">${a.date}</div>
+            <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#0a0a0a;margin-bottom:0.3rem;line-height:1.3;">${a.title}</div>
+            <div style="font-size:0.85rem;color:#666;font-weight:300;line-height:1.5;">${a.excerpt.split(' ').slice(0,18).join(' ')}...</div>
+          </a>
+        `).join('');
+      })
+      .catch(() => { articlesEl.innerHTML = '<div style="color:#888;font-size:0.85rem;">No articles yet.</div>'; });
+  }
+}
+
+let allArticlesList = [];
+let activeArticleCategory = null;
+
+function loadArticlesList() {
+  const container = document.getElementById('articles-list-container');
+  if (!container) return;
+  if (allArticlesList.length > 0) { renderArticlesList(); return; }
+  fetch('articles-list.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(list => {
+      allArticlesList = list;
+      renderArticlesList();
+      renderArticlesCategoryBar();
+      renderArticlesSidebar();
+    })
+    .catch(() => { container.innerHTML = '<div style="color:#888;">Articles not found.</div>'; });
+}
+
+function artLikeId(file) {
+  return 'art_' + file.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+}
+
+function toggleArticleLike(id, btn) {
+  if (!db) return;
+  const key = 'et_liked_' + id;
+  const liked = localStorage.getItem(key) === '1';
+  const ref = db.collection('articleStats').doc(id);
+  if (liked) {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(-1) }, { merge: true }).catch(() => {});
+    localStorage.removeItem(key);
+    btn.classList.remove('liked');
+    btn.innerHTML = '&#9825; <span>' + (parseInt(btn.querySelector('span').textContent || 0) - 1) + '</span>';
+  } else {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(1) }, { merge: true }).catch(() => {});
+    localStorage.setItem(key, '1');
+    btn.classList.add('liked');
+    btn.innerHTML = '&#9829; <span>' + (parseInt(btn.querySelector('span').textContent || 0) + 1) + '</span>';
+  }
+}
+
+async function loadArticleCardLikes(filtered) {
+  if (!db) return;
+  for (const a of filtered) {
+    const id = artLikeId(a.file);
+    const btn = document.getElementById('art-like-' + id);
+    if (!btn) continue;
+    const liked = localStorage.getItem('et_liked_' + id) === '1';
+    db.collection('articleStats').doc(id).get().then(doc => {
+      const likes = doc.exists ? (doc.data().likes || 0) : 0;
+      const sp = btn.querySelector('span');
+      if (sp) sp.textContent = likes;
+      if (liked) { btn.classList.add('liked'); btn.firstChild.textContent = '\u2665 '; }
+    }).catch(() => {});
+  }
+}
+
+function renderArticlesList() {
+  const container = document.getElementById('articles-list-container');
+  if (!container) return;
+  const filtered = activeArticleCategory
+    ? allArticlesList.filter(a => a.category === activeArticleCategory)
+    : allArticlesList;
+  container.innerHTML = filtered.map(a => {
+    const aid = artLikeId(a.file);
+    articleDataMap[aid] = { title: a.title, category: a.category || '', date: a.date || '', readTime: a.readTime || '' };
+    const liked = localStorage.getItem('et_liked_' + aid) === '1';
+    return `<a href="${a.file}" onclick="event.preventDefault();openArticleDetail('${a.file}','${aid}')" style="display:flex;gap:1.2rem;padding:1.5rem 0;border-bottom:1px solid #e0ddd8;text-decoration:none;align-items:flex-start;cursor:pointer;">
+      ${a.image ? `<img src="${a.image}" alt="${a.title}"
+        style="width:100px;height:70px;object-fit:cover;flex-shrink:0;filter:grayscale(15%);"
+        onerror="this.style.display='none'">` : ''}
+      <div style="flex:1;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;color:#e8440a;text-transform:uppercase;margin-bottom:0.3rem;">${a.category} · ${a.readTime}</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#0a0a0a;line-height:1.2;margin-bottom:0.4rem;">${a.title}</div>
+        <div style="font-size:0.88rem;color:#444;line-height:1.6;margin-bottom:0.5rem;font-weight:300;">${a.excerpt || a.subtitle}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:0.4rem;">
+          <span style="font-family:'DM Mono',monospace;font-size:0.62rem;color:#aaa;letter-spacing:0.06em;">${a.date}</span>
+          <button id="art-like-${aid}" onclick="event.preventDefault();event.stopPropagation();toggleArticleLike('${aid}',this)"
+            class="like-btn ${liked ? 'liked' : ''}"
+            style="padding:5px 14px;font-size:11px;border-width:1.5px;">
+            ${liked ? '&#9829;' : '&#9825;'} <span>0</span>
+          </button>
+        </div>
+      </div>
+    </a>`;
+  }).join('') || '<div style="color:#888;padding:1rem 0;">No articles in this category.</div>';
+  loadArticleCardLikes(filtered);
+}
+
+function renderArticlesCategoryBar() {
+  const bar = document.getElementById('articles-category-bar');
+  if (!bar) return;
+  const cats = [...new Set(allArticlesList.map(a => a.category))];
+  bar.innerHTML = `<button onclick="filterArticles(null)" style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid ${activeArticleCategory === null ? '#0a0a0a' : '#e0ddd8'};background:${activeArticleCategory === null ? '#0a0a0a' : 'transparent'};color:${activeArticleCategory === null ? '#fff' : '#888'};padding:0.25rem 0.7rem;cursor:pointer;">All</button>` +
+    cats.map(c => `<button onclick="filterArticles('${c}')" style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid ${activeArticleCategory === c ? '#e8440a' : '#e0ddd8'};background:${activeArticleCategory === c ? '#e8440a' : 'transparent'};color:${activeArticleCategory === c ? '#fff' : '#888'};padding:0.25rem 0.7rem;cursor:pointer;">${c}</button>`).join('');
+}
+
+function filterArticles(cat) {
+  activeArticleCategory = cat;
+  renderArticlesList();
+  renderArticlesCategoryBar();
+}
+
+function renderArticlesSidebar() {
+  // Categories
+  const catsEl = document.getElementById('articles-sidebar-cats');
+  if (catsEl) {
+    const cats = [...new Set(allArticlesList.map(a => a.category))];
+    catsEl.innerHTML = cats.map(c => `
+      <div onclick="filterArticles('${c}')" style="font-family:'DM Mono',monospace;font-size:0.72rem;color:#555;padding:0.3rem 0;border-bottom:1px solid #f0ede8;cursor:pointer;letter-spacing:0.04em;"
+        onmouseover="this.style.color='#e8440a'" onmouseout="this.style.color='#555'">${c}</div>
+    `).join('');
+  }
+  // Recent posts from articles
+  const postsEl = document.getElementById('articles-sidebar-posts');
+  if (postsEl) {
+    postsEl.innerHTML = [...articles].slice(0,4).map(a => `
+      <div onclick="showList();setTimeout(()=>openArticle(articles.find(x=>x.id===${a.id})),100)" class="recent-item" style="cursor:pointer;">
+        <div class="recent-title">${a.title}</div>
+        <div class="recent-date">${a.date}</div>
+      </div>
+    `).join('');
+  }
+}
+
+
+function showApps() {
+  hideAllViews();
+  document.getElementById('apps-view').style.display = 'block';
+  document.getElementById('nav-apps').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showAbout() {
+  hideAllViews();
+  document.getElementById('about-view').style.display = 'block';
+  document.getElementById('nav-about').classList.add('active');
+  document.getElementById('nav-articles').classList.remove('active');
+  const el = document.getElementById('aboutRecentList');
+  if (el) el.innerHTML = [...articles].slice(0,5).map(a=>`
+    <div class="recent-item" onclick="openArticle(articles.find(x=>x.id===${a.id}))">
+      <div class="recent-title">${a.title}</div><div class="recent-date">${a.date}</div>
+    </div>`).join('');
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function openAdmin() {
+  document.getElementById('adminOverlay').classList.add('open');
+  if (adminUnlocked) { showPanel(); }
+  else {
+    document.getElementById('passwordBox').style.display = 'block';
+    document.getElementById('adminPanel').style.display = 'none';
+    setTimeout(() => document.getElementById('pwInput').focus(), 100);
+  }
+}
+
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwError').style.display = 'none';
+  history.replaceState(null,'',window.location.pathname);
+}
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  return Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function checkPassword() {
+  const pw = document.getElementById('pwInput').value;
+  const hash = await sha256(pw);
+  if (hash === PASSWORD_HASH) {
+    adminUnlocked = true;
+    document.getElementById('pwError').style.display = 'none';
+    showPanel();
+  } else {
+    document.getElementById('pwError').style.display = 'block';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+  }
+}
+
+function showPanel() {
+  document.getElementById('passwordBox').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  renderAdminList();
+  loadAdminStats();
+}
+
+function saveArticle() {
+  const title = document.getElementById('f-title').value.trim();
+  const category = document.getElementById('f-category').value.trim();
+  const excerpt = document.getElementById('f-excerpt').value.trim();
+  const content = document.getElementById('f-content').value.trim();
+  const tagsRaw = document.getElementById('f-tags').value.trim();
+  const date = document.getElementById('f-date').value.trim();
+  const readTime = document.getElementById('f-readtime').value.trim();
+  const letter = document.getElementById('f-letter').value.trim() || title[0] || '·';
+  const imgUrl = document.getElementById('f-imgurl').value.trim();
+  const contentImgUrl = document.getElementById('f-contentimgurl').value.trim();
+  if (!title||!category||!excerpt||!content||!tagsRaw||!date) { alert('Please fill in all required (*) fields.'); return; }
+  const tags = tagsRaw.split(',').map(t=>t.trim()).filter(Boolean);
+  const maxId = articles.reduce((m,a)=>Math.max(m,a.id||0),0);
+  const newArticle = { id:maxId+1, category, title, excerpt, content, tags, date, readTime:readTime||'3 min read', imgColor:selectedColor, imgLetter:letter.toUpperCase(), imgUrl, contentImgUrl };
+  articles.unshift(newArticle);
+  localStorage.setItem('et_articles_backup', JSON.stringify(articles));
+  ['f-title','f-category','f-excerpt','f-content','f-tags','f-readtime','f-letter','f-imgurl','f-contentimgurl'].forEach(id => { document.getElementById(id).value=''; });
+  document.getElementById('f-date').value = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  renderAll(); renderTagBar(); renderSidebar(); renderAdminList();
+  const s = document.getElementById('saveSuccess');
+  s.style.display = 'inline';
+  setTimeout(()=>s.style.display='none', 2500);
+}
+
+function deleteArticle(id) {
+  if (!confirm('Are you sure you want to delete this article?')) return;
+  articles = articles.filter(a=>a.id!==id);
+  localStorage.setItem('et_articles_backup', JSON.stringify(articles));
+  renderAll(); renderTagBar(); renderSidebar(); renderAdminList();
+}
+
+function downloadJSON() {
+  const blob = new Blob([JSON.stringify(articles,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'articles.json'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function buildColorPicker() {
+  const container = document.getElementById('colorOptions');
+  CARD_COLORS.forEach(color => {
+    const div = document.createElement('div');
+    div.className = 'color-opt';
+    div.style.background = color;
+    div.style.width = '28px';
+    div.style.height = '28px';
+    div.style.borderRadius = '50%';
+    div.style.cursor = 'pointer';
+    div.style.border = '2px solid transparent';
+    div.onclick = () => {
+      selectedColor = color;
+      container.querySelectorAll('.color-opt').forEach(d => d.classList.remove('selected'));
+      div.classList.add('selected');
+    };
+    container.appendChild(div);
+  });
+}
+
+// ── Post card likes ────────────────────────────────────────────
+function loadAllPostCardLikes(filtered) {
+  if (!db) {
+    filtered.forEach(a => {
+      const btn = document.getElementById('post-like-' + a.id);
+      if (btn) { const sp = btn.querySelector('span'); if (sp) sp.textContent = ''; }
+    });
+    return;
+  }
+  filtered.forEach(a => {
+    db.collection('articleStats').doc(String(a.id)).get().then(doc => {
+      const likes = doc.exists ? (doc.data().likes || 0) : 0;
+      const btn = document.getElementById('post-like-' + a.id);
+      if (!btn) return;
+      const sp = btn.querySelector('span');
+      if (sp) sp.textContent = likes || '';
+    }).catch(() => {});
+  });
+}
+
+function togglePostCardLike(articleId, btn) {
+  if (!db) return;
+  const key = 'et_liked_' + articleId;
+  const liked = localStorage.getItem(key) === '1';
+  const ref = db.collection('articleStats').doc(String(articleId));
+  const sp = btn.querySelector('span');
+  const count = parseInt(sp ? sp.textContent : 0) || 0;
+  if (liked) {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(-1) }, { merge: true }).catch(() => {});
+    localStorage.removeItem(key);
+    btn.classList.remove('liked');
+    btn.innerHTML = '&#9825; <span>' + Math.max(0, count - 1) + '</span>';
+    if (currentArticleId == articleId) {
+      const db2 = document.getElementById('likeBtn');
+      if (db2) { db2.classList.remove('liked'); db2.innerHTML = '&#9825; Like'; }
+    }
+  } else {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(1) }, { merge: true }).catch(() => {});
+    localStorage.setItem(key, '1');
+    btn.classList.add('liked');
+    btn.innerHTML = '&#9829; <span>' + (count + 1) + '</span>';
+    if (currentArticleId == articleId) {
+      const db2 = document.getElementById('likeBtn');
+      if (db2) { db2.classList.add('liked'); db2.innerHTML = '&#9829; Liked'; }
+    }
+  }
+}
+
+// ── Article overlay (iframe + like bar) ────────────────────────
+let currentOverlayArticleId = null;
+const articleDataMap = {};
+let overlayLikeUnsubscribe = null;
+
+function openArticleDetail(file, artId) {
+  currentOverlayArticleId = artId;
+  // Populate header from stored metadata
+  const meta = articleDataMap[artId] || {};
+  document.getElementById('artOverlayCategory').textContent  = meta.category || '';
+  document.getElementById('artOverlayTitle').textContent     = meta.title    || '';
+  document.getElementById('artOverlayDate').textContent      = meta.date     || '';
+  document.getElementById('artOverlayReadTime').textContent  = meta.readTime || '';
+  // Like button state
+  const liked = localStorage.getItem('et_liked_' + artId) === '1';
+  const btn = document.getElementById('artOverlayLikeBtn');
+  btn.innerHTML = liked ? '&#9829; Liked' : '&#9825; Like';
+  liked ? btn.classList.add('liked') : btn.classList.remove('liked');
+  document.getElementById('artOverlayLikeCount').textContent = '';
+  // Load iframe and hide article own header via CSS injection
+  const iframe = document.getElementById('article-iframe');
+  iframe.onload = function() {
+    try {
+      const doc = this.contentDocument || this.contentWindow.document;
+      const s = doc.createElement('style');
+      s.textContent = 'header,nav,.site-nav,.header-top,.detail-back,.tag-bar{display:none!important}body{padding-top:0!important}';
+      doc.head.appendChild(s);
+    } catch(e) {}
+  };
+  iframe.src = file;
+  // Show article view (same as other views)
+  hideAllViews();
+  document.getElementById('article-overlay').style.display = 'block';
+  window.scrollTo({ top:0, behavior:'smooth' });
+  // Real-time like count
+  if (overlayLikeUnsubscribe) { overlayLikeUnsubscribe(); overlayLikeUnsubscribe = null; }
+  if (db) {
+    overlayLikeUnsubscribe = db.collection('articleStats').doc(artId).onSnapshot(doc => {
+      const likes = doc.exists ? (doc.data().likes || 0) : 0;
+      const el = document.getElementById('artOverlayLikeCount');
+      if (el) el.textContent = likes ? likes + (likes === 1 ? ' like' : ' likes') : '';
+    }, () => {});
+  }
+}
+
+function closeArticleOverlay() {
+  document.getElementById('article-iframe').src = '';
+  if (overlayLikeUnsubscribe) { overlayLikeUnsubscribe(); overlayLikeUnsubscribe = null; }
+  currentOverlayArticleId = null;
+  showHome();
+}
+
+function toggleArticleOverlayLike() {
+  if (!db || !currentOverlayArticleId) return;
+  const id = currentOverlayArticleId;
+  const key = 'et_liked_' + id;
+  const liked = localStorage.getItem(key) === '1';
+  const ref = db.collection('articleStats').doc(id);
+  const btn = document.getElementById('artOverlayLikeBtn');
+  if (liked) {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(-1) }, { merge: true }).catch(() => {});
+    localStorage.removeItem(key);
+    btn.classList.remove('liked'); btn.innerHTML = '&#9825; Like';
+    const cardBtn = document.getElementById('art-like-' + id);
+    if (cardBtn) { const sp = cardBtn.querySelector('span'); cardBtn.classList.remove('liked'); cardBtn.innerHTML = '&#9825; <span>' + Math.max(0, parseInt(sp ? sp.textContent : 0) - 1) + '</span>'; }
+  } else {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(1) }, { merge: true }).catch(() => {});
+    localStorage.setItem(key, '1');
+    btn.classList.add('liked'); btn.innerHTML = '&#9829; Liked';
+    const cardBtn = document.getElementById('art-like-' + id);
+    if (cardBtn) { const sp = cardBtn.querySelector('span'); cardBtn.classList.add('liked'); cardBtn.innerHTML = '&#9829; <span>' + ((parseInt(sp ? sp.textContent : 0) || 0) + 1) + '</span>'; }
+  }
+}
+</script>
+</body>
+</html>
