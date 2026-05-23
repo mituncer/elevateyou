@@ -247,7 +247,7 @@
     .about-name { font-size:30px; padding-bottom:18px; margin-bottom:20px; }
 
     /* Apps grid */
-    #apps-view > div { padding:1.5rem 0 3rem !important; }
+    #apps-view > div { padding:1.5rem 1rem 3rem !important; }
 
     /* Articles view */
     #articles-view { padding:0; }
@@ -656,6 +656,18 @@
   </div>
 </div>
 
+<!-- ARTICLE OVERLAY — opens long-form articles with a Like bar -->
+<div id="article-overlay" style="display:none;position:fixed;inset:0;background:var(--white);z-index:900;flex-direction:column;">
+  <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:2px solid var(--black);background:var(--white);flex-shrink:0;">
+    <button onclick="closeArticleOverlay()" style="background:none;border:none;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:6px;padding:0;">← Articles</button>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+      <button class="like-btn" id="artOverlayLikeBtn" onclick="toggleArticleOverlayLike()">&#9825; Like</button>
+      <span class="engagement-count" id="artOverlayLikeCount" style="font-size:13px;"></span>
+    </div>
+  </div>
+  <iframe id="article-iframe" style="flex:1;border:none;width:100%;" loading="lazy"></iframe>
+</div>
+
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const PASSWORD_HASH = 'f4e70404e765e45e4f048ed36a434b9cffb5d6e3465868915e1f4998fdd30fe7';
 
@@ -919,6 +931,7 @@ function renderAll() {
   } else {
     noRes.style.display = 'none';
     filtered.forEach((a, i) => col.insertBefore(buildCard(a, i), noRes));
+    loadAllPostCardLikes(filtered);
   }
   document.getElementById('resultCount').textContent =
     (searchQuery || activeTag) ? `${filtered.length} / ${articles.length} results` : '';
@@ -949,6 +962,7 @@ function buildCard(a, index) {
 
   const body = document.createElement('div');
   body.className = 'article-body';
+  const postLiked = localStorage.getItem('et_liked_' + a.id) === '1';
   body.innerHTML = `
     <div class="article-category">${a.category||''}</div>
     <div class="article-title">${a.title}</div>
@@ -957,7 +971,13 @@ function buildCard(a, index) {
       <span class="article-date">${a.date}</span>
       <div class="article-tags">${(a.tags||[]).map(t=>`<span class="tag" onclick="event.stopPropagation();filterByTag('${t}')">${t}</span>`).join('')}</div>
     </div>
-    <span class="read-more">${a.readTime||''} →</span>`;
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+      <span class="read-more">${a.readTime||''} →</span>
+      <button id="post-like-${a.id}" onclick="event.stopPropagation();togglePostCardLike(${a.id},this)"
+        class="like-btn${postLiked ? ' liked' : ''}" style="padding:5px 14px;font-size:11px;border-width:1.5px;">
+        ${postLiked ? '&#9829;' : '&#9825;'} <span>—</span>
+      </button>
+    </div>`;
   card.appendChild(imgDiv);
   card.appendChild(body);
   return card;
@@ -1203,7 +1223,7 @@ function renderArticlesList() {
   container.innerHTML = filtered.map(a => {
     const aid = artLikeId(a.file);
     const liked = localStorage.getItem('et_liked_' + aid) === '1';
-    return `<a href="${a.file}" style="display:flex;gap:1.2rem;padding:1.5rem 0;border-bottom:1px solid #e0ddd8;text-decoration:none;align-items:flex-start;">
+    return `<a href="${a.file}" onclick="event.preventDefault();openArticleDetail('${a.file}','${aid}')" style="display:flex;gap:1.2rem;padding:1.5rem 0;border-bottom:1px solid #e0ddd8;text-decoration:none;align-items:flex-start;cursor:pointer;">
       ${a.image ? `<img src="${a.image}" alt="${a.title}"
         style="width:100px;height:70px;object-fit:cover;flex-shrink:0;filter:grayscale(15%);"
         onerror="this.style.display='none'">` : ''}
@@ -1384,6 +1404,111 @@ function buildColorPicker() {
     };
     container.appendChild(div);
   });
+}
+
+// ── Post card likes ────────────────────────────────────────────
+function loadAllPostCardLikes(filtered) {
+  if (!db) {
+    filtered.forEach(a => {
+      const btn = document.getElementById('post-like-' + a.id);
+      if (btn) { const sp = btn.querySelector('span'); if (sp) sp.textContent = ''; }
+    });
+    return;
+  }
+  filtered.forEach(a => {
+    db.collection('articleStats').doc(String(a.id)).get().then(doc => {
+      const likes = doc.exists ? (doc.data().likes || 0) : 0;
+      const btn = document.getElementById('post-like-' + a.id);
+      if (!btn) return;
+      const sp = btn.querySelector('span');
+      if (sp) sp.textContent = likes || '';
+    }).catch(() => {});
+  });
+}
+
+function togglePostCardLike(articleId, btn) {
+  if (!db) return;
+  const key = 'et_liked_' + articleId;
+  const liked = localStorage.getItem(key) === '1';
+  const ref = db.collection('articleStats').doc(String(articleId));
+  const sp = btn.querySelector('span');
+  const count = parseInt(sp ? sp.textContent : 0) || 0;
+  if (liked) {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(-1) }, { merge: true }).catch(() => {});
+    localStorage.removeItem(key);
+    btn.classList.remove('liked');
+    btn.innerHTML = '&#9825; <span>' + Math.max(0, count - 1) + '</span>';
+    if (currentArticleId == articleId) {
+      const db2 = document.getElementById('likeBtn');
+      if (db2) { db2.classList.remove('liked'); db2.innerHTML = '&#9825; Like'; }
+    }
+  } else {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(1) }, { merge: true }).catch(() => {});
+    localStorage.setItem(key, '1');
+    btn.classList.add('liked');
+    btn.innerHTML = '&#9829; <span>' + (count + 1) + '</span>';
+    if (currentArticleId == articleId) {
+      const db2 = document.getElementById('likeBtn');
+      if (db2) { db2.classList.add('liked'); db2.innerHTML = '&#9829; Liked'; }
+    }
+  }
+}
+
+// ── Article overlay (iframe + like bar) ────────────────────────
+let currentOverlayArticleId = null;
+let overlayLikeUnsubscribe = null;
+
+function openArticleDetail(file, artId) {
+  currentOverlayArticleId = artId;
+  document.getElementById('article-iframe').src = file;
+  const overlay = document.getElementById('article-overlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  // Reset button state
+  const liked = localStorage.getItem('et_liked_' + artId) === '1';
+  const btn = document.getElementById('artOverlayLikeBtn');
+  btn.innerHTML = liked ? '&#9829; Liked' : '&#9825; Like';
+  liked ? btn.classList.add('liked') : btn.classList.remove('liked');
+  document.getElementById('artOverlayLikeCount').textContent = '';
+  // Real-time like count
+  if (overlayLikeUnsubscribe) { overlayLikeUnsubscribe(); overlayLikeUnsubscribe = null; }
+  if (db) {
+    overlayLikeUnsubscribe = db.collection('articleStats').doc(artId).onSnapshot(doc => {
+      const likes = doc.exists ? (doc.data().likes || 0) : 0;
+      const el = document.getElementById('artOverlayLikeCount');
+      if (el) el.textContent = likes ? likes + (likes === 1 ? ' like' : ' likes') : '';
+    }, () => {});
+  }
+}
+
+function closeArticleOverlay() {
+  document.getElementById('article-overlay').style.display = 'none';
+  document.getElementById('article-iframe').src = '';
+  document.body.style.overflow = '';
+  if (overlayLikeUnsubscribe) { overlayLikeUnsubscribe(); overlayLikeUnsubscribe = null; }
+  currentOverlayArticleId = null;
+}
+
+function toggleArticleOverlayLike() {
+  if (!db || !currentOverlayArticleId) return;
+  const id = currentOverlayArticleId;
+  const key = 'et_liked_' + id;
+  const liked = localStorage.getItem(key) === '1';
+  const ref = db.collection('articleStats').doc(id);
+  const btn = document.getElementById('artOverlayLikeBtn');
+  if (liked) {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(-1) }, { merge: true }).catch(() => {});
+    localStorage.removeItem(key);
+    btn.classList.remove('liked'); btn.innerHTML = '&#9825; Like';
+    const cardBtn = document.getElementById('art-like-' + id);
+    if (cardBtn) { const sp = cardBtn.querySelector('span'); cardBtn.classList.remove('liked'); cardBtn.innerHTML = '&#9825; <span>' + Math.max(0, parseInt(sp ? sp.textContent : 0) - 1) + '</span>'; }
+  } else {
+    ref.set({ likes: firebase.firestore.FieldValue.increment(1) }, { merge: true }).catch(() => {});
+    localStorage.setItem(key, '1');
+    btn.classList.add('liked'); btn.innerHTML = '&#9829; Liked';
+    const cardBtn = document.getElementById('art-like-' + id);
+    if (cardBtn) { const sp = cardBtn.querySelector('span'); cardBtn.classList.add('liked'); cardBtn.innerHTML = '&#9829; <span>' + ((parseInt(sp ? sp.textContent : 0) || 0) + 1) + '</span>'; }
+  }
 }
 </script>
 </body>
