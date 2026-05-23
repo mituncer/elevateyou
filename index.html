@@ -257,6 +257,10 @@
     #home-view > div:first-child { height:auto !important; min-height:300px; }
     .hero-grid { padding:2rem 1rem !important; }
 
+    /* Article overlay */
+    #art-overlay-header > div { padding:0 16px; }
+    #artOverlayTitle { font-size:22px !important; }
+
     /* Admin */
     .admin-panel { width:95vw; max-height:95vh; }
     .admin-body { padding:20px; }
@@ -656,16 +660,27 @@
   </div>
 </div>
 
-<!-- ARTICLE OVERLAY — opens long-form articles with a Like bar -->
-<div id="article-overlay" style="display:none;position:fixed;inset:0;background:var(--white);z-index:900;flex-direction:column;">
-  <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:2px solid var(--black);background:var(--white);flex-shrink:0;">
-    <button onclick="closeArticleOverlay()" style="background:none;border:none;font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:6px;padding:0;">← Articles</button>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
-      <button class="like-btn" id="artOverlayLikeBtn" onclick="toggleArticleOverlayLike()">&#9825; Like</button>
-      <span class="engagement-count" id="artOverlayLikeCount" style="font-size:13px;"></span>
+<!-- ARTICLE OVERLAY — mirrors Posts detail-header style -->
+<div id="article-overlay" style="display:none;position:fixed;inset:0;background:var(--white);z-index:900;flex-direction:column;overflow:hidden;">
+  <div id="art-overlay-header" style="flex-shrink:0;border-bottom:3px solid var(--black);background:var(--white);">
+    <div style="max-width:1200px;margin:0 auto;padding:0 40px;">
+      <button class="detail-back" onclick="closeArticleOverlay()">&#8592; Articles</button>
+      <div class="detail-header" style="border-bottom:none;padding-bottom:20px;">
+        <div class="detail-category" id="artOverlayCategory"></div>
+        <div class="detail-title" id="artOverlayTitle" style="font-size:32px;max-width:680px;"></div>
+        <div class="detail-meta">
+          <span id="artOverlayDate"></span>
+          <span style="color:var(--border)">|</span>
+          <span id="artOverlayReadTime"></span>
+          <span style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+            <button class="like-btn" id="artOverlayLikeBtn" onclick="toggleArticleOverlayLike()">&#9825; Like</button>
+            <span class="engagement-count" id="artOverlayLikeCount" style="font-size:13px;"></span>
+          </span>
+        </div>
+      </div>
     </div>
   </div>
-  <iframe id="article-iframe" style="flex:1;border:none;width:100%;" loading="lazy"></iframe>
+  <iframe id="article-iframe" style="flex:1;border:none;width:100%;min-height:0;" loading="lazy"></iframe>
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
@@ -1222,6 +1237,7 @@ function renderArticlesList() {
     : allArticlesList;
   container.innerHTML = filtered.map(a => {
     const aid = artLikeId(a.file);
+    articleDataMap[aid] = { title: a.title, category: a.category || '', date: a.date || '', readTime: a.readTime || '' };
     const liked = localStorage.getItem('et_liked_' + aid) === '1';
     return `<a href="${a.file}" onclick="event.preventDefault();openArticleDetail('${a.file}','${aid}')" style="display:flex;gap:1.2rem;padding:1.5rem 0;border-bottom:1px solid #e0ddd8;text-decoration:none;align-items:flex-start;cursor:pointer;">
       ${a.image ? `<img src="${a.image}" alt="${a.title}"
@@ -1456,20 +1472,37 @@ function togglePostCardLike(articleId, btn) {
 
 // ── Article overlay (iframe + like bar) ────────────────────────
 let currentOverlayArticleId = null;
+const articleDataMap = {};
 let overlayLikeUnsubscribe = null;
 
 function openArticleDetail(file, artId) {
   currentOverlayArticleId = artId;
-  document.getElementById('article-iframe').src = file;
-  const overlay = document.getElementById('article-overlay');
-  overlay.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-  // Reset button state
+  // Populate header from stored metadata
+  const meta = articleDataMap[artId] || {};
+  document.getElementById('artOverlayCategory').textContent  = meta.category || '';
+  document.getElementById('artOverlayTitle').textContent     = meta.title    || '';
+  document.getElementById('artOverlayDate').textContent      = meta.date     || '';
+  document.getElementById('artOverlayReadTime').textContent  = meta.readTime || '';
+  // Like button state
   const liked = localStorage.getItem('et_liked_' + artId) === '1';
   const btn = document.getElementById('artOverlayLikeBtn');
   btn.innerHTML = liked ? '&#9829; Liked' : '&#9825; Like';
   liked ? btn.classList.add('liked') : btn.classList.remove('liked');
   document.getElementById('artOverlayLikeCount').textContent = '';
+  // Load iframe and hide article own header via CSS injection
+  const iframe = document.getElementById('article-iframe');
+  iframe.onload = function() {
+    try {
+      const doc = this.contentDocument || this.contentWindow.document;
+      const s = doc.createElement('style');
+      s.textContent = 'header,nav,.site-nav,.header-top,.detail-back,.tag-bar{display:none!important}body{padding-top:0!important}';
+      doc.head.appendChild(s);
+    } catch(e) {}
+  };
+  iframe.src = file;
+  // Show overlay
+  document.getElementById('article-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
   // Real-time like count
   if (overlayLikeUnsubscribe) { overlayLikeUnsubscribe(); overlayLikeUnsubscribe = null; }
   if (db) {
